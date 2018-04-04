@@ -33,7 +33,7 @@
         <div class="main-login main-center">
             <h5>Sign up once and watch any of our free demos.</h5>
             <%--<form class="" method="post" action="/register">--%>
-            <form:form method="POST" action="/register" modelAttribute="user">
+            <form:form method="POST" action="/realestate/register" modelAttribute="user">
                 <div class="form-group">
                     <label for="email" class="cols-sm-2 control-label">Your Email</label>
                     <div class="cols-sm-10">

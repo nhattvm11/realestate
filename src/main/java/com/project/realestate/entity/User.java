@@ -15,6 +15,7 @@ public class User {
     private int levelId;
     private Date dateCreate;
     private Date lastUpdate;
+    private String accessToken;
 
     public User(String username, String password) {
         this.username = username;
@@ -122,5 +123,15 @@ public class User {
         result = 31 * result + (dateCreate != null ? dateCreate.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "access_token")
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }
