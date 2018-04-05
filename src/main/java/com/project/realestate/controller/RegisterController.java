@@ -1,6 +1,10 @@
 package com.project.realestate.controller;
 
 import com.project.realestate.entity.User;
+import com.project.realestate.exception.ConfirmationException;
+import com.project.realestate.exception.TokenInvalidException;
+import com.project.realestate.exception.UserNotFoundException;
+import com.project.realestate.exception.UsernameExistException;
 import com.project.realestate.model.RegisterTemp;
 import com.project.realestate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +42,10 @@ public class RegisterController {
     }
 
     @GetMapping("/confirm")
-    public String emailConfirm(@RequestParam String token) {
-        userService.confirmRegistration(token);
+    public String emailConfirm(@RequestParam String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
+        userService.resetPassword(token);
         return "redirect:/login";
     }
+
+
 }

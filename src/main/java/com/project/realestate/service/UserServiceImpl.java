@@ -7,18 +7,20 @@ import com.project.realestate.exception.UserNotFoundException;
 import com.project.realestate.exception.UsernameExistException;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UsersRepository usersRepository;
+    PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @Autowired
-    PasswordEncoder encoder;
+//    @Autowired
+    @Qualifier("userRepository")
+    UsersRepository usersRepository;
 
     @Autowired
     EmailService emailService;
@@ -36,11 +38,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateFirstToken(User updateUser) throws UsernameExistException {
+        User user = usersRepository.findUsersByUsername(updateUser.getUsername());
+        if(user != null ) {
+            throw new UsernameExistException("Username is exist");
+        }
+        usersRepository.save(user);
+
     }
 
     @Override
     public void register(User user) {
+        saveUser(user);
+        emailService.sendMailConfirmation(user);
     }
 
     @Override
@@ -50,7 +60,8 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             throw new TokenInvalidException("Token invalid");
         }
-        //update token
+        user.setAccessToken(token);
+        updateFirstToken(user);
     }
 
     @Override
@@ -59,6 +70,14 @@ public class UserServiceImpl implements UserService {
         updateUser.setPassword(encoder.encode(updateUser.getPassword()));
         if(user == null)
             throw new UsernameNotFoundException("Username does not exist");
+        usersRepository.save(updateUser);
+    }
+
+    @Override
+    public void resetPassword(String token) throws TokenInvalidException, UsernameExistException, UserNotFoundException, ConfirmationException {
+        int userId = Integer.parseInt(jwtTokenService.verifyToken(token));
+        User user = getUserById(userId);
         usersRepository.save(user);
     }
+
 }

@@ -42,7 +42,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public String verifyToken(String token) throws TokenInvalidException, UserNotFoundException, UsernameExistException, ConfirmationException {
+    public String verifyToken(String token) throws TokenInvalidException, UserNotFoundException {
         Claims claim = Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody();
         Date expiration = claim.getExpiration();

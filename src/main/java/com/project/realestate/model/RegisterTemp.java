@@ -12,11 +12,9 @@ public class RegisterTemp {
     private String username;
     @NotEmpty
     @Min(value = 8, message = "Password of minimum length 8 characters")
-    @Max(value = 25, message = "Password of maximum length 25 characters")
     private String password;
     @NotEmpty
     @Min(value = 8, message = "Confirm Password of minimum length 8 characters")
-    @Max(value = 25, message = "Confirm Password of maximum length 25 characters")
     private String confirmPassword;
 
     public String getUsername() {

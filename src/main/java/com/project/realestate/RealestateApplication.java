@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.project.realestate.*"})
+@ComponentScan(basePackages = {"com.project.realestate"})
 public class RealestateApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

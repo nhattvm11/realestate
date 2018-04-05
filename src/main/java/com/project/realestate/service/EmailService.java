@@ -4,4 +4,5 @@ import com.project.realestate.entity.User;
 
 public interface EmailService {
     void sendMailConfirmation(User user);
+    void sendMailResetPassword(User user);
 }

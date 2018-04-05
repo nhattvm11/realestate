@@ -8,8 +8,9 @@ import com.project.realestate.exception.UsernameExistException;
 
 public interface UserService {
     User getUserById(int id) throws UserNotFoundException;
-    void updateUser(User user);
+    void updateFirstToken(User user) throws UsernameExistException;
     void register(User user);
     void confirmRegistration(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
     void saveUser(User user);
+    void resetPassword(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
 }
