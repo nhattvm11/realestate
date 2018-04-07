@@ -1,20 +1,19 @@
 package com.project.realestate.model;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.*;
 
 public class RegisterTemp {
 
     @NotEmpty
-    @javax.validation.constraints.Email(message = "Email invalid")
+    @Email(message = "Email invalid")
     private String username;
     @NotEmpty
-    @Min(value = 8, message = "Password of minimum length 8 characters")
+    @Length(min = 8, max = 11, message = "Password of minimum length 8 characters")
     private String password;
     @NotEmpty
-    @Min(value = 8, message = "Confirm Password of minimum length 8 characters")
+    @Length(min = 8, max = 11, message = "Confirm Password of minimum length 8 characters")
     private String confirmPassword;
 
     public String getUsername() {
@@ -40,4 +39,5 @@ public class RegisterTemp {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
 }

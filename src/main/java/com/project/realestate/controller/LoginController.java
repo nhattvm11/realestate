@@ -6,6 +6,8 @@ import com.project.realestate.exception.TokenInvalidException;
 import com.project.realestate.exception.UserNotFoundException;
 import com.project.realestate.exception.UsernameExistException;
 import com.project.realestate.model.RegisterTemp;
+import com.project.realestate.model.ResetUser;
+import com.project.realestate.service.EmailService;
 import com.project.realestate.service.JwtTokenService;
 import com.project.realestate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class LoginController {
     @Autowired
     JwtTokenService jwtTokenService;
 
+    @Autowired
+    EmailService emailService;
+
     @GetMapping("/login")
     public String getLogin() {
         return "login";
@@ -37,8 +42,10 @@ public class LoginController {
     }
 
     @PostMapping("/reset")
-    public String handleFormReset() {
-        return "123";
+    public String handleFormReset(@RequestBody ResetUser resetUser) throws UserNotFoundException {
+        User user = userService.getUSerByEmail(resetUser.getEmail());
+        emailService.sendMailResetPassword(user);
+        return "newPass";
     }
 
     @GetMapping("/newpass")
@@ -60,7 +67,7 @@ public class LoginController {
 
     private User getUserFormToken(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
         String userId = jwtTokenService.verifyToken(token);
-        User user = userService.getUserById(Integer.parseInt(userId));
+        User user = userService.getUserById(userId);
         return user;
     }
 

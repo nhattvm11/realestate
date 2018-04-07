@@ -7,32 +7,41 @@ import com.project.realestate.exception.UserNotFoundException;
 import com.project.realestate.exception.UsernameExistException;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-//    @Autowired
-    @Qualifier("userRepository")
-    UsersRepository usersRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
 
     @Autowired
-    JwtTokenService jwtTokenService;
+    private JwtTokenService jwtTokenService;
 
     @Override
-    public User getUserById(int id) throws UserNotFoundException {
+    public User getUserById(String id) throws UserNotFoundException {
         User user = usersRepository.findUserById(id);
         if( user== null) {
             throw new UserNotFoundException("User does not exist");
+        }
+        return user;
+    }
+
+    @Override
+    public User getUSerByEmail(String email) throws UserNotFoundException {
+        User user = usersRepository.findUsersByUsername(email);
+        if(user == null) {
+            throw new UserNotFoundException("User not found");
         }
         return user;
     }
@@ -49,13 +58,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        saveUser(user);
+        createUser(user);
         emailService.sendMailConfirmation(user);
+    }
+
+    private void createUser(User user) {
+        user.setId(UUID.randomUUID().toString());
+        usersRepository.save(user);
     }
 
     @Override
     public void confirmRegistration(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
-        int userId = Integer.parseInt(jwtTokenService.verifyToken(token));
+        String userId = jwtTokenService.verifyToken(token);
         User user = getUserById(userId);
         if(user == null) {
             throw new TokenInvalidException("Token invalid");
@@ -70,12 +84,13 @@ public class UserServiceImpl implements UserService {
         updateUser.setPassword(encoder.encode(updateUser.getPassword()));
         if(user == null)
             throw new UsernameNotFoundException("Username does not exist");
+
         usersRepository.save(updateUser);
     }
 
     @Override
     public void resetPassword(String token) throws TokenInvalidException, UsernameExistException, UserNotFoundException, ConfirmationException {
-        int userId = Integer.parseInt(jwtTokenService.verifyToken(token));
+        String userId = jwtTokenService.verifyToken(token);
         User user = getUserById(userId);
         usersRepository.save(user);
     }

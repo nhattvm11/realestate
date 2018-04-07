@@ -50,7 +50,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             throw new TokenInvalidException("Token is expired");
 
         String userId = claim.get("user-id").toString();
-        User user = userService.getUserById(Integer.parseInt(userId));
+        User user = userService.getUserById(userId);
         if(user == null) {
             throw new TokenInvalidException("Token Invalid");
         }
