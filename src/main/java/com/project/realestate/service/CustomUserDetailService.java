@@ -1,5 +1,6 @@
 package com.project.realestate.service;
 
+import com.project.realestate.entity.User;
 import com.project.realestate.model.CustomUserDetail;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;

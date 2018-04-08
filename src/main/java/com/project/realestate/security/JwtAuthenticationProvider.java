@@ -1,5 +1,6 @@
 package com.project.realestate.security;
 
+import com.project.realestate.entity.User;
 import com.project.realestate.exception.ConfirmationException;
 import com.project.realestate.exception.TokenInvalidException;
 import com.project.realestate.exception.UserNotFoundException;

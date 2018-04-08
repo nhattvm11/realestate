@@ -8,7 +8,6 @@ public class Picture {
     private String id;
     private String url;
     private Boolean thumbnail;
-    private String articleId;
     private Date createAt;
     private Date lastUpdate;
     private Article articleByArticleId;
@@ -44,16 +43,6 @@ public class Picture {
     }
 
     @Basic
-    @Column(name = "articleID")
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
-    }
-
-    @Basic
     @Column(name = "createAt")
     public Date getCreateAt() {
         return createAt;
@@ -83,7 +72,6 @@ public class Picture {
         if (id != null ? !id.equals(picture.id) : picture.id != null) return false;
         if (url != null ? !url.equals(picture.url) : picture.url != null) return false;
         if (thumbnail != null ? !thumbnail.equals(picture.thumbnail) : picture.thumbnail != null) return false;
-        if (articleId != null ? !articleId.equals(picture.articleId) : picture.articleId != null) return false;
         if (createAt != null ? !createAt.equals(picture.createAt) : picture.createAt != null) return false;
         if (lastUpdate != null ? !lastUpdate.equals(picture.lastUpdate) : picture.lastUpdate != null) return false;
 
@@ -95,7 +83,6 @@ public class Picture {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (thumbnail != null ? thumbnail.hashCode() : 0);
-        result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;

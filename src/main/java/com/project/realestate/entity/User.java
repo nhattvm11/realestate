@@ -10,7 +10,6 @@ public class User {
     private String username;
     private String password;
     private Boolean active;
-    private String levelId;
     private Date dateCreate;
     private Date dateUpdate;
     private String token;
@@ -19,12 +18,11 @@ public class User {
     private Collection<Contact> contactsById;
     private Level levelByLevelId;
 
+    public User() {}
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-    public User() {
     }
 
     @Id
@@ -65,16 +63,6 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    @Basic
-    @Column(name = "levelId")
-    public String getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
     }
 
     @Basic
@@ -128,7 +116,6 @@ public class User {
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (active != null ? !active.equals(user.active) : user.active != null) return false;
-        if (levelId != null ? !levelId.equals(user.levelId) : user.levelId != null) return false;
         if (dateCreate != null ? !dateCreate.equals(user.dateCreate) : user.dateCreate != null) return false;
         if (dateUpdate != null ? !dateUpdate.equals(user.dateUpdate) : user.dateUpdate != null) return false;
         if (token != null ? !token.equals(user.token) : user.token != null) return false;
@@ -143,7 +130,6 @@ public class User {
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (levelId != null ? levelId.hashCode() : 0);
         result = 31 * result + (dateCreate != null ? dateCreate.hashCode() : 0);
         result = 31 * result + (dateUpdate != null ? dateUpdate.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);

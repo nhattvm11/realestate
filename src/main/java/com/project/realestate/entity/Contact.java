@@ -6,7 +6,6 @@ import java.sql.Date;
 @Entity
 public class Contact {
     private String id;
-    private String userId;
     private String contactName;
     private String phone;
     private String email;
@@ -24,16 +23,6 @@ public class Contact {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "userId")
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     @Basic
@@ -114,7 +103,6 @@ public class Contact {
         Contact contact = (Contact) o;
 
         if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
-        if (userId != null ? !userId.equals(contact.userId) : contact.userId != null) return false;
         if (contactName != null ? !contactName.equals(contact.contactName) : contact.contactName != null) return false;
         if (phone != null ? !phone.equals(contact.phone) : contact.phone != null) return false;
         if (email != null ? !email.equals(contact.email) : contact.email != null) return false;
@@ -129,7 +117,6 @@ public class Contact {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);

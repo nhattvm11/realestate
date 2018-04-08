@@ -7,14 +7,12 @@ import java.sql.Date;
 @Table(name = "article_feature", schema = "realestate", catalog = "")
 public class ArticleFeature {
     private String id;
-    private String articleId;
-    private String featureId;
     private Date createAt;
     private Date lastUpdate;
     private Article articleByArticleId;
     private Feature featureByFeatureId;
 
-    @Basic
+    @Id
     @Column(name = "id")
     public String getId() {
         return id;
@@ -22,26 +20,6 @@ public class ArticleFeature {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "articleId")
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
-    }
-
-    @Basic
-    @Column(name = "featureId")
-    public String getFeatureId() {
-        return featureId;
-    }
-
-    public void setFeatureId(String featureId) {
-        this.featureId = featureId;
     }
 
     @Basic
@@ -72,8 +50,6 @@ public class ArticleFeature {
         ArticleFeature that = (ArticleFeature) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) return false;
-        if (featureId != null ? !featureId.equals(that.featureId) : that.featureId != null) return false;
         if (createAt != null ? !createAt.equals(that.createAt) : that.createAt != null) return false;
         if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
 
@@ -83,8 +59,6 @@ public class ArticleFeature {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
-        result = 31 * result + (featureId != null ? featureId.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;
