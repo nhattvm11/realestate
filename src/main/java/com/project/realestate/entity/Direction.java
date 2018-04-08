@@ -1,25 +1,24 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class Direction {
-    private int id;
+    private String id;
     private String directionName;
     private Date createAt;
     private Date updateAt;
+    private Collection<Article> articlesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,7 +59,7 @@ public class Direction {
 
         Direction direction = (Direction) o;
 
-        if (id != direction.id) return false;
+        if (id != null ? !id.equals(direction.id) : direction.id != null) return false;
         if (directionName != null ? !directionName.equals(direction.directionName) : direction.directionName != null)
             return false;
         if (createAt != null ? !createAt.equals(direction.createAt) : direction.createAt != null) return false;
@@ -71,10 +70,19 @@ public class Direction {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (directionName != null ? directionName.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (updateAt != null ? updateAt.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "directionByDirectionId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
     }
 }

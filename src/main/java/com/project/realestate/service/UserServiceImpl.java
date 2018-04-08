@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             throw new TokenInvalidException("Token invalid");
         }
-        user.setAccessToken(token);
+        user.setToken(token);
         updateFirstToken(user);
     }
 

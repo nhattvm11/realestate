@@ -1,27 +1,25 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 public class Picture {
-    private int id;
+    private String id;
     private String url;
     private Boolean thumbnail;
-    private Integer articleId;
+    private String articleId;
     private Date createAt;
     private Date lastUpdate;
+    private Article articleByArticleId;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,11 +45,11 @@ public class Picture {
 
     @Basic
     @Column(name = "articleID")
-    public Integer getArticleId() {
+    public String getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(Integer articleId) {
+    public void setArticleId(String articleId) {
         this.articleId = articleId;
     }
 
@@ -82,7 +80,7 @@ public class Picture {
 
         Picture picture = (Picture) o;
 
-        if (id != picture.id) return false;
+        if (id != null ? !id.equals(picture.id) : picture.id != null) return false;
         if (url != null ? !url.equals(picture.url) : picture.url != null) return false;
         if (thumbnail != null ? !thumbnail.equals(picture.thumbnail) : picture.thumbnail != null) return false;
         if (articleId != null ? !articleId.equals(picture.articleId) : picture.articleId != null) return false;
@@ -94,12 +92,22 @@ public class Picture {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (thumbnail != null ? thumbnail.hashCode() : 0);
         result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "articleID", referencedColumnName = "id")
+    public Article getArticleByArticleId() {
+        return articleByArticleId;
+    }
+
+    public void setArticleByArticleId(Article articleByArticleId) {
+        this.articleByArticleId = articleByArticleId;
     }
 }

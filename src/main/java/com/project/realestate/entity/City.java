@@ -1,25 +1,24 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class City {
-    private int id;
+    private String id;
     private String cityName;
     private Date createAt;
     private Date lastUpdate;
+    private Collection<Article> articlesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,7 +59,7 @@ public class City {
 
         City city = (City) o;
 
-        if (id != city.id) return false;
+        if (id != null ? !id.equals(city.id) : city.id != null) return false;
         if (cityName != null ? !cityName.equals(city.cityName) : city.cityName != null) return false;
         if (createAt != null ? !createAt.equals(city.createAt) : city.createAt != null) return false;
         if (lastUpdate != null ? !lastUpdate.equals(city.lastUpdate) : city.lastUpdate != null) return false;
@@ -70,10 +69,19 @@ public class City {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (cityName != null ? cityName.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "cityByCityId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
     }
 }

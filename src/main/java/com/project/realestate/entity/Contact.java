@@ -1,14 +1,11 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 public class Contact {
-    private int id;
+    private String id;
     private String userId;
     private String contactName;
     private String phone;
@@ -17,14 +14,15 @@ public class Contact {
     private Boolean mainContact;
     private Date createAt;
     private Date lastUpdate;
+    private User userByUserId;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -108,5 +106,47 @@ public class Contact {
         this.lastUpdate = lastUpdate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Contact contact = (Contact) o;
+
+        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
+        if (userId != null ? !userId.equals(contact.userId) : contact.userId != null) return false;
+        if (contactName != null ? !contactName.equals(contact.contactName) : contact.contactName != null) return false;
+        if (phone != null ? !phone.equals(contact.phone) : contact.phone != null) return false;
+        if (email != null ? !email.equals(contact.email) : contact.email != null) return false;
+        if (address != null ? !address.equals(contact.address) : contact.address != null) return false;
+        if (mainContact != null ? !mainContact.equals(contact.mainContact) : contact.mainContact != null) return false;
+        if (createAt != null ? !createAt.equals(contact.createAt) : contact.createAt != null) return false;
+        if (lastUpdate != null ? !lastUpdate.equals(contact.lastUpdate) : contact.lastUpdate != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (mainContact != null ? mainContact.hashCode() : 0);
+        result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
+        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
+    }
 }

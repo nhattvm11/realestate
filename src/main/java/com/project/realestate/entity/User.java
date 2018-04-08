@@ -1,10 +1,8 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class User {
@@ -12,10 +10,14 @@ public class User {
     private String username;
     private String password;
     private Boolean active;
-    private int levelId;
+    private String levelId;
     private Date dateCreate;
-    private Date lastUpdate;
-    private String accessToken;
+    private Date dateUpdate;
+    private String token;
+    private String avatar;
+    private Collection<Article> articlesById;
+    private Collection<Contact> contactsById;
+    private Level levelByLevelId;
 
     public User(String username, String password) {
         this.username = username;
@@ -66,17 +68,17 @@ public class User {
     }
 
     @Basic
-    @Column(name = "levelId", insertable = false, updatable = false)
-    public int getLevelId() {
+    @Column(name = "levelId")
+    public String getLevelId() {
         return levelId;
     }
 
-    public void setLevelId(int levelId) {
+    public void setLevelId(String levelId) {
         this.levelId = levelId;
     }
 
     @Basic
-    @Column(name = "date_create")
+    @Column(name = "dateCreate")
     public Date getDateCreate() {
         return dateCreate;
     }
@@ -86,25 +88,94 @@ public class User {
     }
 
     @Basic
-    @Column(name = "last_update")
-    public Date getLastUpdate() {
-        return lastUpdate;
+    @Column(name = "dateUpdate")
+    public Date getDateUpdate() {
+        return dateUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
     }
-
-
-
 
     @Basic
-    @Column(name = "access_token")
-    public String getAccessToken() {
-        return accessToken;
+    @Column(name = "token")
+    public String getToken() {
+        return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Basic
+    @Column(name = "avatar")
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (active != null ? !active.equals(user.active) : user.active != null) return false;
+        if (levelId != null ? !levelId.equals(user.levelId) : user.levelId != null) return false;
+        if (dateCreate != null ? !dateCreate.equals(user.dateCreate) : user.dateCreate != null) return false;
+        if (dateUpdate != null ? !dateUpdate.equals(user.dateUpdate) : user.dateUpdate != null) return false;
+        if (token != null ? !token.equals(user.token) : user.token != null) return false;
+        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        result = 31 * result + (levelId != null ? levelId.hashCode() : 0);
+        result = 31 * result + (dateCreate != null ? dateCreate.hashCode() : 0);
+        result = 31 * result + (dateUpdate != null ? dateUpdate.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
+        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
+        return result;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Contact> getContactsById() {
+        return contactsById;
+    }
+
+    public void setContactsById(Collection<Contact> contactsById) {
+        this.contactsById = contactsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "levelId", referencedColumnName = "id")
+    public Level getLevelByLevelId() {
+        return levelByLevelId;
+    }
+
+    public void setLevelByLevelId(Level levelByLevelId) {
+        this.levelByLevelId = levelByLevelId;
     }
 }

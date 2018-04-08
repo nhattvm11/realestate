@@ -1,10 +1,8 @@
 package com.project.realestate.service;
 
 import com.project.realestate.entity.User;
-import com.project.realestate.exception.ConfirmationException;
 import com.project.realestate.exception.TokenInvalidException;
 import com.project.realestate.exception.UserNotFoundException;
-import com.project.realestate.exception.UsernameExistException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

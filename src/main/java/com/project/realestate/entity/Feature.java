@@ -1,22 +1,21 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class Feature {
-    private int id;
+    private String id;
     private String featureName;
+    private Collection<ArticleFeature> articleFeaturesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,7 +36,7 @@ public class Feature {
 
         Feature feature = (Feature) o;
 
-        if (id != feature.id) return false;
+        if (id != null ? !id.equals(feature.id) : feature.id != null) return false;
         if (featureName != null ? !featureName.equals(feature.featureName) : feature.featureName != null) return false;
 
         return true;
@@ -45,8 +44,17 @@ public class Feature {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (featureName != null ? featureName.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "featureByFeatureId")
+    public Collection<ArticleFeature> getArticleFeaturesById() {
+        return articleFeaturesById;
+    }
+
+    public void setArticleFeaturesById(Collection<ArticleFeature> articleFeaturesById) {
+        this.articleFeaturesById = articleFeaturesById;
     }
 }

@@ -1,24 +1,23 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class Type {
-    private int id;
+    private String id;
     private String typeName;
     private Date createAt;
+    private Collection<Article> articlesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,7 +48,7 @@ public class Type {
 
         Type type = (Type) o;
 
-        if (id != type.id) return false;
+        if (id != null ? !id.equals(type.id) : type.id != null) return false;
         if (typeName != null ? !typeName.equals(type.typeName) : type.typeName != null) return false;
         if (createAt != null ? !createAt.equals(type.createAt) : type.createAt != null) return false;
 
@@ -58,9 +57,18 @@ public class Type {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "typeByTypeId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
     }
 }

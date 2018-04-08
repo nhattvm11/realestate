@@ -1,6 +1,5 @@
 package com.project.realestate.security;
 
-import com.project.realestate.entity.User;
 import com.project.realestate.exception.ConfirmationException;
 import com.project.realestate.exception.TokenInvalidException;
 import com.project.realestate.exception.UserNotFoundException;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

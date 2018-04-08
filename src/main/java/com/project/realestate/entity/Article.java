@@ -1,19 +1,17 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class Article {
-    private int id;
-    private int typeId;
-    private int propertyId;
-    private int cityId;
-    private int districtId;
+    private String id;
+    private String typeId;
+    private String propertyId;
+    private String cityId;
+    private String districtId;
     private String address;
     private String title;
     private BigDecimal areasize;
@@ -21,7 +19,7 @@ public class Article {
     private Integer bathroom;
     private Integer livingroom;
     private Integer tier;
-    private Integer directionId;
+    private String directionId;
     private BigDecimal price;
     private String description;
     private Integer priority;
@@ -32,54 +30,62 @@ public class Article {
     private Date dateUp;
     private Date dateExpire;
     private Date lastUpdate;
+    private Type typeByTypeId;
+    private PropertyType propertyTypeByPropertyId;
+    private City cityByCityId;
+    private District districtByDistrictId;
+    private Direction directionByDirectionId;
+    private User userByUserId;
+    private Collection<ArticleFeature> articleFeaturesById;
+    private Collection<Picture> picturesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "typeId")
-    public int getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 
     @Basic
     @Column(name = "propertyId")
-    public int getPropertyId() {
+    public String getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(int propertyId) {
+    public void setPropertyId(String propertyId) {
         this.propertyId = propertyId;
     }
 
     @Basic
     @Column(name = "cityId")
-    public int getCityId() {
+    public String getCityId() {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(String cityId) {
         this.cityId = cityId;
     }
 
     @Basic
     @Column(name = "districtId")
-    public int getDistrictId() {
+    public String getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(int districtId) {
+    public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
 
@@ -155,11 +161,11 @@ public class Article {
 
     @Basic
     @Column(name = "directionId")
-    public Integer getDirectionId() {
+    public String getDirectionId() {
         return directionId;
     }
 
-    public void setDirectionId(Integer directionId) {
+    public void setDirectionId(String directionId) {
         this.directionId = directionId;
     }
 
@@ -263,5 +269,143 @@ public class Article {
         this.lastUpdate = lastUpdate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Article article = (Article) o;
+
+        if (contactId != article.contactId) return false;
+        if (id != null ? !id.equals(article.id) : article.id != null) return false;
+        if (typeId != null ? !typeId.equals(article.typeId) : article.typeId != null) return false;
+        if (propertyId != null ? !propertyId.equals(article.propertyId) : article.propertyId != null) return false;
+        if (cityId != null ? !cityId.equals(article.cityId) : article.cityId != null) return false;
+        if (districtId != null ? !districtId.equals(article.districtId) : article.districtId != null) return false;
+        if (address != null ? !address.equals(article.address) : article.address != null) return false;
+        if (title != null ? !title.equals(article.title) : article.title != null) return false;
+        if (areasize != null ? !areasize.equals(article.areasize) : article.areasize != null) return false;
+        if (bedroom != null ? !bedroom.equals(article.bedroom) : article.bedroom != null) return false;
+        if (bathroom != null ? !bathroom.equals(article.bathroom) : article.bathroom != null) return false;
+        if (livingroom != null ? !livingroom.equals(article.livingroom) : article.livingroom != null) return false;
+        if (tier != null ? !tier.equals(article.tier) : article.tier != null) return false;
+        if (directionId != null ? !directionId.equals(article.directionId) : article.directionId != null) return false;
+        if (price != null ? !price.equals(article.price) : article.price != null) return false;
+        if (description != null ? !description.equals(article.description) : article.description != null) return false;
+        if (priority != null ? !priority.equals(article.priority) : article.priority != null) return false;
+        if (active != null ? !active.equals(article.active) : article.active != null) return false;
+        if (view != null ? !view.equals(article.view) : article.view != null) return false;
+        if (userId != null ? !userId.equals(article.userId) : article.userId != null) return false;
+        if (dateUp != null ? !dateUp.equals(article.dateUp) : article.dateUp != null) return false;
+        if (dateExpire != null ? !dateExpire.equals(article.dateExpire) : article.dateExpire != null) return false;
+        if (lastUpdate != null ? !lastUpdate.equals(article.lastUpdate) : article.lastUpdate != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
+        result = 31 * result + (propertyId != null ? propertyId.hashCode() : 0);
+        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        result = 31 * result + (districtId != null ? districtId.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (areasize != null ? areasize.hashCode() : 0);
+        result = 31 * result + (bedroom != null ? bedroom.hashCode() : 0);
+        result = 31 * result + (bathroom != null ? bathroom.hashCode() : 0);
+        result = 31 * result + (livingroom != null ? livingroom.hashCode() : 0);
+        result = 31 * result + (tier != null ? tier.hashCode() : 0);
+        result = 31 * result + (directionId != null ? directionId.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        result = 31 * result + (view != null ? view.hashCode() : 0);
+        result = 31 * result + contactId;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (dateUp != null ? dateUp.hashCode() : 0);
+        result = 31 * result + (dateExpire != null ? dateExpire.hashCode() : 0);
+        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
+        return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "typeId", referencedColumnName = "id", nullable = false)
+    public Type getTypeByTypeId() {
+        return typeByTypeId;
+    }
+
+    public void setTypeByTypeId(Type typeByTypeId) {
+        this.typeByTypeId = typeByTypeId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "propertyId", referencedColumnName = "id", nullable = false)
+    public PropertyType getPropertyTypeByPropertyId() {
+        return propertyTypeByPropertyId;
+    }
+
+    public void setPropertyTypeByPropertyId(PropertyType propertyTypeByPropertyId) {
+        this.propertyTypeByPropertyId = propertyTypeByPropertyId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "cityId", referencedColumnName = "id", nullable = false)
+    public City getCityByCityId() {
+        return cityByCityId;
+    }
+
+    public void setCityByCityId(City cityByCityId) {
+        this.cityByCityId = cityByCityId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "districtId", referencedColumnName = "id", nullable = false)
+    public District getDistrictByDistrictId() {
+        return districtByDistrictId;
+    }
+
+    public void setDistrictByDistrictId(District districtByDistrictId) {
+        this.districtByDistrictId = districtByDistrictId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "directionId", referencedColumnName = "id")
+    public Direction getDirectionByDirectionId() {
+        return directionByDirectionId;
+    }
+
+    public void setDirectionByDirectionId(Direction directionByDirectionId) {
+        this.directionByDirectionId = directionByDirectionId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
+    }
+
+    @OneToMany(mappedBy = "articleByArticleId")
+    public Collection<ArticleFeature> getArticleFeaturesById() {
+        return articleFeaturesById;
+    }
+
+    public void setArticleFeaturesById(Collection<ArticleFeature> articleFeaturesById) {
+        this.articleFeaturesById = articleFeaturesById;
+    }
+
+    @OneToMany(mappedBy = "articleByArticleId")
+    public Collection<Picture> getPicturesById() {
+        return picturesById;
+    }
+
+    public void setPicturesById(Collection<Picture> picturesById) {
+        this.picturesById = picturesById;
+    }
 }

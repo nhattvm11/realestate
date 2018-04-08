@@ -1,7 +1,6 @@
 package com.project.realestate.service;
 
 import com.project.realestate.entity.User;
-import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

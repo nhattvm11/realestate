@@ -1,22 +1,21 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class District {
-    private int id;
+    private String id;
     private String districtName;
+    private Collection<Article> articlesById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,7 +36,7 @@ public class District {
 
         District district = (District) o;
 
-        if (id != district.id) return false;
+        if (id != null ? !id.equals(district.id) : district.id != null) return false;
         if (districtName != null ? !districtName.equals(district.districtName) : district.districtName != null)
             return false;
 
@@ -46,8 +45,17 @@ public class District {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (districtName != null ? districtName.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "districtByDistrictId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
     }
 }

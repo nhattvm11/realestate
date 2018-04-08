@@ -6,39 +6,41 @@ import java.sql.Date;
 @Entity
 @Table(name = "article_feature", schema = "realestate", catalog = "")
 public class ArticleFeature {
-    private int id;
-    private int articleId;
-    private int featureId;
+    private String id;
+    private String articleId;
+    private String featureId;
     private Date createAt;
     private Date lastUpdate;
+    private Article articleByArticleId;
+    private Feature featureByFeatureId;
 
-    @Id
+    @Basic
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "articleId")
-    public int getArticleId() {
+    public String getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(int articleId) {
+    public void setArticleId(String articleId) {
         this.articleId = articleId;
     }
 
     @Basic
     @Column(name = "featureId")
-    public int getFeatureId() {
+    public String getFeatureId() {
         return featureId;
     }
 
-    public void setFeatureId(int featureId) {
+    public void setFeatureId(String featureId) {
         this.featureId = featureId;
     }
 
@@ -69,9 +71,9 @@ public class ArticleFeature {
 
         ArticleFeature that = (ArticleFeature) o;
 
-        if (id != that.id) return false;
-        if (articleId != that.articleId) return false;
-        if (featureId != that.featureId) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) return false;
+        if (featureId != null ? !featureId.equals(that.featureId) : that.featureId != null) return false;
         if (createAt != null ? !createAt.equals(that.createAt) : that.createAt != null) return false;
         if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
 
@@ -80,11 +82,31 @@ public class ArticleFeature {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + articleId;
-        result = 31 * result + featureId;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
+        result = 31 * result + (featureId != null ? featureId.hashCode() : 0);
         result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "articleId", referencedColumnName = "id", nullable = false)
+    public Article getArticleByArticleId() {
+        return articleByArticleId;
+    }
+
+    public void setArticleByArticleId(Article articleByArticleId) {
+        this.articleByArticleId = articleByArticleId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "featureId", referencedColumnName = "id", nullable = false)
+    public Feature getFeatureByFeatureId() {
+        return featureByFeatureId;
+    }
+
+    public void setFeatureByFeatureId(Feature featureByFeatureId) {
+        this.featureByFeatureId = featureByFeatureId;
     }
 }

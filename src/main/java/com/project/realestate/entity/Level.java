@@ -1,22 +1,21 @@
 package com.project.realestate.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class Level {
-    private int id;
+    private String id;
     private String levelName;
+    private Collection<User> usersById;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,7 +36,7 @@ public class Level {
 
         Level level = (Level) o;
 
-        if (id != level.id) return false;
+        if (id != null ? !id.equals(level.id) : level.id != null) return false;
         if (levelName != null ? !levelName.equals(level.levelName) : level.levelName != null) return false;
 
         return true;
@@ -45,8 +44,17 @@ public class Level {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (levelName != null ? levelName.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "levelByLevelId")
+    public Collection<User> getUsersById() {
+        return usersById;
+    }
+
+    public void setUsersById(Collection<User> usersById) {
+        this.usersById = usersById;
     }
 }
