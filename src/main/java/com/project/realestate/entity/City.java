@@ -11,6 +11,7 @@ public class City {
     private Date createAt;
     private Date lastUpdate;
     private Collection<Article> articlesById;
+    private Collection<District> districtsById;
 
     @Id
     @Column(name = "id")
@@ -83,5 +84,14 @@ public class City {
 
     public void setArticlesById(Collection<Article> articlesById) {
         this.articlesById = articlesById;
+    }
+
+    @OneToMany(mappedBy = "cityByCitiId")
+    public Collection<District> getDistrictsById() {
+        return districtsById;
+    }
+
+    public void setDistrictsById(Collection<District> districtsById) {
+        this.districtsById = districtsById;
     }
 }

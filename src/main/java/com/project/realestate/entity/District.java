@@ -8,6 +8,7 @@ public class District {
     private String id;
     private String districtName;
     private Collection<Article> articlesById;
+    private City cityByCitiId;
 
     @Id
     @Column(name = "id")
@@ -57,5 +58,15 @@ public class District {
 
     public void setArticlesById(Collection<Article> articlesById) {
         this.articlesById = articlesById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "citiId", referencedColumnName = "id")
+    public City getCityByCitiId() {
+        return cityByCitiId;
+    }
+
+    public void setCityByCitiId(City cityByCitiId) {
+        this.cityByCitiId = cityByCitiId;
     }
 }
