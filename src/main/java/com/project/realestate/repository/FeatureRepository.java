@@ -8,4 +8,5 @@ import java.util.List;
 public interface FeatureRepository extends JpaRepository<Feature, String> {
     @Override
     List<Feature> findAll();
+    public Feature findFeatureById(String id);
 }

@@ -2,15 +2,19 @@ package com.project.realestate.controller;
 
 import com.project.realestate.entity.*;
 import com.project.realestate.model.ArticleTemp;
+import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class
@@ -19,13 +23,11 @@ public class
 ArticleController {
 
     @Autowired
+    private ArticleService articleService;
+
+
+    @Autowired
     private CityService cityService;
-
-    @Autowired
-    private TypeService typeService;
-
-    @Autowired
-    private PropertyTypeService propertyTypeService;
 
     @Autowired
     private DistrictService districtService;
@@ -34,74 +36,42 @@ ArticleController {
     private FeatureService featureService;
 
     @Autowired
-    private DirectionSerVice directionSerVice;
-
-    @Autowired
     private ArticleFeatureService articleFeatureService;
 
     @GetMapping("/article/create")
-    public ModelAndView createArticle() throws Exception{
+    public ModelAndView createArticleView() throws Exception{
         ModelAndView model = new ModelAndView();
         model.setViewName("createArticle");
 
-        List<City> cities = cityService.findAll();
-        Map<String, String> citiesMap = new HashMap<>();
-        convertCityListToMap(cities, citiesMap);
-
-        List<Type> types = typeService.findAll();
-        Map<String, String> typesMap = new HashMap<>();
-        convertTypeListToMap(types, typesMap);
-
-        List<PropertyType> propertyTypes = propertyTypeService.findAll();
-        Map<String, String> propertyTypeMap = new HashMap<>();
-        convertPropertyTypeListToMap(propertyTypes, propertyTypeMap);
-
-        List<Feature> features = featureService.findAll();
-        Map<String, String> featureMap = new HashMap<>();
-        convertFeatureListToMap(features, featureMap);
-
-        List<Direction> directions = directionSerVice.findAll();
-        Map<String, String> directionMap = new HashMap<>();
-        convertDirectionListToMap(directions, directionMap);
-
-        model.addObject("cities", citiesMap);
-        model.addObject("types", typesMap);
-        model.addObject("propertyTypes", propertyTypeMap);
-        model.addObject("features", featureMap);
-        model.addObject("directions", directionMap);
+        model.addObject("cities", articleService.initCityModel());
+        model.addObject("types", articleService.initTypeModel());
+        model.addObject("propertyTypes", articleService.initPropertyTypeModel());
+        model.addObject("features", articleService.initFeatureModel());
+        model.addObject("directions", articleService.initDirectionModel());
 
         model.addObject("article", new ArticleTemp());
 
         return model;
     }
 
-    private void convertDirectionListToMap(List<Direction> directions, Map<String, String> directionMap) {
-        for (Direction direction: directions) {
-            directionMap.put(direction.getId(), direction.getDirectionName());
-        }
+
+    @PostMapping("/article/create")
+    public String createArticleHandler(@ModelAttribute("article") ArticleTemp articleTemp) throws Exception{
+        Article article = new Article();
+        articleService.parseArticleTempToEntity(article, articleTemp);
+        articleService.SaveArticle(article);
+
+        articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), article.getId());
+        return "listArticle";
     }
 
-    private void convertFeatureListToMap(List<Feature> features, Map<String, String> featureMap) {
-        for (Feature feature: features) {
-            featureMap.put(feature.getId(), feature.getFeatureName());
-        }
-    }
+    @GetMapping("/article/districts")
+    public ResponseEntity<List<DistrictTemp>> getDistricts(@RequestParam(value = "cityId", required = false) String cityId) throws Exception {
+        City city = cityService.findById(cityId);
+        List<District> districts = districtService.findDistrictByCityId(city);
+        List<DistrictTemp> districtTemps = new ArrayList<>();
+        articleService.convertDistrictEntityToDistrictTemp(districts, districtTemps);
 
-    private void convertPropertyTypeListToMap(List<PropertyType> propertyTypes, Map<String, String> propertyTypeMap) {
-        for (PropertyType type: propertyTypes) {
-            propertyTypeMap.put(type.getId(), type.getPropertyName());
-        }
-    }
-
-    private void convertTypeListToMap(List<Type> types, Map<String, String> typesMap) {
-        for (Type type: types) {
-            typesMap.put(type.getId(), type.getTypeName());
-        }
-    }
-
-    private void convertCityListToMap(List<City> cities, Map<String, String> citiesMap){
-        for (City city: cities) {
-            citiesMap.put(city.getId(), city.getCityName());
-        }
+        return new ResponseEntity<List<DistrictTemp>>(districtTemps, HttpStatus.OK);
     }
 }

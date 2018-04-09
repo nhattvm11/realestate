@@ -8,4 +8,5 @@ import java.util.List;
 public interface PropertyTypeRepository extends JpaRepository<PropertyType, String> {
     @Override
     List<PropertyType> findAll();
+    PropertyType findPropertyTypeById(String id);
 }

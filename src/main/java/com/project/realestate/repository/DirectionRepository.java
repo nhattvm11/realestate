@@ -8,4 +8,5 @@ import java.util.List;
 public interface DirectionRepository extends JpaRepository<Direction, String> {
     @Override
     List<Direction> findAll();
+    Direction findDirectionById(String id);
 }

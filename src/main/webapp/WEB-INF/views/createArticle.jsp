@@ -12,41 +12,74 @@
 <html>
 <head>
     <title>create Article</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
     <h2>Create Article</h2>
 
-    <form:form method="post" modelAttribute="article">
+    <form:form method="post" modelAttribute="article" action="/realestate/article/create">
 
-        Type <form:select path="typeId" items="${types}"/>
+        Type <form:select path="typeId" items="${types}"/><br>
 
-        Property Type <form:select path="propertyId" items="${propertyTypes}"/>
+        Property Type <form:select path="propertyId" items="${propertyTypes}"/><br>
 
-        address <form:input path="address"/>
+        address <form:input path="address"/><br>
 
-        city <form:select path="cityId" items="${cities}" />
+        city <form:select path="cityId" items="${cities}" /><br>
 
-        Title <form:input path="title"/>
+        District
+        <div id="District">
+            <select name="DistrictId">
+                <option>--Select City--</option>
+            </select>
+        </div>
 
-        Area Size <form:input path="areasize" />
+        <br>
 
-        BedRoom <form:input path="bedroom" />
+        Title <form:input path="title"/><br>
 
-        BathRoom <form:input path="bathroom" />
+        Area Size <form:input path="areasize" /><br>
 
-        LivingRoom <form:input path="livingroom" />
+        BedRoom <form:input path="bedroom" /><br>
 
-        Tiers <form:input path="tier" />
+        BathRoom <form:input path="bathroom" /><br>
 
-        Direction <form:select path="directionId" items="${directions}"/>
+        LivingRoom <form:input path="livingroom" /><br>
 
-        Price <form:input path="price" />
+        Tiers <form:input path="tier" /><br>
 
-        Description <form:input path="description" />
+        Direction <form:select path="directionId" items="${directions}"/><br>
 
-        Feature <form:checkboxes element="li" path="features" items="${features}"/>
+        Price <form:input path="price" /><br>
+
+        Description <form:input path="description" /><br>
+
+        Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
 
         <input type="submit" value="Create Article"/>
     </form:form>
 </body>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#cityId').change(function () {
+            $.ajax({
+                type: "get",
+                url: "/realestate/article/districts",
+                data: { cityId: $('#cityId').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var district = "<select id='districtId' name = 'districtId'>";
+                    for (var i = 0; i < data.length; i++) {
+                        district = district + '<option value=' + data[i].id + '>' + data[i].districtName + '</option>';
+                    }
+                    district = district + '</select>';
+                    $('#District').html(district);
+                }
+            });
+        });
+    });
+</script>
 </html>

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TypeRepository extends JpaRepository<Type, String> {
     @Override
     List<Type> findAll();
+    Type findTypeById(String id);
 }

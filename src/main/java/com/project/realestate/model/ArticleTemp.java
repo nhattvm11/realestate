@@ -1,17 +1,18 @@
 package com.project.realestate.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ArticleTemp {
 
     private String address;
     private String title;
-    private Double areasize;
+    private BigDecimal areasize;
     private Integer bedroom;
     private Integer bathroom;
     private Integer livingroom;
     private Integer tier;
-    private Double price;
+    private BigDecimal price;
     private String description;
     private Integer priority;
     private Boolean active;
@@ -40,11 +41,11 @@ public class ArticleTemp {
         this.title = title;
     }
 
-    public Double getAreasize() {
+    public BigDecimal getAreasize() {
         return areasize;
     }
 
-    public void setAreasize(Double areasize) {
+    public void setAreasize(BigDecimal areasize) {
         this.areasize = areasize;
     }
 
@@ -80,11 +81,11 @@ public class ArticleTemp {
         this.tier = tier;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

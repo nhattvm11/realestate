@@ -7,5 +7,6 @@ import com.project.realestate.exception.CityException;
 import java.util.List;
 
 public interface CityService {
-    List<City> findAll() throws CityException;
+    public List<City> findAll() throws CityException;
+    public City findById(String id) throws CityException;
 }

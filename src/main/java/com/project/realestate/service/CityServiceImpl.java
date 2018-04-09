@@ -22,4 +22,12 @@ public class CityServiceImpl implements CityService {
             throw new CityException("no city found");
         return cities;
     }
+
+    @Override
+    public City findById(String id) throws CityException {
+        City city = cityRepository.findCitiesById(id);
+        if (city == null)
+            throw new CityException("city not found");
+        return city;
+    }
 }

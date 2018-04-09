@@ -21,4 +21,13 @@ public class FeatureServiceImpl implements FeatureService {
             throw new FeatureException("no feature found");
         return features;
     }
+
+    @Override
+    public Feature findById(String id) throws FeatureException {
+        Feature feature = featureRepository.findFeatureById(id);
+        if (feature == null)
+            throw new FeatureException("feature not found");
+        return feature;
+    }
+
 }

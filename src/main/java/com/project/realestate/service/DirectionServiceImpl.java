@@ -21,4 +21,12 @@ public class DirectionServiceImpl implements DirectionSerVice {
             throw new DirectionException();
         return directions;
     }
+
+    @Override
+    public Direction findById(String id) throws DirectionException {
+        Direction direction = directionRepository.findDirectionById(id);
+        if (direction == null)
+            throw new DirectionException();
+        return direction;
+    }
 }
