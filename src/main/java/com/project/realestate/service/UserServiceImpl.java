@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -93,6 +94,11 @@ public class UserServiceImpl implements UserService {
         String userId = jwtTokenService.verifyToken(token);
         User user = getUserById(userId);
         usersRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return usersRepository.findAll();
     }
 
 }
