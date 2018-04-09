@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DirectionSerVice {
     public List<Direction> findAll() throws DirectionException;
+    public Direction findById(String id) throws DirectionException;
 }

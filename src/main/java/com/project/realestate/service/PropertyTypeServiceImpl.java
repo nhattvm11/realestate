@@ -22,4 +22,12 @@ public class PropertyTypeServiceImpl implements PropertyTypeService{
             throw new PropertyTypeException("no propertyType found");
         return propertyTypes;
     }
+
+    @Override
+    public PropertyType findById(String id) throws PropertyTypeException {
+        PropertyType propertyType = propertyTypeRepository.findPropertyTypeById(id);
+        if(propertyType == null)
+            throw new PropertyTypeException();
+        return propertyType;
+    }
 }

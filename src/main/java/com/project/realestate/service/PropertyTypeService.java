@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PropertyTypeService {
     public List<PropertyType> findAll() throws PropertyTypeException;
+    public PropertyType findById(String id) throws PropertyTypeException;
 }

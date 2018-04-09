@@ -86,7 +86,7 @@ public class City {
         this.articlesById = articlesById;
     }
 
-    @OneToMany(mappedBy = "cityByCitiId")
+    @OneToMany(mappedBy = "cityByCityId")
     public Collection<District> getDistrictsById() {
         return districtsById;
     }

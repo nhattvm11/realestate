@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FeatureService {
     public List<Feature> findAll() throws FeatureException;
+    public Feature findById(String id) throws FeatureException;
 }

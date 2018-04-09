@@ -22,4 +22,12 @@ public class TypeServiceImpl implements TypeService {
         }
         return types;
     }
+
+    @Override
+    public Type findById(String id) throws TypeException {
+        Type type = typeRepository.findTypeById(id);
+        if (type == null)
+            throw new TypeException();
+        return type;
+    }
 }
