@@ -18,4 +18,8 @@ public interface ArticleService {
     public Map<String, String> initPropertyTypeModel() throws PropertyTypeException;
     public Map<String, String> initFeatureModel() throws FeatureException;
     public Map<String, String> initDirectionModel() throws DirectionException;
+
+    ArticleTemp convertArticleEntityToModel(String id);
+
+    void updateArticle(String id, ArticleTemp articleTemp) throws Exception;
 }

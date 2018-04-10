@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ArticleTemp {
 
+    private String id;
     private String address;
     private String title;
     private BigDecimal areasize;
@@ -24,6 +25,14 @@ public class ArticleTemp {
     private String districtId;
     private String directionId;
     private List<String> features;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAddress() {
         return address;

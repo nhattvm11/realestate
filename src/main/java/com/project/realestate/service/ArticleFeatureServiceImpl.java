@@ -27,16 +27,28 @@ public class ArticleFeatureServiceImpl implements ArticleFeatureService{
 
     @Override
     public void SaveArticleFeature(List<String> featureId, String articleId) throws ArticleFeatureException, ArticleException, FeatureException {
-        Article articleCreated = articleService.findById(articleId);
+        Article article = articleService.findById(articleId);
+        List<ArticleFeature> articleFeatures = findArticleFeatureByArticle(article);
+
+        if (!articleFeatures.isEmpty()){
+            for (ArticleFeature articleFeature : articleFeatures) {
+                articleFeatureRepository.delete(articleFeature);
+            }
+        }
 
         for (String feature: featureId) {
             ArticleFeature articleFeature = new ArticleFeature();
             articleFeature.setId(UUID.randomUUID().toString());
-            articleFeature.setArticleByArticleId(articleCreated);
+            articleFeature.setArticleByArticleId(article);
 
             Feature ft = featureService.findById(feature);
             articleFeature.setFeatureByFeatureId(ft);
             articleFeatureRepository.save(articleFeature);
         }
+    }
+
+    @Override
+    public List<ArticleFeature> findArticleFeatureByArticle(Article article) {
+        return articleFeatureRepository.findArticleFeatureByArticleByArticleId(article);
     }
 }
