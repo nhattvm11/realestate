@@ -1,19 +1,40 @@
 package com.project.realestate.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ArticleTemp {
 
     private String id;
+
+    @NotEmpty(message = "Address is required")
+    @Length(max = 50, message = "Adress could not be more than 50 charactors")
     private String address;
+    @NotEmpty(message = "Address is required")
+    @Length(max = 50, message = "Title could not be more than 50 charactors")
     private String title;
+    @NotNull(message = "areasize is required")
+    @Min(value = 20, message = "Minimum Area size is 20 m2")
     private BigDecimal areasize;
+    @NotNull(message = "Bedroom is required")
     private Integer bedroom;
+    @NotNull(message = "Bathroom is required")
     private Integer bathroom;
+    @NotNull(message = "Living room is required")
     private Integer livingroom;
+    @NotNull(message = "Tier is required")
     private Integer tier;
+    @NotNull(message = "Price is required")
+    @Min(value = 100000)
     private BigDecimal price;
+    @NotNull(message = "Description is required")
+    @Length(max = 500, message = "Maximum description is 500 charactor")
     private String description;
     private Integer priority;
     private Boolean active;
@@ -21,7 +42,9 @@ public class ArticleTemp {
     private Integer contactId;
     private String typeId;
     private String propertyId;
+    @NotNull(message = "City is required")
     private String cityId;
+    @NotNull(message = "District is required")
     private String districtId;
     private String directionId;
     private List<String> features;

@@ -6,6 +6,7 @@
 <head>
     <title>create Article</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/realestate/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <h2>Update Article</h2>
@@ -45,12 +46,15 @@
 
     Price <form:input path="price" /><br>
 
-    Description <form:input path="description" /><br>
+    Description <form:textarea path="description" /><br>
 
     Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
 
     <input type="submit" value="Update Article"/>
+
+    <a href="/realestate/article/delete/${article.id}">Delete Article</a>
 </form:form>
+
 </body>
 
 <script type="text/javascript">
@@ -71,6 +75,12 @@
                     district = district + '</select>';
                     $('#District').html(district);
                 }
+            });
+        });
+        CKEDITOR.replace("description");
+        $(function () {
+            $('input[type="submit"]').click(function () {
+                CKEDITOR.instances.Body.updateElement();
             });
         });
     });

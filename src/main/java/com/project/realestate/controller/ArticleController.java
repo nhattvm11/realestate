@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -43,20 +45,22 @@ ArticleController {
         model.addObject("features", articleService.initFeatureModel());
         model.addObject("directions", articleService.initDirectionModel());
 
-        model.addObject("article", new ArticleTemp());
+        ArticleTemp articleTemp = new ArticleTemp();
+        articleTemp.setCityId("-1");
+        model.addObject("article", articleTemp);
 
         return model;
     }
 
 
     @PostMapping("/article/create")
-    public String createArticleHandler(@ModelAttribute("article") ArticleTemp articleTemp) throws Exception{
+    public ModelAndView createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
         Article article = new Article();
         articleService.parseArticleTempToEntity(article, articleTemp);
         articleService.SaveArticle(article);
 
         articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), article.getId());
-        return "listArticle";
+        return new ModelAndView("listArticle");
     }
 
 
@@ -77,8 +81,14 @@ ArticleController {
     }
 
     @PostMapping("/article/update/{id}")
-    public String updateArticleHandler(@PathVariable("id") String id, @ModelAttribute("article") ArticleTemp articleTemp) throws Exception {
+    public String updateArticleHandler(@PathVariable("id") String id,@Valid @ModelAttribute("article") ArticleTemp articleTemp) throws Exception {
         articleService.updateArticle(id, articleTemp);
+        return "listArticle";
+    }
+
+    @GetMapping("/article/delete/{id}")
+    public String deleteArticleHandler(@PathVariable("id") String id){
+        articleService.deleteArticle(id);
         return "listArticle";
     }
 

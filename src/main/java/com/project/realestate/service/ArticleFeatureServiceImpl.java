@@ -51,4 +51,9 @@ public class ArticleFeatureServiceImpl implements ArticleFeatureService{
     public List<ArticleFeature> findArticleFeatureByArticle(Article article) {
         return articleFeatureRepository.findArticleFeatureByArticleByArticleId(article);
     }
+
+    @Override
+    public void deleteArticleFeature(ArticleFeature articleFeature) {
+        articleFeatureRepository.delete(articleFeature);
+    }
 }
