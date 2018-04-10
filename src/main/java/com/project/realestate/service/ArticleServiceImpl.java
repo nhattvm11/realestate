@@ -185,6 +185,21 @@ public class ArticleServiceImpl implements ArticleService {
         articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), id);
     }
 
+    @Override
+    public void deleteArticle(String id) {
+        Article article = articleRepository.findArticleById(id);
+        List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
+
+        List<String> featureId = new ArrayList<>();
+        if (!articleFeatures.isEmpty()){
+            for (ArticleFeature articleFeature:articleFeatures) {
+                articleFeatureService.deleteArticleFeature(articleFeature);
+            }
+        }
+
+        articleRepository.delete(article);
+    }
+
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);

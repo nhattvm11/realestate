@@ -22,4 +22,6 @@ public interface ArticleService {
     ArticleTemp convertArticleEntityToModel(String id);
 
     void updateArticle(String id, ArticleTemp articleTemp) throws Exception;
+
+    void deleteArticle(String id);
 }

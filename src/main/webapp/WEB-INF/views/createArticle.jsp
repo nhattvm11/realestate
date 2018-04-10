@@ -21,12 +21,16 @@
     <form:form method="post" modelAttribute="article" action="/realestate/article/create">
 
         Type <form:select path="typeId" items="${types}"/><br>
+        <form:errors path="typeId"/>
 
         Property Type <form:select path="propertyId" items="${propertyTypes}"/><br>
+        <form:errors path="propertyId"/>
 
         address <form:input path="address"/><br>
+        <form:errors path="address"/>
 
         city <form:select path="cityId" items="${cities}" /><br>
+        <form:errors path="cityId"/>
 
         District
         <div id="District">
@@ -34,29 +38,35 @@
                 <option>--Select City--</option>
             </select>
         </div>
-
+        <form:errors path="districtId"/>
         <br>
 
         Title <form:input path="title"/><br>
+        <form:errors path="title"/>
 
         Area Size <form:input path="areasize" /><br>
+        <form:errors path="areasize"/>
 
         BedRoom <form:input path="bedroom" /><br>
+        <form:errors path="bedroom"/>
 
         BathRoom <form:input path="bathroom" /><br>
+        <form:errors path="bathroom"/>
 
         LivingRoom <form:input path="livingroom" /><br>
+        <form:errors path="livingroom"/>
 
         Tiers <form:input path="tier" /><br>
+        <form:errors path="tier"/>
 
         Direction <form:select path="directionId" items="${directions}"/><br>
+        <form:errors path="directionId"/>
 
         Price <form:input path="price" /><br>
+        <form:errors path="price"/>
 
         Description <form:textarea path="description" /><br>
-        <script>
-
-        </script>
+        <form:errors path="description"/>
 
         Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
 
