@@ -4,16 +4,12 @@ import com.project.realestate.entity.*;
 import com.project.realestate.exception.*;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
-import com.project.realestate.repository.ArticleFeatureRepository;
 import com.project.realestate.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -70,7 +66,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void parseArticleTempToEntity(Article article, ArticleTemp articleTemp) throws Exception {
-        article.setId(UUID.randomUUID().toString());
+        if(article.getId() == null){
+            article.setId(UUID.randomUUID().toString());
+        }
         article.setActive(false);
         article.setAddress(articleTemp.getAddress());
         article.setAreasize(articleTemp.getAreasize());
@@ -123,6 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public void convertCityListToMap(List<City> cities, Map<String, String> citiesMap) {
+        citiesMap.put("-1", "--Select City--");
         for (City city: cities) {
             citiesMap.put(city.getId(), city.getCityName());
         }
@@ -166,5 +165,54 @@ public class ArticleServiceImpl implements ArticleService {
         Map<String, String> directionMap = new HashMap<>();
         convertDirectionListToMap(directions, directionMap);
         return directionMap;
+    }
+
+    @Override
+    public ArticleTemp convertArticleEntityToModel(String id) {
+        Article article = articleRepository.findArticleById(id);
+        ArticleTemp articleTemp = new ArticleTemp();
+
+        parseArticleEntityToModel(article, articleTemp);
+        return articleTemp;
+    }
+
+    @Override
+    public void updateArticle(String id, ArticleTemp articleTemp) throws Exception {
+        Article article = articleRepository.findArticleById(id);
+        parseArticleTempToEntity(article, articleTemp);
+        articleRepository.save(article);
+
+        articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), id);
+    }
+
+    private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {
+        articleTemp.setId(article.getId());
+        articleTemp.setActive(false);
+        articleTemp.setAddress(article.getAddress());
+        articleTemp.setAreasize(article.getAreasize());
+        articleTemp.setBathroom(article.getBathroom());
+        articleTemp.setBedroom(article.getBedroom());
+        articleTemp.setTier(article.getTier());
+        articleTemp.setTitle(article.getTitle());
+        articleTemp.setPrice(article.getPrice());
+        articleTemp.setLivingroom(article.getLivingroom());
+        articleTemp.setDescription(article.getDescription());
+        articleTemp.setPriority(0);
+        articleTemp.setView(0);
+
+        articleTemp.setCityId(article.getCityByCityId().getId());
+        articleTemp.setDistrictId(article.getDistrictByDistrictId().getId());
+        articleTemp.setTypeId(article.getTypeByTypeId().getId());
+        articleTemp.setPropertyId(article.getPropertyTypeByPropertyId().getId());
+        articleTemp.setDirectionId(article.getDirectionByDirectionId().getId());
+
+        List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
+        List<String> features = new ArrayList<>();
+        if (!articleFeatures.isEmpty()){
+            for (ArticleFeature articleFeature : articleFeatures) {
+                features.add(articleFeature.getFeatureByFeatureId().getId());
+            }
+        }
+        articleTemp.setFeatures(features);
     }
 }

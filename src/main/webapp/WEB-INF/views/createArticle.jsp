@@ -13,6 +13,7 @@
 <head>
     <title>create Article</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/realestate/ckeditor/ckeditor.js"></script>
 </head>
 <body>
     <h2>Create Article</h2>
@@ -52,7 +53,10 @@
 
         Price <form:input path="price" /><br>
 
-        Description <form:input path="description" /><br>
+        Description <form:textarea path="description" /><br>
+        <script>
+
+        </script>
 
         Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
 
@@ -65,7 +69,7 @@
     $(document).ready(function () {
         $('#cityId').change(function () {
             $.ajax({
-                type: "get",
+                type: "post",
                 url: "/realestate/article/districts",
                 data: { cityId: $('#cityId').val() },
                 datatype: "json",
@@ -78,6 +82,13 @@
                     district = district + '</select>';
                     $('#District').html(district);
                 }
+            });
+        });
+
+        CKEDITOR.replace("description");
+        $(function () {
+            $('input[type="submit"]').click(function () {
+                CKEDITOR.instances.Body.updateElement();
             });
         });
     });

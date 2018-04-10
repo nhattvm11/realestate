@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -31,9 +28,6 @@ ArticleController {
 
     @Autowired
     private DistrictService districtService;
-
-    @Autowired
-    private FeatureService featureService;
 
     @Autowired
     private ArticleFeatureService articleFeatureService;
@@ -65,7 +59,30 @@ ArticleController {
         return "listArticle";
     }
 
-    @GetMapping("/article/districts")
+
+    @GetMapping("article/update/{id}")
+    public ModelAndView updateArticleView(@PathVariable("id")String id) throws Exception{
+        ModelAndView model = new ModelAndView();
+        model.setViewName("updateArticle");
+
+        model.addObject("cities", articleService.initCityModel());
+        model.addObject("types", articleService.initTypeModel());
+        model.addObject("propertyTypes", articleService.initPropertyTypeModel());
+        model.addObject("features", articleService.initFeatureModel());
+        model.addObject("directions", articleService.initDirectionModel());
+
+        model.addObject("article", articleService.convertArticleEntityToModel(id));
+
+        return model;
+    }
+
+    @PostMapping("/article/update/{id}")
+    public String updateArticleHandler(@PathVariable("id") String id, @ModelAttribute("article") ArticleTemp articleTemp) throws Exception {
+        articleService.updateArticle(id, articleTemp);
+        return "listArticle";
+    }
+
+    @PostMapping("/article/districts")
     public ResponseEntity<List<DistrictTemp>> getDistricts(@RequestParam(value = "cityId", required = false) String cityId) throws Exception {
         City city = cityService.findById(cityId);
         List<District> districts = districtService.findDistrictByCityId(city);
