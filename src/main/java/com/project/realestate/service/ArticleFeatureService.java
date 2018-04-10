@@ -1,6 +1,5 @@
 package com.project.realestate.service;
 
-import com.project.realestate.entity.ArticleFeature;
 import com.project.realestate.exception.ArticleException;
 import com.project.realestate.exception.ArticleFeatureException;
 import com.project.realestate.exception.FeatureException;

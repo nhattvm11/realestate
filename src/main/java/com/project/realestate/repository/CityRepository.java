@@ -1,6 +1,5 @@
 package com.project.realestate.repository;
 
-import com.project.realestate.entity.Article;
 import com.project.realestate.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 
