@@ -27,16 +27,34 @@
             border:2px solid #03b1ce ;}
         .tital{ font-size:16px; font-weight:500;}
         .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
+        .col-md-7 {
+            position: absolute;
+            top:0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            margin-top: 150px;
+        }
+        body {
+            background-image: url(https://wallpaperscraft.com/image/building_new_york_skyscrapers_59151_3840x2160.jpg);
+            background-size:     cover;                      /* <------ */
+            background-repeat:   no-repeat;
+            background-position: center center;
+        }
     </style>
 </head>
 <body>
 <c:set var="user" value="${user}" />
+
 <div class="container">
     <div class="row">
         <div class="col-md-7 ">
 
             <div class="panel panel-default">
-                <div class="panel-heading">  <h4 >User Profile</h4></div>
+                <div class="panel-heading">
+                    <h4>User Profile</h4>
+                </div>
                 <div class="panel-body">
 
                     <div class="box box-info">
@@ -84,8 +102,11 @@
                                     <div class="bot-border"></div>
 
                                     <div class="col-sm-5 col-xs-6 tital " >Date Of Joining:</div><div class="col-sm-7">${user.dateCreate}</div>
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
                                 </c:if>
                             </c:forEach>
+                            <a href="${pageContext.request.contextPath}/api/v1/public/users/${user.id}/edit" class="btn btn-primary">Edit</a>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->

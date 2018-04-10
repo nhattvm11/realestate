@@ -15,4 +15,10 @@ public class ContactServiceImpl implements ContactService {
     public void saveContact(Contact contact) {
         contactRepository.save(contact);
     }
+
+    @Override
+    public Contact findById(String id) {
+        return contactRepository.getContactById(id);
+    }
+
 }

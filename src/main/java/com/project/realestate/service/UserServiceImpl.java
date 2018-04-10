@@ -6,6 +6,7 @@ import com.project.realestate.exception.ConfirmationException;
 import com.project.realestate.exception.TokenInvalidException;
 import com.project.realestate.exception.UserNotFoundException;
 import com.project.realestate.exception.UsernameExistException;
+import com.project.realestate.model.UserUpdate;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +20,8 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder encoder;
 
     @Autowired
     ContactService contactService;
@@ -116,6 +118,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return usersRepository.findAll();
+    }
+
+    @Override
+    public void updateUser(UserUpdate userUpdate) {
+        User user = usersRepository.findUserById(userUpdate.getId());
+        user.setUsername(userUpdate.getUsername());
+        usersRepository.save(user);
+        Contact contact = contactService.findById(userUpdate.getIdContact());
+        contact.setPhone(userUpdate.getPhone());
+        contact.setEmail(userUpdate.getEmail());
+        contact.setAddress(userUpdate.getAddress());
+        contactService.saveContact(contact);
     }
 
 }
