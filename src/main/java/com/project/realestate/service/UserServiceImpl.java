@@ -1,5 +1,6 @@
 package com.project.realestate.service;
 
+import com.project.realestate.entity.Contact;
 import com.project.realestate.entity.User;
 import com.project.realestate.exception.ConfirmationException;
 import com.project.realestate.exception.TokenInvalidException;
@@ -19,6 +20,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    ContactService contactService;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -48,10 +52,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateFirstToken(User updateUser) throws UsernameExistException {
+    public void updateFirstToken(User updateUser) throws UserNotFoundException {
         User user = usersRepository.findUsersByUsername(updateUser.getUsername());
-        if(user != null ) {
-            throw new UsernameExistException("Username is exist");
+        if(user == null ) {
+            throw new UserNotFoundException("User not found");
         }
         usersRepository.save(user);
 
@@ -65,7 +69,19 @@ public class UserServiceImpl implements UserService {
 
     private void createUser(User user) {
         user.setId(UUID.randomUUID().toString());
+        user.setActive(false);
+        user.setPassword(encoder.encode(user.getPassword()));
         usersRepository.save(user);
+        Contact contact = new Contact();
+        contact.setId(UUID.randomUUID().toString());
+        contact.setAddress("");
+        contact.setContactName("");
+        contact.setEmail("");
+        contact.setPhone("");
+        contact.setMainContact(true);
+        contact.setUserByUserId(user);
+        contactService.saveContact(contact);
+
     }
 
     @Override
@@ -75,6 +91,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             throw new TokenInvalidException("Token invalid");
         }
+        user.setActive(true);
         user.setToken(token);
         updateFirstToken(user);
     }

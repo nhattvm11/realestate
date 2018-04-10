@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
     User getUserById(String id) throws UserNotFoundException;
     User getUSerByEmail(String email) throws UserNotFoundException;
-    void updateFirstToken(User user) throws UsernameExistException;
+    void updateFirstToken(User user) throws UsernameExistException, UserNotFoundException;
     void register(User user);
     void confirmRegistration(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
     void saveUser(User user);
