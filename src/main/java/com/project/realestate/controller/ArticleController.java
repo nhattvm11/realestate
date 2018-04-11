@@ -1,22 +1,26 @@
 package com.project.realestate.controller;
 
-import com.project.realestate.entity.*;
-import com.project.realestate.exception.CityException;
+import com.project.realestate.entity.Article;
+import com.project.realestate.entity.City;
+import com.project.realestate.entity.District;
 import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
-import com.project.realestate.service.*;
+import com.project.realestate.service.ArticleFeatureService;
+import com.project.realestate.service.ArticleService;
+import com.project.realestate.service.CityService;
+import com.project.realestate.service.DistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ArticleController {
@@ -37,6 +41,7 @@ public class ArticleController {
     @GetMapping("/article/create")
     public ModelAndView createArticleView() throws Exception{
         ModelAndView model = new ModelAndView("createArticle");
+        model.addObject("title", "Create Article");
         setModel(model);
         return model;
     }
