@@ -40,7 +40,7 @@ public class RegisterController {
     @GetMapping("/confirm")
     public String emailConfirm(@RequestParam String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
         userService.confirmRegistration(token);
-        return "redirect:/login";
+        return "redirect:/api/v1/public/login";
     }
 
 

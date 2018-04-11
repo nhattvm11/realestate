@@ -14,7 +14,7 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Website CSS style -->
-    <link rel="stylesheet" href='<c:url value="/WEB-INF/resources/css/register.css"/>' type="text/css" media="all">
+    <link rel="stylesheet" href='<c:url value="/static/ckeditor/css/register.css"/>' type="text/css" media="all">
     <!-- Website Font style -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <!-- Google Fonts -->
