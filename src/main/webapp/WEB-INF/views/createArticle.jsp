@@ -21,16 +21,17 @@
     <form:form method="post" modelAttribute="article" action="/realestate/article/create">
 
         Type <form:select path="typeId" items="${types}"/><br>
-        <form:errors path="typeId"/>
+        <div>${errors.typeId}</div>
 
         Property Type <form:select path="propertyId" items="${propertyTypes}"/><br>
-        <form:errors path="propertyId"/>
+        <div>${errors.propertyId}</div>
 
         address <form:input path="address"/><br>
-        <form:errors path="address"/>
+        <div>${errors.address}</div>
+
 
         city <form:select path="cityId" items="${cities}" /><br>
-        <form:errors path="cityId"/>
+        <div>${errors.cityId}</div>
 
         District
         <div id="District">
@@ -38,35 +39,35 @@
                 <option>--Select City--</option>
             </select>
         </div>
-        <form:errors path="districtId"/>
+        <div>${errors.districtId}</div>
         <br>
 
         Title <form:input path="title"/><br>
-        <form:errors path="title"/>
+        <div>${errors.title}</div>
 
         Area Size <form:input path="areasize" /><br>
-        <form:errors path="areasize"/>
+        <div>${errors.areasize}</div>
 
         BedRoom <form:input path="bedroom" /><br>
-        <form:errors path="bedroom"/>
+        <div>${errors.bedroom}</div>
 
         BathRoom <form:input path="bathroom" /><br>
-        <form:errors path="bathroom"/>
+        <div>${errors.bathroom}</div>
 
         LivingRoom <form:input path="livingroom" /><br>
-        <form:errors path="livingroom"/>
+        <div>${errors.livingroom}</div>
 
         Tiers <form:input path="tier" /><br>
-        <form:errors path="tier"/>
+        <div>${errors.tier}</div>
 
         Direction <form:select path="directionId" items="${directions}"/><br>
-        <form:errors path="directionId"/>
+        <div>${errors.directionId}</div>
 
         Price <form:input path="price" /><br>
-        <form:errors path="price"/>
+        <div>${errors.price}</div>
 
         Description <form:textarea path="description" /><br>
-        <form:errors path="description"/>
+        <div>${errors.description}</div>
 
         Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
 
@@ -101,6 +102,7 @@
                 CKEDITOR.instances.Body.updateElement();
             });
         });
+
     });
 </script>
 </html>
