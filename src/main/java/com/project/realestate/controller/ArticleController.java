@@ -55,6 +55,9 @@ ArticleController {
 
     @PostMapping("/article/create")
     public ModelAndView createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
+        if(result.hasErrors()){
+            System.out.println(result.getModel().get("cities"));
+        }
         Article article = new Article();
         articleService.parseArticleTempToEntity(article, articleTemp);
         articleService.SaveArticle(article);
