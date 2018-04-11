@@ -28,7 +28,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(@Valid @ModelAttribute("user") RegisterTemp registerTemp, BindingResult result) {
+    public String handleRegister(@Valid @ModelAttribute("user") RegisterTemp registerTemp, BindingResult result) throws UsernameExistException {
         if(result.hasErrors()) {
             return "register";
         }

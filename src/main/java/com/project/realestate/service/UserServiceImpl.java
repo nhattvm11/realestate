@@ -10,7 +10,6 @@ import com.project.realestate.model.UserUpdate;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
+    public void register(User user) throws UsernameExistException {
+        User userCheck = usersRepository.findUsersByUsername(user.getUsername());
+        if(userCheck != null)
+            throw new UsernameExistException("Username is exist");
         createUser(user);
         emailService.sendMailConfirmation(user);
     }

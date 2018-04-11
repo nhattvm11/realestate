@@ -17,7 +17,7 @@ public class DistrictServiceImpl implements DistrictService {
 
     @Override
     public List<District> findDistrictByCityId(City city) throws DistrictException {
-        List<District> districts = districtRepository.findDistrictByCityByCityId(city);
+        List<District> districts = districtRepository.findDistrictByCityByCitiId(city);
         if(districts.isEmpty())
             throw new DistrictException("no district found");
         return districts;

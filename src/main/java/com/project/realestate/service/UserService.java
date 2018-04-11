@@ -13,7 +13,7 @@ public interface UserService {
     User getUserById(String id) throws UserNotFoundException;
     User getUSerByEmail(String email) throws UserNotFoundException;
     void updateFirstToken(User user) throws UsernameExistException, UserNotFoundException;
-    void register(User user);
+    void register(User user) throws UsernameExistException;
     void confirmRegistration(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
     void saveUser(User user);
     void resetPassword(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
