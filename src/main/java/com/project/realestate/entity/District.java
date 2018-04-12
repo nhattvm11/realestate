@@ -61,22 +61,12 @@ public class District {
     }
 
     @ManyToOne
-<<<<<<< HEAD
     @JoinColumn(name = "citiId", referencedColumnName = "id")
     public City getCityByCitiId() {
-        return cityByCitId;
-    }
-
-    public void setCityByCitiId(City cityByCitiId) {
-        this.cityByCitId = cityByCitiId;
-=======
-    @JoinColumn(name = "cityId", referencedColumnName = "id")
-    public City getCityByCityId() {
         return cityByCityId;
     }
 
-    public void setCityByCityId(City cityByCityId) {
-        this.cityByCityId = cityByCityId;
->>>>>>> 8419a55ba04418c4f951d2d66ff980a465c86a5f
+    public void setCityByCitiId(City cityByCitiId) {
+        this.cityByCityId = cityByCitiId;
     }
 }
