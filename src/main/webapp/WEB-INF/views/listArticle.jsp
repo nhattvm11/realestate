@@ -65,7 +65,7 @@
                 <c:choose>
                     <c:when test="${currentPage == loop.index}">
                         <li class="active">
-                            <a class="not-active" href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
+                            <a class="not-active" style="pointer-events: none;" href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
                         </li>
                     </c:when>
 
