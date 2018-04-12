@@ -40,12 +40,15 @@ public class ArticleTemp {
     private Boolean active;
     private Integer view;
     private Integer contactId;
+    @NotNull
     private String typeId;
+    @NotNull
     private String propertyId;
     @NotNull(message = "City is required")
     private String cityId;
     @NotNull(message = "District is required")
     private String districtId;
+    @NotNull
     private String directionId;
     private List<String> features;
 

@@ -1,0 +1,322 @@
+/* ---------------------------------------------------------------------- */
+/*	 0.4 Version 1024px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 1224px) {	
+
+	.jBar .botton{	
+		padding: 8px 10px;
+		font-size: 13px;		
+	}
+	.image_property_h{
+		top: -10%;
+	}
+	.info_service p{
+		font-size: 13px;
+		line-height: 18px;
+	}
+	.item_service .image_service{		
+		padding: 15px;	
+		width: 65px;
+		height: 65px;		
+	}
+	.item_service i{
+		font-size: 20px;
+	}
+
+}
+
+/* ---------------------------------------------------------------------- */
+/*	 0.5 Version 1000px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 1000px) {
+	
+	#menu,
+  .divisor{
+		display: none;	
+	}
+	.tinynav {
+		display: inline !important;
+		width: 25%;								
+		border: 1px solid #dbdbdb;
+		float: right;
+		height: 35px;	
+		font-size: 14px !important;
+		z-index: 999;
+		position: absolute;
+		top: 12px;
+		right: 20px;
+	} 	
+	.logo img {
+		display: block !important;
+    max-width: 200px !important;
+    height: auto !important;
+		position: relative !important;
+	}
+	.container{
+		width: auto;
+	}
+	nav{
+		position: relative;
+    min-height: 75px !important;
+	}
+	header{
+		overflow: visible;
+	}
+
+  .filter-bottom{
+  	position:relative !important;
+    margin-top: -20px !important;
+  }
+	.filter_horizontal{
+		top: -150px !important;
+	}
+	.filter_horizontal select{
+		margin-bottom: 10px;
+	}
+	.bg_header{
+		position: absolute;
+		margin-top: 10% !important;
+		width: 60%;
+		max-width: 500px !important;
+		z-index: 2;
+		left: 50px !important;
+	}
+	.content_info{	
+		max-width: auto;
+		padding: 20px 0 0 0;
+	}
+	.item_property_h{
+		overflow: hidden !important;
+	}
+	.item_property_h .line_property{
+		position: relative !important;
+		padding-left: 10px !important;
+	}
+	aside .search_advance{
+		margin-top: 40px;
+	}
+
+	.section_title{				
+		padding: 20px 20px 10px 20px !important;			
+	}
+	.section_title h1{
+		font-size: 25px !important;	
+		line-height: 35px !important;		
+	}
+	.section_title span{
+		font-size: 13px !important;		
+	}
+	.section_title input{
+		height: 28px !important;
+		margin-top: 3px !important;
+		width: 98% !important;
+		float: left !important;
+	}
+	.item_property_h{
+		margin: 0 auto 30px auto !important;
+		max-width: 480px !important;
+	}
+  
+  	/* newsletter_box ----------------------------*/
+
+	.newsletter_box{		
+		display:none !important;	
+	}
+  
+	
+	/* header ---------------------------------------------------------*/
+
+	.info_head{
+		padding: 10px 20px;
+	}
+	.info_service p{
+		font-size: 16px;
+		line-height: 26px;
+	}
+	.item_service{
+		margin-bottom: 60px;
+	}
+	.item_property,
+	.item_property_h{
+		margin: 0 auto 30px auto !important;
+		max-width: 380px !important;
+	}
+	.footer_top{
+		padding: 40px 20px;
+	}
+	.footer_medium{
+		padding: 40px 20px;
+    text-align: center;
+	}
+	.footer_down{
+		padding: 10px 20px;
+		text-align: center;
+	}
+	.footer_down .social{
+		text-align: center;
+		margin-top: 10px;
+	}
+	.testimonial_autor{
+		text-align: left;
+	}
+	.item_service .image_service{		
+		padding: 20px;			
+	}
+
+	.description{
+		margin-bottom: 30px;
+	}
+	.item_agent,
+	.item_table{
+		margin: 0 auto;
+		margin-bottom: 30px;
+		max-width: 320px;
+	}
+
+	.tabs_services li{
+		margin-bottom: 10px;
+	}
+	.sections .tabs_services{
+		margin: 10px auto 0 auto;
+	}	
+	
+  .jBar{
+   	text-align: center ; 
+  }
+	.jBar input{
+		margin: 10px 0 !important;
+    width: 100% !important;
+	}
+  .jBar form {
+    padding: 30px 0 !important;
+    margin: 0;
+  }
+
+    
+	.padding_top{
+		padding-top: 0;
+	}
+	.item_team{
+		margin-bottom: 20px;
+    max-width: 380px;	
+	}
+
+	.footer_medium .testimonials{
+		margin-top: 15px;
+	}
+	.bar_properties{
+		display: none;
+	}
+	.thumbnail-process{
+		margin-bottom: 20px;
+	}
+	.info_team,
+	.services h3,
+	.titles{
+		text-align: center;
+	}
+
+	.item_service{
+		max-width: 380px !important;
+		margin: 0 auto 30px auto !important; 
+	}
+	.item_service .image_service{	
+		width: 75px;
+		height: 75px;		
+	}
+  
+  .testimonial-carousel{
+     max-width: 350px;
+     margin: 0 auto;
+	}
+}
+
+
+/* ---------------------------------------------------------------------- */
+/*	0.6 Mobile Version 600px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 600px) {
+	.titles h1{
+		font-size: 25px !important;
+		line-height: 50px !important;
+	}
+
+}
+
+
+/* ---------------------------------------------------------------------- */
+/*	0.7 Mobile Version 560px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 560px) {
+
+	ul.tabs li {
+		float: none;
+		width: 100%;
+		text-align: center;
+		border: 1px solid #ddd;
+		border-bottom: 0;
+	}
+}
+
+/* ---------------------------------------------------------------------- */
+/*	0.8 Mobile Version 480px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 480px) {	
+
+	.bg_header{
+		position: absolute;
+		margin-top: 10% !important;
+		width: 50%;
+		max-width: 380px !important;
+		z-index: 2;
+		left: 30px !important;
+	}
+}
+
+
+/* ---------------------------------------------------------------------- */
+/*	0.9 Mobile Version 380px
+/* ---------------------------------------------------------------------- */
+
+@media handheld, only screen and (max-width: 380px) {
+
+	.social li{
+		margin-bottom: 10px;
+	}
+	.item_service p{
+		font-size: 13px;
+		line-height: 20px;
+	}
+	.titles h1{
+		font-size: 20px;
+		line-height: 30px;
+	}
+
+	.image_property_h{		
+		width: 50%;		
+		top: 0%;		
+	}
+
+	.line_property{
+		font-size: 12px;
+		text-align: left;
+		padding-left: 5px;
+	}
+	.item_service .image_service{		
+		padding: 12px;			
+	}
+	.footer_top h1 {		
+		font-size: 30px;
+		line-height: 40px;		
+	}
+	.footer_top p{
+		font-size: 14px;
+		line-height: 24px;
+	}
+
+}
