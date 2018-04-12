@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,7 +43,8 @@ public class ArticleController {
     public ModelAndView createArticleView() throws Exception{
         ModelAndView model = new ModelAndView("createArticle");
         model.addObject("title", "Create Article");
-        setModel(model);
+        ArticleTemp articleTemp = new ArticleTemp();articleTemp.setCityId("-1");
+        setModel(model, articleTemp);
         return model;
     }
 
@@ -51,7 +53,8 @@ public class ArticleController {
     public ModelAndView createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
         if(result.hasErrors()){
             ModelAndView model = new ModelAndView("createArticle");
-            setModel(model);
+            ArticleTemp articleTemp1 = new ArticleTemp();articleTemp1.setCityId("-1");
+            setModel(model, articleTemp1);
             ArticleError articleError = new ArticleError();
             articleService.initArticleError(articleError, result);
             model.addObject("errors", articleError);
@@ -69,14 +72,7 @@ public class ArticleController {
     public ModelAndView updateArticleView(@PathVariable("id")String id) throws Exception{
         ModelAndView model = new ModelAndView();
         model.setViewName("updateArticle");
-
-        model.addObject("cities", articleService.initCityModel());
-        model.addObject("types", articleService.initTypeModel());
-        model.addObject("propertyTypes", articleService.initPropertyTypeModel());
-        model.addObject("features", articleService.initFeatureModel());
-        model.addObject("directions", articleService.initDirectionModel());
-
-        model.addObject("article", articleService.convertArticleEntityToModel(id));
+        setModel(model, articleService.convertArticleEntityToModel(id));
 
         return model;
     }
@@ -103,15 +99,21 @@ public class ArticleController {
         return new ResponseEntity<List<DistrictTemp>>(districtTemps, HttpStatus.OK);
     }
 
-    private void setModel(ModelAndView model) throws Exception {
+
+    @GetMapping("/article/list")
+    public String listArticles(Model model, @RequestParam(defaultValue = "0") int page){
+        model.addAttribute("data", articleService.findAllPagination(page, 4));
+        model.addAttribute("currentPage", page);
+        return "listArticle";
+    }
+
+    private void setModel(ModelAndView model, ArticleTemp articleTemp) throws Exception {
         model.addObject("cities", articleService.initCityModel());
         model.addObject("types", articleService.initTypeModel());
         model.addObject("propertyTypes", articleService.initPropertyTypeModel());
         model.addObject("features", articleService.initFeatureModel());
         model.addObject("directions", articleService.initDirectionModel());
 
-        ArticleTemp articleTemp = new ArticleTemp();
-        articleTemp.setCityId("-1");
         model.addObject("article", articleTemp);
     }
 }
