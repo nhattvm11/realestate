@@ -52,7 +52,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         if(user == null) {
             throw new TokenInvalidException("Token Invalid");
         }
-//        user.setAccessToken(token);
         LOGGER.info("user id " + userId);
         return userId;
     }

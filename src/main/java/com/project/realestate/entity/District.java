@@ -8,7 +8,7 @@ public class District {
     private String id;
     private String districtName;
     private Collection<Article> articlesById;
-    private City cityByCitiId;
+    private City cityByCitId;
 
     @Id
     @Column(name = "id")
@@ -63,10 +63,10 @@ public class District {
     @ManyToOne
     @JoinColumn(name = "citiId", referencedColumnName = "id")
     public City getCityByCitiId() {
-        return cityByCitiId;
+        return cityByCitId;
     }
 
     public void setCityByCitiId(City cityByCitiId) {
-        this.cityByCitiId = cityByCitiId;
+        this.cityByCitId = cityByCitiId;
     }
 }

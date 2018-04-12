@@ -22,6 +22,7 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/register")
     public ModelAndView getRegister() {
         return new ModelAndView("register", "user", new RegisterTemp());
