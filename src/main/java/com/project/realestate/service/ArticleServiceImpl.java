@@ -7,6 +7,9 @@ import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -246,6 +249,11 @@ public class ArticleServiceImpl implements ArticleService {
         if (result.getFieldError("directionId") != null){
             articleError.setDirectionId(result.getFieldError("directionId").getDefaultMessage());
         }
+    }
+
+    @Override
+    public Page<Article> findAllPagination(int page, int pagesize) {
+        return articleRepository.findAll(PageRequest.of(page, pagesize));
     }
 
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {

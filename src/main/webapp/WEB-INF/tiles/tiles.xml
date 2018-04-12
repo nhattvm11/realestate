@@ -12,4 +12,8 @@
         <put-attribute name="body" value="/WEB-INF/views/createArticle.jsp" />
     </definition>
 
+    <definition name="listArticle" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/listArticle.jsp" />
+    </definition>
+
 </tiles-definitions>

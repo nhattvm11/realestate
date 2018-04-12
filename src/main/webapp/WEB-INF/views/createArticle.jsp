@@ -192,7 +192,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Features</label>
             <div class="col-md-10">
-                <form:checkboxes element="li" path="features" items="${features}" cssClass="form-control"/>
+                <form:checkboxes element="li" path="features" items="${features}"/>
             </div>
         </div>
 
