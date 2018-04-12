@@ -122,7 +122,6 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
 
-<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/org.springframework.mobile/spring-mobile-device -->
 		<dependency>
 			<groupId>org.springframework.mobile</groupId>
@@ -131,7 +130,6 @@
 		</dependency>
 
 
-=======
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-api</artifactId>
@@ -163,7 +161,6 @@
 			<version>3.0.8</version>
 		</dependency>
 
->>>>>>> 8419a55ba04418c4f951d2d66ff980a465c86a5f
 	</dependencies>
 
 	<build>
