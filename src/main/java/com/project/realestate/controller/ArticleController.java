@@ -3,13 +3,11 @@ package com.project.realestate.controller;
 import com.project.realestate.entity.Article;
 import com.project.realestate.entity.City;
 import com.project.realestate.entity.District;
+import com.project.realestate.exception.ArticleException;
 import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
-import com.project.realestate.service.ArticleFeatureService;
-import com.project.realestate.service.ArticleService;
-import com.project.realestate.service.CityService;
-import com.project.realestate.service.DistrictService;
+import com.project.realestate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +15,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ArticleController {
@@ -39,6 +47,11 @@ public class ArticleController {
     @Autowired
     private ArticleFeatureService articleFeatureService;
 
+    @Autowired
+    private PictureService pictureService;
+
+    private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\image\\";
+
     @GetMapping("/article/create")
     public ModelAndView createArticleView() throws Exception{
         ModelAndView model = new ModelAndView("createArticle");
@@ -50,22 +63,32 @@ public class ArticleController {
 
 
     @PostMapping("/article/create")
-    public ModelAndView createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
+    public ResponseEntity createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
         if(result.hasErrors()){
-            ModelAndView model = new ModelAndView("createArticle");
-            ArticleTemp articleTemp1 = new ArticleTemp();articleTemp1.setCityId("-1");
-            setModel(model, articleTemp1);
             ArticleError articleError = new ArticleError();
             articleService.initArticleError(articleError, result);
-            model.addObject("errors", articleError);
-            return model;
+            return new ResponseEntity(articleError, HttpStatus.BAD_REQUEST);
         }
         Article article = new Article();
         articleService.parseArticleTempToEntity(article, articleTemp);
         articleService.SaveArticle(article);
 
         articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), article.getId());
-        return new ModelAndView("listArticle");
+        return new ResponseEntity(article.getId(), HttpStatus.OK);
+    }
+
+    @PostMapping("/article/uploadImage/{articleId}")
+    public ResponseEntity uploadDropzone(MultipartHttpServletRequest request, @PathVariable(value = "articleId") String articleId) throws IOException, ArticleException {
+        Map<String, MultipartFile> fileMap = request.getFileMap();
+        for (MultipartFile file : fileMap.values()) {
+            byte[] imageData = file.getBytes();
+            Path path = Paths.get(UPLOAD_PATH + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+ file.getOriginalFilename());
+            Files.write(path, imageData);
+
+            String imagePath = "/images/" + file.getOriginalFilename();
+            pictureService.saveImage(articleId, imagePath, false);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("article/update/{id}")
