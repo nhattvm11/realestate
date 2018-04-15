@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form method="post" modelAttribute="article" action="/realestate/article/create">
+<form:form id="formCreate" method="post"  modelAttribute="article" action="/realestate/article/create">
 
     <div class="form-horizontal">
         <h4>Article</h4>
@@ -196,16 +196,35 @@
             </div>
         </div>
 
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create Article" class="btn btn-default"/>
-            </div>
-        </div>
     </div>
 
 </form:form>
+
+<div class="container form-horizontal">
+    <label class="control-label col-md-2">Images</label>
+    <div class="panel panel-default col-md-10">
+        <div class="panel-body">
+            <div>
+                <form id="dropzone-form" class="dropzone" action="/realestate/article/uploadImage"
+                      enctype="multipart/form-data">
+
+                    <div class="dz-default dz-message file-dropzone text-center well col-sm-12">
+                        <span class="glyphicon glyphicon-paperclip"></span> <span>
+								To attach files, drag and drop here</span><br> <span>OR</span><br>
+                        <span>Just Click</span>
+                    </div>
+
+
+                    <div class="dropzone-previews"></div>
+                </form>
+                <hr>
+                <button id="upload-button" class="btn btn-primary" type="submit">
+                    <span class="glyphicon glyphicon-plus"></span> Create Article
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 
