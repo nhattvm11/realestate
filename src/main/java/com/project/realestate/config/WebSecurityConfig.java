@@ -1,5 +1,6 @@
 package com.project.realestate.config;
 import com.project.realestate.endpoint.RestAuthenticationEntryPoint;
+import com.project.realestate.filter.CookieFilter;
 import com.project.realestate.filter.TokenAuthenticationFilter;
 import com.project.realestate.helper.TokenHelper;
 import com.project.realestate.service.CustomUserDetailsService;
@@ -60,9 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .authorizeRequests()
-                .antMatchers("/protected/**").authenticated()
-                .anyRequest().permitAll().and()
-                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
+                .antMatchers("/register").permitAll()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated().and()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class)
+                .addFilterBefore(new CookieFilter(), TokenAuthenticationFilter.class);
+
 
         http.csrf().disable();
     }
@@ -73,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // TokenAuthenticationFilter will ignore the below paths
         web.ignoring().antMatchers(
                 HttpMethod.GET,
-                "/realestate/api/v1/public/login"
+                "/login"
         );
         web.ignoring().antMatchers(
                 HttpMethod.GET,

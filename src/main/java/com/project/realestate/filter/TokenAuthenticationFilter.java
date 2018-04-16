@@ -11,11 +11,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final String TOKEN = "token";
 
     private final Log LOG = LogFactory.getLog(this.getClass());
 
@@ -35,25 +38,40 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws IOException, ServletException {
+        Cookie[] cookies = request.getCookies();
+        String authTokenCk = null;
+        if(cookies != null) {
+            authTokenCk = getTokenFromCookie(cookies);
+        }
+
 
         String username;
         String authToken = tokenHelper.getToken(request);
 
-        if (authToken != null) {
+        if (authTokenCk != null) {
             // get username from token
-            username = tokenHelper.getUsernameFromToken(authToken);
+            username = tokenHelper.getUsernameFromToken(authTokenCk);
             if (username != null) {
                 // get user
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (tokenHelper.validateToken(authToken, userDetails)) {
+                if (tokenHelper.validateToken(authTokenCk, userDetails)) {
                     // create authentication
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
-                    authentication.setToken(authToken);
+                    authentication.setToken(authTokenCk);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         }
         chain.doFilter(request, response);
+    }
+
+    public String getTokenFromCookie(Cookie[] cookies) {
+        for (Cookie ck : cookies) {
+            if(ck.getName().equals(TOKEN)) {
+                return ck.getValue();
+            }
+        }
+        return null;
     }
 
 }

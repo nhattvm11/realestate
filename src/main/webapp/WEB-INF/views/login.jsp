@@ -28,7 +28,7 @@
             <div class="card">
                 <h1 class="title">Login</h1>
 
-                <spring:url var="loginURL" value="/api/v1/protected/login"/>
+                <spring:url var="loginURL" value="/login"/>
                 <form method="post" action="${loginURL}">
                     <div class="input-container">
                         <input type="text" id="Username" name="username" required="required"/>
