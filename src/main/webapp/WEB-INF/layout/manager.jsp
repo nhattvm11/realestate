@@ -32,7 +32,11 @@
     <!-- Custom Theme Style -->
     <link href="/realestate/Content/polygon/build/css/custom.min.css" rel="stylesheet">
 
-    <script src="/realestate/Content/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href='/realestate/css/dropzone.css'>
+
+    <%--<script src="/realestate/Content/jquery-1.10.2.js"></script>--%>
+    <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
     <!-- Bootstrap -->
     <script src="/realestate/Content/polygon/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -92,17 +96,13 @@
 
 <!-- Custom Theme Scripts -->
 <script src="/realestate/Content/polygon/build/js/custom.min.js"></script>
- <%--<tiles:insertAttribute name="footer" />--%>
+
+
+<script type="text/javascript"
+        src='/realestate/js/dropzone.js'></script>
+<script type="text/javascript"
+        src='/realestate/js/app.js'></script>
+
 </body>
 
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-23581568-13', 'auto');
-    ga('send', 'pageview');
-
-</script>
 </html>
