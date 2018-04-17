@@ -31,4 +31,5 @@ public interface ArticleService {
 
     void initArticleError(ArticleError articleError, BindingResult result);
     Page<Article> findAllPagination(int page, int pagesize);
+    Page<Article> findBySearchTerm(String searchTerm, int page);
 }

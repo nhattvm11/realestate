@@ -36,6 +36,6 @@ public class BeanConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/images/**")
-                .addResourceLocations("file:C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\image\\");
+                .addResourceLocations("file:C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\static\\image\\");
     }
 }
