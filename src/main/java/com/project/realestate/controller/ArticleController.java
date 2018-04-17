@@ -9,6 +9,7 @@ import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,7 +51,7 @@ public class ArticleController {
     @Autowired
     private PictureService pictureService;
 
-    private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\image\\";
+    private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\static\\image\\";
 
     @GetMapping("/article/create")
     public ModelAndView createArticleView() throws Exception{
@@ -82,10 +83,11 @@ public class ArticleController {
         Map<String, MultipartFile> fileMap = request.getFileMap();
         for (MultipartFile file : fileMap.values()) {
             byte[] imageData = file.getBytes();
-            Path path = Paths.get(UPLOAD_PATH + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+ file.getOriginalFilename());
+            String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+ file.getOriginalFilename();
+            Path path = Paths.get(UPLOAD_PATH + fileName);
             Files.write(path, imageData);
 
-            String imagePath = "/images/" + file.getOriginalFilename();
+            String imagePath = "/images/" + fileName;
             pictureService.saveImage(articleId, imagePath, false);
         }
         return new ResponseEntity(HttpStatus.OK);
@@ -138,5 +140,11 @@ public class ArticleController {
         model.addObject("directions", articleService.initDirectionModel());
 
         model.addObject("article", articleTemp);
+    }
+
+    @RequestMapping(value = "/article/search", method = RequestMethod.GET)
+    public Page<Article> findBySearchTerm(@RequestParam("searchTerm") String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
+        Page<Article> searchResultPage = articleService.findBySearchTerm(searchTerm, page);
+        return searchResultPage;
     }
 }

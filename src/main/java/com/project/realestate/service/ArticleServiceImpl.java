@@ -1,5 +1,6 @@
 package com.project.realestate.service;
 
+import com.project.realestate.Specification.ArticleSpecification;
 import com.project.realestate.entity.*;
 import com.project.realestate.exception.*;
 import com.project.realestate.model.ArticleError;
@@ -254,6 +255,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<Article> findAllPagination(int page, int pagesize) {
         return articleRepository.findAll(PageRequest.of(page, pagesize));
+    }
+
+    @Override
+    public Page<Article> findBySearchTerm(String searchTerm, int page) {
+        Page<Article> searchResultPage = articleRepository.findAll(ArticleSpecification.titleOrDescriptionContainsIgnoreCase(searchTerm), PageRequest.of(page, 4));
+        return searchResultPage;
     }
 
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {

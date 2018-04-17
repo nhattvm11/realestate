@@ -1,5 +1,7 @@
 package com.project.realestate.entity;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
