@@ -22,13 +22,14 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/register")
     public ModelAndView getRegister() {
         return new ModelAndView("register", "user", new RegisterTemp());
     }
 
     @PostMapping("/register")
-    public String handleRegister(@Valid @ModelAttribute("user") RegisterTemp registerTemp, BindingResult result) {
+    public String handleRegister(@Valid @ModelAttribute("user") RegisterTemp registerTemp, BindingResult result) throws UsernameExistException {
         if(result.hasErrors()) {
             return "register";
         }
@@ -40,7 +41,7 @@ public class RegisterController {
     @GetMapping("/confirm")
     public String emailConfirm(@RequestParam String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
         userService.confirmRegistration(token);
-        return "redirect:/login";
+        return "redirect:/api/v1/public/login";
     }
 
 

@@ -10,7 +10,6 @@ import com.project.realestate.model.UserUpdate;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    PasswordEncoder encoder;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     ContactService contactService;
@@ -64,7 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
+    public void register(User user) throws UsernameExistException {
+        User userCheck = usersRepository.findUsersByUsername(user.getUsername());
+        if(userCheck != null)
+            throw new UsernameExistException("Username is exist");
         createUser(user);
         emailService.sendMailConfirmation(user);
     }
@@ -72,7 +74,7 @@ public class UserServiceImpl implements UserService {
     private void createUser(User user) {
         user.setId(UUID.randomUUID().toString());
         user.setActive(false);
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
         Contact contact = new Contact();
         contact.setId(UUID.randomUUID().toString());
@@ -101,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User updateUser) {
         User user = usersRepository.findUsersByUsername(updateUser.getUsername());
-        updateUser.setPassword(encoder.encode(updateUser.getPassword()));
+        updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         if(user == null)
             throw new UsernameNotFoundException("Username does not exist");
 

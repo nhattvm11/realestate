@@ -1,78 +1,230 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Anh
-  Date: 4/9/2018
-  Time: 9:38 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<html>
-<head>
-    <title>create Article</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/realestate/ckeditor/ckeditor.js"></script>
-</head>
-<body>
-    <h2>Create Article</h2>
 
-    <form:form method="post" modelAttribute="article" action="/realestate/article/create">
+<form:form id="formCreate" method="post"  modelAttribute="article" action="/realestate/article/create">
 
-        Type <form:select path="typeId" items="${types}"/><br>
-        <form:errors path="typeId"/>
-
-        Property Type <form:select path="propertyId" items="${propertyTypes}"/><br>
-        <form:errors path="propertyId"/>
-
-        address <form:input path="address"/><br>
-        <form:errors path="address"/>
-
-        city <form:select path="cityId" items="${cities}" /><br>
-        <form:errors path="cityId"/>
-
-        District
-        <div id="District">
-            <select name="DistrictId">
-                <option>--Select City--</option>
-            </select>
+    <div class="form-horizontal">
+        <h4>Article</h4>
+        <hr />
+        <div class="form-group">
+            <label class = "control-label col-md-2">Type</label>
+            <div class="col-md-10">
+                <form:select path="typeId" items="${types}" cssClass="form-control"/>
+                <div class="text-danger" id="ajajak">${errors.typeId}</div>
+            </div>
         </div>
-        <form:errors path="districtId"/>
-        <br>
 
-        Title <form:input path="title"/><br>
-        <form:errors path="title"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">Property Type</label>
+            <div class="col-md-10">
+                <form:select path="propertyId" items="${propertyTypes}" cssClass="form-control"/>
+                <div class="text-danger">${errors.propertyId}</div>
+            </div>
+        </div>
 
-        Area Size <form:input path="areasize" /><br>
-        <form:errors path="areasize"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">City</label>
+            <div class="col-md-10">
+                <form:select path="cityId" items="${cities}" cssClass="form-control"/>
+                <div class="text-danger">${errors.cityId}</div>
+            </div>
+        </div>
 
-        BedRoom <form:input path="bedroom" /><br>
-        <form:errors path="bedroom"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">District</label>
+            <div id="District" class="col-md-10">
+                <select name="DistrictId" class = "form-control">
+                    <option>--Select City--</option>
+                </select>
+            </div>
+            <div class="text-danger">${errors.districtId}</div>
+        </div>
 
-        BathRoom <form:input path="bathroom" /><br>
-        <form:errors path="bathroom"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">Address</label>
+            <div class="col-md-10">
+                <form:input path="address" cssClass="form-control"/>
+                <div class="text-danger">${errors.address}</div>
+            </div>
+        </div>
 
-        LivingRoom <form:input path="livingroom" /><br>
-        <form:errors path="livingroom"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">Title</label>
+            <div class="col-md-10">
+                <form:input path="title" cssClass="form-control"/>
+                <div class="text-danger">${errors.title}</div>
+            </div>
+        </div>
 
-        Tiers <form:input path="tier" /><br>
-        <form:errors path="tier"/>
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.DateUp, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--@Html.JQueryUI().DatepickerFor(model => model.DateUp)--%>
+                <%--@Html.ValidationMessageFor(model => model.DateUp, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
 
-        Direction <form:select path="directionId" items="${directions}"/><br>
-        <form:errors path="directionId"/>
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.DateExpire, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--@Html.JQueryUI().DatepickerFor(model => model.DateExpire)--%>
+                <%--@Html.ValidationMessageFor(model => model.DateExpire, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
 
-        Price <form:input path="price" /><br>
-        <form:errors path="price"/>
+        <div class="form-group">
+            <label class="control-label col-md-2">Area Size</label>
 
-        Description <form:textarea path="description" /><br>
-        <form:errors path="description"/>
+            <div class="col-md-10">
+                <form:input path="areasize" cssClass="form-control"/>
+                <div class="text-danger">${errors.areasize}</div>
+            </div>
+        </div>
 
-        Feature <form:checkboxes element="li" path="features" items="${features}"/><br>
+        <div class="form-group">
+            <label class="control-label col-md-2">BedRoom</label>
+            <div class="col-md-10">
+                <form:input path="bedroom" cssClass="form-control"/>
+                <div class="text-danger">${errors.bedroom}</div>
+            </div>
+        </div>
 
-        <input type="submit" value="Create Article"/>
-    </form:form>
-</body>
+        <div class="form-group">
+            <label class="control-label col-md-2">BathRoom</label>
+
+            <div class="col-md-10">
+                <form:input path="bathroom" cssClass="form-control"/>
+                <div class="text-danger">${errors.bathroom}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tiers</label>
+
+            <div class="col-md-10">
+                <form:input path="tier" cssClass="form-control"/>
+                <div class="text-danger">${errors.tier}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Direction</label>
+
+            <div class="col-md-10">
+                <form:select path="directionId" items="${directions}" cssClass="form-control"/>
+                <div class="text-danger">${errors.directionId}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Price</label>
+
+            <div class="col-md-10">
+                <form:input path="price" cssClass="form-control"/>
+                <div class="text-danger">${errors.price}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+
+            <div class="col-md-10">
+                <form:textarea path="description" cssClass="form-control"/>
+                <div class="text-danger">${errors.description}</div>
+            </div>
+        </div>
+
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--@Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control", @id = "ddlUser" })--%>
+                <%--@Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.ContactId, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10" id="Contact">--%>
+                <%--<select class="form-control" name="ContactId">--%>
+                    <%--<option>--Select User before--</option>--%>
+                <%--</select>--%>
+                <%--@Html.ValidationMessageFor(model => model.ContactId, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--@Html.EditorFor(model => model.Priority, new { htmlAttributes = new { @class = "form-control" } })--%>
+                <%--@Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--<div class="checkbox">--%>
+                    <%--@Html.EditorFor(model => model.Active)--%>
+                    <%--@Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+        <%--<div class="form-group">--%>
+            <%--@Html.LabelFor(model => model.View, htmlAttributes: new { @class = "control-label col-md-2" })--%>
+            <%--<div class="col-md-10">--%>
+                <%--@Html.EditorFor(model => model.View, new { htmlAttributes = new { @class = "form-control" } })--%>
+                <%--@Html.ValidationMessageFor(model => model.View, "", new { @class = "text-danger" })--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">LivingRoom</label>
+
+            <div class="col-md-10">
+                <form:input path="livingroom" cssClass="form-control"/>
+                <div class="text-danger">${errors.livingroom}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Features</label>
+            <div class="col-md-10">
+                <form:checkboxes element="li" path="features" items="${features}"/>
+            </div>
+        </div>
+
+    </div>
+
+</form:form>
+
+<div class="container form-horizontal">
+    <label class="control-label col-md-2">Images</label>
+    <div class="panel panel-default col-md-10">
+        <div class="panel-body">
+            <div>
+                <form id="dropzone-form" class="dropzone" action="/realestate/article/uploadImage"
+                      enctype="multipart/form-data">
+
+                    <div class="dz-default dz-message file-dropzone text-center well col-sm-12">
+                        <span class="glyphicon glyphicon-paperclip"></span> <span>
+								To attach files, drag and drop here</span><br> <span>OR</span><br>
+                        <span>Just Click</span>
+                    </div>
+
+
+                    <div class="dropzone-previews"></div>
+                </form>
+                <hr>
+                <button id="upload-button" class="btn btn-primary" type="submit">
+                    <span class="glyphicon glyphicon-plus"></span> Create Article
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -101,6 +253,6 @@
                 CKEDITOR.instances.Body.updateElement();
             });
         });
+
     });
 </script>
-</html>

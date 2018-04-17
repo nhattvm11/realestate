@@ -11,22 +11,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/api/v1/public")
 public class UserController {
 
     @Autowired
     UserService userService;
 
     @GetMapping("/users/{id}")
-    public ModelAndView showProfile(@PathVariable("id") String id) throws UserNotFoundException {
+    public ModelAndView showProfile(@PathVariable("id") String id, HttpServletRequest request) throws UserNotFoundException {
         User user = userService.getUserById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("user", user);
         modelAndView.setViewName("profile");
+        System.out.println(request.getCookies().toString());
         return modelAndView;
     }
 

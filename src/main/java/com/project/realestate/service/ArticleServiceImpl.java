@@ -1,13 +1,19 @@
 package com.project.realestate.service;
 
+import com.project.realestate.Specification.ArticleSpecification;
 import com.project.realestate.entity.*;
 import com.project.realestate.exception.*;
+import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.*;
 
@@ -198,6 +204,63 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         articleRepository.delete(article);
+    }
+
+    @Override
+    public void initArticleError(ArticleError articleError, BindingResult result) {
+        if (result.getFieldError("address") != null){
+            articleError.setAddress(result.getFieldError("address").getDefaultMessage());
+        }
+        if (result.getFieldError("title") != null){
+            articleError.setTier(result.getFieldError("title").getDefaultMessage());
+        }
+        if (result.getFieldError("areasize") != null){
+            articleError.setAreasize(result.getFieldError("areasize").getDefaultMessage());
+        }
+        if (result.getFieldError("bedroom") != null){
+            articleError.setBedroom(result.getFieldError("bedroom").getDefaultMessage());
+        }
+        if (result.getFieldError("bathroom") != null){
+            articleError.setBathroom(result.getFieldError("bathroom").getDefaultMessage());
+        }
+        if (result.getFieldError("livingroom") != null){
+            articleError.setLivingroom(result.getFieldError("livingroom").getDefaultMessage());
+        }
+        if (result.getFieldError("tier") != null){
+            articleError.setTier(result.getFieldError("livingroom").getDefaultMessage());
+        }
+        if (result.getFieldError("price") != null){
+            articleError.setPrice(result.getFieldError("price").getDefaultMessage());
+        }
+        if (result.getFieldError("description") != null){
+            articleError.setDescription(result.getFieldError("description").getDefaultMessage());
+        }
+        if (result.getFieldError("typeId") != null){
+            articleError.setTypeId(result.getFieldError("typeId").getDefaultMessage());
+        }
+        if (result.getFieldError("propertyId") != null){
+            articleError.setPropertyId(result.getFieldError("propertyId").getDefaultMessage());
+        }
+        if (result.getFieldError("cityId") != null){
+            articleError.setCityId(result.getFieldError("cityId").getDefaultMessage());
+        }
+        if (result.getFieldError("districtId") != null){
+            articleError.setDistrictId(result.getFieldError("districtId").getDefaultMessage());
+        }
+        if (result.getFieldError("directionId") != null){
+            articleError.setDirectionId(result.getFieldError("directionId").getDefaultMessage());
+        }
+    }
+
+    @Override
+    public Page<Article> findAllPagination(int page, int pagesize) {
+        return articleRepository.findAll(PageRequest.of(page, pagesize));
+    }
+
+    @Override
+    public Page<Article> findBySearchTerm(String searchTerm, int page) {
+        Page<Article> searchResultPage = articleRepository.findAll(ArticleSpecification.titleOrDescriptionContainsIgnoreCase(searchTerm), PageRequest.of(page, 4));
+        return searchResultPage;
     }
 
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {

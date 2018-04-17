@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class CustomUserDetail implements UserDetails {
@@ -14,6 +15,7 @@ public class CustomUserDetail implements UserDetails {
     private String token;
 
     private List<GrantedAuthority> grantedAuthorities;
+    private Date lastPasswordResetDate;
 
     public CustomUserDetail(String username, String password, List<GrantedAuthority> grantedAuthorities) {
         this.username = username;
@@ -82,5 +84,13 @@ public class CustomUserDetail implements UserDetails {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 }

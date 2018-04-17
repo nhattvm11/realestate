@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/api/v1/public")
 public class LoginController {
 
     @Autowired
@@ -32,9 +31,15 @@ public class LoginController {
     EmailService emailService;
 
     @GetMapping("/login")
-    public String getLogin() {
+    public String login() {
         return "login";
     }
+
+//    @PostMapping("/login")
+//    public String handleLogin() {
+//        System.out.println("begin handle login ......");
+//        return "login";
+//    }
 
     @GetMapping("/reset")
     public String showFormReset() {
@@ -47,6 +52,8 @@ public class LoginController {
         emailService.sendMailResetPassword(user);
         return "newPass";
     }
+
+
 
     @GetMapping("/newpass")
     public ModelAndView showFormNewPass(@RequestParam String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
