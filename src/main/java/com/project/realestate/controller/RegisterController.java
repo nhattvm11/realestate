@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/api/v1/protected")
+@RequestMapping("/api/v1/public")
 public class RegisterController {
 
     @Autowired
