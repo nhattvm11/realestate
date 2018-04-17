@@ -11,7 +11,7 @@
             <label class = "control-label col-md-2">Type</label>
             <div class="col-md-10">
                 <form:select path="typeId" items="${types}" cssClass="form-control"/>
-                <div class="text-danger">${errors.typeId}</div>
+                <div class="text-danger" id="ajajak">${errors.typeId}</div>
             </div>
         </div>
 

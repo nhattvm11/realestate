@@ -33,7 +33,10 @@ $(document).ready(function() {
                 myDropzone.processQueue();
             },
             error: function (data) {
-                alert("Loi");
+                console.log( "===this is data error: ===="+ data.responseJSON);
+                console.log( "===this is address address: ===="+ data.responseJSON.address);
+                var response = data.responseJSON;
+                document.getElementById("ajajak").innerHTML = response.address;
             },
         });
 
