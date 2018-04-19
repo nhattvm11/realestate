@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/api/v1/public")
 public class RegisterController {
 
     @Autowired
@@ -41,7 +40,7 @@ public class RegisterController {
     @GetMapping("/confirm")
     public String emailConfirm(@RequestParam String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
         userService.confirmRegistration(token);
-        return "redirect:/api/v1/public/login";
+        return "redirect:/login";
     }
 
 

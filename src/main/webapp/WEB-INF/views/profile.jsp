@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Title</title>
@@ -106,7 +108,8 @@
                                     <div class="bot-border"></div>
                                 </c:if>
                             </c:forEach>
-                            <a href="${pageContext.request.contextPath}/api/v1/public/users/${user.id}/edit" class="btn btn-primary">Edit</a>
+                            <spring:url var="editProfileURL" value="/users/${user.id}/edit"/>
+                            <a href="${editProfileURL}" class="btn btn-primary">Edit</a>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
