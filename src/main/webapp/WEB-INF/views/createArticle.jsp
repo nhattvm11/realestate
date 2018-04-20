@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form id="formCreate" method="post"  modelAttribute="article" action="/realestate/article/create">
+<form:form id="formArticle" method="post"  modelAttribute="article" action="/realestate/article/create">
 
     <div class="form-horizontal">
         <h4>Article</h4>
@@ -11,7 +11,7 @@
             <label class = "control-label col-md-2">Type</label>
             <div class="col-md-10">
                 <form:select path="typeId" items="${types}" cssClass="form-control"/>
-                <div class="text-danger" id="ajajak">${errors.typeId}</div>
+                <div class="text-danger" id="typeId-error"></div>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
             <label class="control-label col-md-2">Property Type</label>
             <div class="col-md-10">
                 <form:select path="propertyId" items="${propertyTypes}" cssClass="form-control"/>
-                <div class="text-danger">${errors.propertyId}</div>
+                <div class="text-danger" id="property-error"></div>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <label class="control-label col-md-2">City</label>
             <div class="col-md-10">
                 <form:select path="cityId" items="${cities}" cssClass="form-control"/>
-                <div class="text-danger">${errors.cityId}</div>
+                <div class="text-danger" id="city-error"></div>
             </div>
         </div>
 
@@ -38,14 +38,14 @@
                     <option>--Select City--</option>
                 </select>
             </div>
-            <div class="text-danger">${errors.districtId}</div>
+            <div class="text-danger" id="districtId-error"></div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2">Address</label>
             <div class="col-md-10">
                 <form:input path="address" cssClass="form-control"/>
-                <div class="text-danger">${errors.address}</div>
+                <div class="text-danger" id="address-error"></div>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
             <label class="control-label col-md-2">Title</label>
             <div class="col-md-10">
                 <form:input path="title" cssClass="form-control"/>
-                <div class="text-danger">${errors.title}</div>
+                <div class="text-danger" id="title-error"></div>
             </div>
         </div>
 
@@ -78,7 +78,7 @@
 
             <div class="col-md-10">
                 <form:input path="areasize" cssClass="form-control"/>
-                <div class="text-danger">${errors.areasize}</div>
+                <div class="text-danger" id="areasize-error"></div>
             </div>
         </div>
 
@@ -86,7 +86,7 @@
             <label class="control-label col-md-2">BedRoom</label>
             <div class="col-md-10">
                 <form:input path="bedroom" cssClass="form-control"/>
-                <div class="text-danger">${errors.bedroom}</div>
+                <div class="text-danger" id="bedroom-error"></div>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
 
             <div class="col-md-10">
                 <form:input path="bathroom" cssClass="form-control"/>
-                <div class="text-danger">${errors.bathroom}</div>
+                <div class="text-danger" id="bathroom-error"></div>
             </div>
         </div>
 
@@ -104,7 +104,7 @@
 
             <div class="col-md-10">
                 <form:input path="tier" cssClass="form-control"/>
-                <div class="text-danger">${errors.tier}</div>
+                <div class="text-danger" id="tier-error"></div>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
 
             <div class="col-md-10">
                 <form:select path="directionId" items="${directions}" cssClass="form-control"/>
-                <div class="text-danger">${errors.directionId}</div>
+                <div class="text-danger" id="directionId-error"></div>
             </div>
         </div>
 
@@ -122,7 +122,7 @@
 
             <div class="col-md-10">
                 <form:input path="price" cssClass="form-control"/>
-                <div class="text-danger">${errors.price}</div>
+                <div class="text-danger" id="price-error"></div>
             </div>
         </div>
 
@@ -131,7 +131,7 @@
 
             <div class="col-md-10">
                 <form:textarea path="description" cssClass="form-control"/>
-                <div class="text-danger">${errors.description}</div>
+                <div class="text-danger" id="description-error"></div>
             </div>
         </div>
 
@@ -185,7 +185,7 @@
 
             <div class="col-md-10">
                 <form:input path="livingroom" cssClass="form-control"/>
-                <div class="text-danger">${errors.livingroom}</div>
+                <div class="text-danger" id="livingroom-error"></div>
             </div>
         </div>
 
@@ -226,33 +226,3 @@
     </div>
 </div>
 
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $('#cityId').change(function () {
-            $.ajax({
-                type: "post",
-                url: "/realestate/article/districts",
-                data: { cityId: $('#cityId').val() },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    var district = "<select id='districtId' name = 'districtId'>";
-                    for (var i = 0; i < data.length; i++) {
-                        district = district + '<option value=' + data[i].id + '>' + data[i].districtName + '</option>';
-                    }
-                    district = district + '</select>';
-                    $('#District').html(district);
-                }
-            });
-        });
-
-        CKEDITOR.replace("description");
-        $(function () {
-            $('input[type="submit"]').click(function () {
-                CKEDITOR.instances.Body.updateElement();
-            });
-        });
-
-    });
-</script>

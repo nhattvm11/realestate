@@ -28,4 +28,12 @@ public class PictureServiceImpl implements PictureService {
         picture.setUrl(path);
         pictureRepository.save(picture);
     }
+
+    @Override
+    public void deletePicture(String id) {
+        Picture picture = pictureRepository.getOne(id);
+        if (picture == null)
+            return;
+        pictureRepository.delete(picture);
+    }
 }

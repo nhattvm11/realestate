@@ -1,5 +1,6 @@
 package com.project.realestate.controller;
 
+import com.project.realestate.Specification.ArticleSpecificationBuilder;
 import com.project.realestate.entity.Article;
 import com.project.realestate.entity.City;
 import com.project.realestate.entity.District;
@@ -10,6 +11,7 @@ import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class ArticleController {
@@ -103,9 +107,14 @@ public class ArticleController {
     }
 
     @PostMapping("/article/update/{id}")
-    public String updateArticleHandler(@PathVariable("id") String id,@Valid @ModelAttribute("article") ArticleTemp articleTemp) throws Exception {
+    public ResponseEntity updateArticleHandler(@PathVariable("id") String id,@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception {
+        if(result.hasErrors()){
+            ArticleError articleError = new ArticleError();
+            articleService.initArticleError(articleError, result);
+            return new ResponseEntity(articleError, HttpStatus.BAD_REQUEST);
+        }
         articleService.updateArticle(id, articleTemp);
-        return "listArticle";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/article/delete/{id}")
@@ -144,7 +153,17 @@ public class ArticleController {
 
     @RequestMapping(value = "/article/search", method = RequestMethod.GET)
     public Page<Article> findBySearchTerm(@RequestParam("searchTerm") String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
-        Page<Article> searchResultPage = articleService.findBySearchTerm(searchTerm, page);
+        ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(searchTerm + ",");
+        while (matcher.find()) {
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+
+        Specification<Article> spec = builder.build();
+        Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page);
         return searchResultPage;
     }
+
+    
 }

@@ -51,6 +51,15 @@ public class ArticleTemp {
     @NotNull
     private String directionId;
     private List<String> features;
+    private List<PictureTemp> pictures;
+
+    public List<PictureTemp> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<PictureTemp> pictures) {
+        this.pictures = pictures;
+    }
 
     public String getId() {
         return id;

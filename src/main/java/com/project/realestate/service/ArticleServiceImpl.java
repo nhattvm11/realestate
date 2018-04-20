@@ -3,14 +3,13 @@ package com.project.realestate.service;
 import com.project.realestate.Specification.ArticleSpecification;
 import com.project.realestate.entity.*;
 import com.project.realestate.exception.*;
-import com.project.realestate.model.ArticleError;
-import com.project.realestate.model.ArticleTemp;
-import com.project.realestate.model.DistrictTemp;
+import com.project.realestate.model.*;
 import com.project.realestate.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -227,7 +226,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleError.setLivingroom(result.getFieldError("livingroom").getDefaultMessage());
         }
         if (result.getFieldError("tier") != null){
-            articleError.setTier(result.getFieldError("livingroom").getDefaultMessage());
+            articleError.setTier(result.getFieldError("tier").getDefaultMessage());
         }
         if (result.getFieldError("price") != null){
             articleError.setPrice(result.getFieldError("price").getDefaultMessage());
@@ -258,8 +257,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> findBySearchTerm(String searchTerm, int page) {
-        Page<Article> searchResultPage = articleRepository.findAll(ArticleSpecification.titleOrDescriptionContainsIgnoreCase(searchTerm), PageRequest.of(page, 4));
+    public Page<Article> findBySearchTerm(Specification specification, int page) {
+        Page<Article> searchResultPage = articleRepository.findAll(specification, PageRequest.of(page, 4));
         return searchResultPage;
     }
 
@@ -292,5 +291,18 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         articleTemp.setFeatures(features);
+
+        if (!article.getPicturesById().isEmpty()){
+            List<Picture> pictures = new ArrayList<>(article.getPicturesById());
+            List<PictureTemp> pictureTemps = new ArrayList<>();
+
+            for (Picture picture:pictures) {
+                PictureTemp pictureTemp = new PictureTemp();
+                pictureTemp.setId(picture.getId());
+                pictureTemp.setUrl(picture.getUrl());
+                pictureTemps.add(pictureTemp);
+            }
+            articleTemp.setPictures(pictureTemps);
+        }
     }
 }
