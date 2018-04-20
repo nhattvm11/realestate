@@ -16,4 +16,8 @@
         <put-attribute name="body" value="/WEB-INF/views/listArticle.jsp" />
     </definition>
 
+    <definition name="updateArticle" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/updateArticle.jsp" />
+    </definition>
+
 </tiles-definitions>

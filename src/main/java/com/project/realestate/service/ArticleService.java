@@ -7,6 +7,7 @@ import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -31,5 +32,5 @@ public interface ArticleService {
 
     void initArticleError(ArticleError articleError, BindingResult result);
     Page<Article> findAllPagination(int page, int pagesize);
-    Page<Article> findBySearchTerm(String searchTerm, int page);
+    Page<Article> findBySearchTerm(Specification specification, int page);
 }
