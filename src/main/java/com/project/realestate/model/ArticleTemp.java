@@ -51,7 +51,16 @@ public class ArticleTemp {
     @NotNull
     private String directionId;
     private List<String> features;
+    private String thumbnail;
     private List<PictureTemp> pictures;
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
     public List<PictureTemp> getPictures() {
         return pictures;
