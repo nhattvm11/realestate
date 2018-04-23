@@ -8,6 +8,12 @@
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
     </definition>
 
+    <definition name="pageLayout" template="/WEB-INF/layout/pageLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/layout/pageHeader.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/layout/pageFooter.jsp" />
+    </definition>
+
     <definition name="createArticle" extends="mainLayout">
         <put-attribute name="body" value="/WEB-INF/views/createArticle.jsp" />
     </definition>
@@ -18,6 +24,14 @@
 
     <definition name="updateArticle" extends="mainLayout">
         <put-attribute name="body" value="/WEB-INF/views/updateArticle.jsp" />
+    </definition>
+
+    <definition name="index" extends="pageLayout">
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+    </definition>
+
+    <definition name="listArticlePage" extends="pageLayout">
+        <put-attribute name="body" value="/WEB-INF/views/listArticlePage.jsp" />
     </definition>
 
 </tiles-definitions>

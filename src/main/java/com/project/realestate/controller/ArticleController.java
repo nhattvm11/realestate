@@ -1,9 +1,7 @@
 package com.project.realestate.controller;
 
 import com.project.realestate.Specification.ArticleSpecificationBuilder;
-import com.project.realestate.entity.Article;
-import com.project.realestate.entity.City;
-import com.project.realestate.entity.District;
+import com.project.realestate.entity.*;
 import com.project.realestate.exception.ArticleException;
 import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
@@ -62,7 +60,8 @@ public class ArticleController {
         ModelAndView model = new ModelAndView("createArticle");
         model.addObject("title", "Create Article");
         ArticleTemp articleTemp = new ArticleTemp();articleTemp.setCityId("-1");
-        setModel(model, articleTemp);
+        articleService.setModel(model);
+        model.addObject("article", articleTemp);
         return model;
     }
 
@@ -101,8 +100,8 @@ public class ArticleController {
     public ModelAndView updateArticleView(@PathVariable("id")String id) throws Exception{
         ModelAndView model = new ModelAndView();
         model.setViewName("updateArticle");
-        setModel(model, articleService.convertArticleEntityToModel(id));
-
+        articleService.setModel(model);
+        model.addObject("article", articleService.convertArticleEntityToModel(id, false));
         return model;
     }
 
@@ -141,28 +140,50 @@ public class ArticleController {
         return "listArticle";
     }
 
-    private void setModel(ModelAndView model, ArticleTemp articleTemp) throws Exception {
-        model.addObject("cities", articleService.initCityModel());
-        model.addObject("types", articleService.initTypeModel());
-        model.addObject("propertyTypes", articleService.initPropertyTypeModel());
-        model.addObject("features", articleService.initFeatureModel());
-        model.addObject("directions", articleService.initDirectionModel());
-
-        model.addObject("article", articleTemp);
-    }
-
     @RequestMapping(value = "/article/search", method = RequestMethod.GET)
-    public Page<Article> findBySearchTerm(@RequestParam("searchTerm") String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
+    public String searchAricles(Model model, @RequestParam("searchTerm") String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
         ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
         Matcher matcher = pattern.matcher(searchTerm + ",");
         while (matcher.find()) {
-            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+            switch (matcher.group(1)){
+                case "directionByDirectionId":
+                    Direction direction = new Direction();
+                    direction.setId(matcher.group(3));
+                    builder.with(matcher.group(1), matcher.group(2), direction);
+                    break;
+                case "cityByCityId":
+                    City city = new City();
+                    city.setId(matcher.group(3));
+                    builder.with(matcher.group(1), matcher.group(2), city);
+                    break;
+                case "districtByDistrictId":
+                    District district = new District();
+                    district.setId(matcher.group(3));
+                    builder.with(matcher.group(1), matcher.group(2), district);
+                    break;
+                case "propertyTypeByPropertyId":
+                    PropertyType propertyType = new PropertyType();
+                    propertyType.setId(matcher.group(3));
+                    builder.with(matcher.group(1), matcher.group(2), propertyType);
+                    break;
+                case "typeByTypeId":
+                    Type type = new Type();
+                    type.setId(matcher.group(3));
+                    builder.with(matcher.group(1), matcher.group(2), type);
+                    break;
+                default:
+                    builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+                    break;
+            }
         }
 
         Specification<Article> spec = builder.build();
-        Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page);
-        return searchResultPage;
+        Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page, 4);
+        model.addAttribute("pageInfo", searchResultPage);
+        model.addAttribute("data", articleService.parseListEntityToListModel(searchResultPage.getContent(), true));
+        model.addAttribute("currentPage", page);
+        return "listArticlePage";
     }
 
     
