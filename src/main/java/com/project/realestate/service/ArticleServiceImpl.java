@@ -344,12 +344,11 @@ public class ArticleServiceImpl implements ArticleService {
             for (Picture picture:pictures) {
                 if(picture.getThumbnail()){
                     articleTemp.setThumbnail(picture.getUrl());
-                }else {
-                    PictureTemp pictureTemp = new PictureTemp();
-                    pictureTemp.setId(picture.getId());
-                    pictureTemp.setUrl(picture.getUrl());
-                    pictureTemps.add(pictureTemp);
                 }
+                PictureTemp pictureTemp = new PictureTemp();
+                pictureTemp.setId(picture.getId());
+                pictureTemp.setUrl(picture.getUrl());
+                pictureTemps.add(pictureTemp);
             }
             articleTemp.setPictures(pictureTemps);
         }

@@ -74,13 +74,13 @@
                 <div class="menu-main-menu-container">
                     <ul id="menu" class="sf-menu">
                         <li id="menu-item-1430" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1430">
-                            <a href="#">Nhà Đất Cho Thuê</a>
+                            <a href="#">Rent</a>
                             <ul class="sub-menu">
                                 <li class="menu-item menu-item-type-post_type menu-item-object-page">Thue chung cu</li>
                             </ul>
                         </li>
                         <li id="menu-item-1437" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1437">
-                            <a href="#">Nhà Đất Bán</a>
+                            <a href="#">Sale</a>
                             <ul class="sub-menu">
                                 <li class="menu-item menu-item-type-post_type menu-item-object-page">Ban chung cu</li>
                             </ul>

@@ -140,11 +140,21 @@ public class ArticleController {
         return "listArticle";
     }
 
-    @RequestMapping(value = "/article/search", method = RequestMethod.GET)
-    public String searchAricles(Model model, @RequestParam("searchTerm") String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
+    @PostMapping(value = "/article/search")
+    public String searchAricles(Model model, @RequestParam(required=false) Map<String, String> searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
         ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(searchTerm + ",");
+        String criteria  = "cityByCityId:"+searchTerm.get("city")+","
+                + searchTerm.get("type")+','
+                + searchTerm.get("property")+','
+                + searchTerm.get("district")+','
+                + searchTerm.get("direction")+','
+                + searchTerm.get("area")+','
+                + searchTerm.get("price")+','
+                + searchTerm.get("bedroom")+','
+                + searchTerm.get("bathroom")+','
+                + searchTerm.get("tier");
+        Matcher matcher = pattern.matcher(criteria + ',');
         while (matcher.find()) {
             switch (matcher.group(1)){
                 case "directionByDirectionId":
@@ -180,11 +190,16 @@ public class ArticleController {
 
         Specification<Article> spec = builder.build();
         Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page, 4);
-        model.addAttribute("pageInfo", searchResultPage);
+        model.addAttribute("pageInfo", searchResultPage.getTotalPages());
         model.addAttribute("data", articleService.parseListEntityToListModel(searchResultPage.getContent(), true));
         model.addAttribute("currentPage", page);
         return "listArticlePage";
     }
 
-    
+    @GetMapping("/article/detail/{id}")
+    public String articleDetail(@PathVariable("id") String id, Model model) throws ArticleException {
+        ArticleTemp articleTemp = articleService.convertArticleEntityToModel(id, true);
+        model.addAttribute("article", articleTemp);
+        return "articleDetail";
+    }
 }
