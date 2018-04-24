@@ -179,7 +179,7 @@
 
                                 <form method="post" action="FilterArticle" id="meta_data_filter_598ec9cf17607" data-search-url="/fullestate/properties-result-page?" data-unique-id="598ec9cf17607" data-slug="property" data-sidebar-name="Filter" data-sidebar-id="filter" data-widget-id="metadatafilter_search-4" class="mdf_widget_form mdf_ajax_auto_recount">
                                     <div class="mdf_one_moment_txt">
-                                        <span><img src="/Content/fullestate/wp-content/plugins/meta-data-filter/images/tax_loader.gif" alt="loader" /></span>
+                                        <span><img src="/realestate/Content/fullestate/wp-content/plugins/meta-data-filter/images/tax_loader.gif" alt="loader" /></span>
                                     </div>
                                     <h6>Wordpress Meta Data and Taxonomies Filter</h6>
 
@@ -357,7 +357,7 @@
 
                         <div class="pagination-container">
                             <ul class="pagination">
-                                <c:forEach begin="0" end="${pageInfo.totalPages-1}" varStatus="loop">
+                                <c:forEach begin="0" end="${pageInfo-1}" varStatus="loop">
                                     <c:choose>
                                         <c:when test="${currentPage == loop.index}">
                                             <li class="active">
