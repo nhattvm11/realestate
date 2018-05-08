@@ -61,7 +61,7 @@
             <!-- Logo-->
             <div class="col-md-3">
                 <div class="logo">
-                    <a style="color: #ffffff; font-style: normal; font-family: arial; font-size: 30px;  top:-5px;" href="~/Home/Index">
+                    <a style="color: #ffffff; font-style: normal; font-family: arial; font-size: 30px;  top:-5px;" href="${pageContext.request.contextPath}/home">
 
                         <img src="/realestate/Content/fullestate/wp-content/uploads/2015/03/logo.png" alt="Logo" class="logo_img" />
 

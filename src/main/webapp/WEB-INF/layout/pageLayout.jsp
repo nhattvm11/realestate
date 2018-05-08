@@ -135,7 +135,7 @@
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/efect_switcher/jquery.content-panel-switcher.js'></script>
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/totop/jquery.ui.totop.js'></script>
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/slide/camera.js'></script>
-    <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/slide/jquery.easing.1.3.min.js'></script>
+
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/bootstrap/bootstrap.min.js'></script>
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/inc/acf-location-field/js/load-gm.js'></script>
     <script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/owlcarousel/owl.carousel.js'></script>
@@ -374,6 +374,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script type='text/javascript' src='/realestate/Content/fullestate/wp-content/themes/fullestate/js/slide/jquery.easing.1.3.min.js'></script>
 <%--<script src="@Url.Content("~/Scripts/app.jsx")"></script>--%>
 
 </body>

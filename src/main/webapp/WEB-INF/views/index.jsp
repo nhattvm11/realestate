@@ -201,7 +201,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="mdf_shortcode_container  mdf_shortcode_skin_default">
-                        <form method="post" id="searchForm" action="/realestate/article/search">
+                        <form method="get" id="searchForm" action="/realestate/article/search">
                         <div class="mdf_input_container_block mdf_input_container_block_0">
                             <div class="mdf_input_container">
                                 <select id="typeId" name="type" class="mdf_filter_select">
@@ -402,7 +402,7 @@
                         <div style="display: none" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="rent">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${rent.id}">
                                     <img src="${pageContext.request.contextPath}${rent.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                     <h5><c:out value="${rent.cityId}"/></h5>
                                     </a>
@@ -423,7 +423,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="sale">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${sale.id}">
                                         <img src="${pageContext.request.contextPath}${sale.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                         <h5>${sale.cityId}</h5>
                                     </a>
@@ -444,7 +444,7 @@
                         <div style="display: none" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="offer">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${nor.id}">
                                         <img src="${pageContext.request.contextPath}${nor.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                         <h5>${nor.cityId}</h5>
                                     </a>
