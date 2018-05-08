@@ -299,6 +299,28 @@ public class ArticleServiceImpl implements ArticleService {
         return articleTemps;
     }
 
+    @Override
+    public Map<String, Boolean> getMapFeaturesOfArticle(String articleId) throws ArticleException, FeatureException {
+        Article article = articleRepository.findArticleById(articleId);
+        if (article == null)
+            throw new ArticleException("Article not found");
+        List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
+        List<String> featuresOfArticle = new ArrayList<>();
+        for (ArticleFeature at:articleFeatures){
+            featuresOfArticle.add(at.getFeatureByFeatureId().getFeatureName());
+        }
+        List<Feature> features = featureService.findAll();
+        Map<String, Boolean> featuresMap = new HashMap<>();
+        for (Feature ft : features){
+            if (featuresOfArticle.contains(ft.getFeatureName())){
+                featuresMap.put(ft.getFeatureName(), true);
+            }else {
+                featuresMap.put(ft.getFeatureName(), false);
+            }
+        }
+        return featuresMap;
+    }
+
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);

@@ -75,54 +75,54 @@ jQuery(function() {
     });
 
     //checkbox
-    jQuery('.mdf_taxonomy_checkbox').life('click', function() {
-        var tax_name = jQuery(this).data('tax-name');
-        var is_auto_submit = jQuery(this).parents('.mdf_input_container').hasClass('mdf_tax_auto_submit');
-        var form = jQuery(this).parents('form');
-        if (!jQuery(this).hasClass('mdf_has_childs') && !jQuery(form).hasClass('mdf_ajax_auto_recount')) {
-            if (is_auto_submit) {
-                jQuery(this).parents('form').submit();
-            }
-            return true;
-        }
-
-        //+++
-        if (tax_name == 'post_tag') {
-            //return true;
-        }
-        //+++
-        var _this = this;
-        var term_id = jQuery(this).val();
-        var slug = jQuery(this).parents('form').find('input[name="mdf[mdf_widget_options][slug]"]').val();
-        //+++
-        if (jQuery(this).is(":checked")) {
-            jQuery(this).prev("input[type=hidden]").val(term_id);
-            jQuery(_this).parent().find('.mdf_taxonomy_child_container').show(200);
-            var data = {
-                action: "mdf_draw_term_childs",
-                type: 'checkbox',
-                tax_name: tax_name,
-                mdf_parent_id: term_id,
-                hide: jQuery(this).data('hide'),
-                page_mdf: jQuery(this).parents('form').find('.hidden_page_mdf_for_ajax').val(),
-                meta_data_filter_cat: jQuery(this).parents('form').find('input[name="mdf[mdf_widget_options][meta_data_filter_cat]"]').val(),
-                slug: slug,
-                is_auto_submit: is_auto_submit
-            };
-
-        } else {
-            jQuery(_this).parent().find('.mdf_taxonomy_child_container').hide().html(mdf_tax_loader);
-            if (jQuery(this).parents('.mdf_input_container').hasClass('mdf_tax_auto_submit')) {
-                jQuery(this).parents('form').submit();
-            }
-            //ajax recount
-            if (jQuery(form).hasClass('mdf_ajax_auto_recount')) {
-                mdf_ajax_data_recount(jQuery(form).attr('id'), slug);
-            }
-        }
-
-        return true;
-    });
+    // jQuery('.mdf_taxonomy_checkbox').life('click', function() {
+    //     var tax_name = jQuery(this).data('tax-name');
+    //     var is_auto_submit = jQuery(this).parents('.mdf_input_container').hasClass('mdf_tax_auto_submit');
+    //     var form = jQuery(this).parents('form');
+    //     if (!jQuery(this).hasClass('mdf_has_childs') && !jQuery(form).hasClass('mdf_ajax_auto_recount')) {
+    //         if (is_auto_submit) {
+    //             jQuery(this).parents('form').submit();
+    //         }
+    //         return true;
+    //     }
+    //
+    //     //+++
+    //     if (tax_name == 'post_tag') {
+    //         //return true;
+    //     }
+    //     //+++
+    //     var _this = this;
+    //     var term_id = jQuery(this).val();
+    //     var slug = jQuery(this).parents('form').find('input[name="mdf[mdf_widget_options][slug]"]').val();
+    //     //+++
+    //     if (jQuery(this).is(":checked")) {
+    //         jQuery(this).prev("input[type=hidden]").val(term_id);
+    //         jQuery(_this).parent().find('.mdf_taxonomy_child_container').show(200);
+    //         var data = {
+    //             action: "mdf_draw_term_childs",
+    //             type: 'checkbox',
+    //             tax_name: tax_name,
+    //             mdf_parent_id: term_id,
+    //             hide: jQuery(this).data('hide'),
+    //             page_mdf: jQuery(this).parents('form').find('.hidden_page_mdf_for_ajax').val(),
+    //             meta_data_filter_cat: jQuery(this).parents('form').find('input[name="mdf[mdf_widget_options][meta_data_filter_cat]"]').val(),
+    //             slug: slug,
+    //             is_auto_submit: is_auto_submit
+    //         };
+    //
+    //     } else {
+    //         jQuery(_this).parent().find('.mdf_taxonomy_child_container').hide().html(mdf_tax_loader);
+    //         if (jQuery(this).parents('.mdf_input_container').hasClass('mdf_tax_auto_submit')) {
+    //             jQuery(this).parents('form').submit();
+    //         }
+    //         //ajax recount
+    //         if (jQuery(form).hasClass('mdf_ajax_auto_recount')) {
+    //             mdf_ajax_data_recount(jQuery(form).attr('id'), slug);
+    //         }
+    //     }
+    //
+    //     return true;
+    // });
 
     //+++
     //for shortcode
@@ -208,7 +208,7 @@ function mdf_init_range_sliders(item, input, act_without_button, uniqid) {
         });
     } catch (e) {
         /*
-         
+
          jQuery(item).slider({
          min: jQuery(input).data('min'),
          max: jQuery(input).data('max'),
@@ -227,7 +227,7 @@ function mdf_init_range_sliders(item, input, act_without_button, uniqid) {
          if (act_without_button) {
          jQuery("#meta_data_filter_" + uniqid).submit();
          }
-         
+
          //ajax recount
          if (jQuery("#meta_data_filter_" + uniqid).hasClass('mdf_ajax_auto_recount')) {
          mdf_ajax_data_recount(jQuery("#meta_data_filter_" + uniqid).attr('id'), jQuery("#meta_data_filter_" + uniqid).data('slug'));
@@ -290,6 +290,28 @@ function mdf_init_search_form(uniqid, slug, search_url, act_without_button, ajax
 
     mdf_init_submit_button(uniqid, slug, search_url);
 
+    function get(name){
+        if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+    }
+
+    jQuery(document).ready(function(){
+        jQuery("#filter_button").click(function() {
+            var url = window.location.href.split("filter")[0];
+            var min_price = jQuery('#min_price').val();
+            var max_price = jQuery('#max_price').val();
+            var areasize = jQuery('#areasize').val();
+            var tier = jQuery('#tier').val();
+            if (!isNaN(min_price) && !isNaN(max_price)){
+                url = url + "&filter=price>"+min_price+",price<"+max_price+","+areasize+","+tier;
+            }else {
+                alert("Let chose the price is a number!");
+                return false;
+            }
+            window.location.replace(url);
+        });
+    })
+
 }
 
 function mdf_init_submit_button(uniqid, slug, search_url) {
@@ -328,29 +350,10 @@ function mdf_init_submit_button(uniqid, slug, search_url) {
     }
 
 
-    jQuery("#meta_data_filter_" + uniqid).submit(function() {
-        jQuery(this).find("input[type='submit'], .mdf_reset_button").replaceWith(mdf_tax_loader);
-        jQuery("#meta_data_filter_" + uniqid + " .mdf_one_moment_txt span").show();
 
-        var mdf_widget_search_url = search_url + "slg=" + slug + "&";
-
-        var data = {
-            action: "mdf_encode_search_get_params",
-            vars: jQuery(this).serialize(),
-            mode: submit_mode,
-            mdf_front_qtrans_lang: mdf_front_qtrans_lang,
-            type: type,
-            shortcode_id: shortcode_id,
-            sidebar_id: sidebar_id,
-            sidebar_name: sidebar_name,
-            widget_id: widget_id,
-            is_ajaxed_reset: is_ajaxed_reset
-        };
-
-
-        return false;
-    });
 }
+
+
 
 function mdf_ajax_data_recount(form_id, slug) {
     // mdf_show_stat_info_popup(lang_one_moment);
@@ -359,7 +362,7 @@ function mdf_ajax_data_recount(form_id, slug) {
     var widget_id = 0;
     var sidebar_name = "";
     var sidebar_id = 0;
-    
+
     if (jQuery("#" + form_id).hasClass('mdf_shortcode_form')) {
         type = 'shortcode';
         shortcode_id = jQuery("#" + form_id).data('shortcode-id');

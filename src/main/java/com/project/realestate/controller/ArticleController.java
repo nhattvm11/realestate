@@ -3,10 +3,12 @@ package com.project.realestate.controller;
 import com.project.realestate.Specification.ArticleSpecificationBuilder;
 import com.project.realestate.entity.*;
 import com.project.realestate.exception.ArticleException;
+import com.project.realestate.exception.FeatureException;
 import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
+import jdk.internal.org.xml.sax.SAXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,18 +21,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -140,8 +148,8 @@ public class ArticleController {
         return "listArticle";
     }
 
-    @PostMapping(value = "/article/search")
-    public String searchAricles(Model model, @RequestParam(required=false) Map<String, String> searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
+    @GetMapping(value = "/article/search")
+    public String searchAricles(Model model, @RequestParam(required = false) String filter, @RequestParam(required=false) Map<String, String> searchTerm,@RequestParam(value = "page", defaultValue = "0") int page) {
         ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
         String criteria  = "cityByCityId:"+searchTerm.get("city")+","
@@ -154,6 +162,10 @@ public class ArticleController {
                 + searchTerm.get("bedroom")+','
                 + searchTerm.get("bathroom")+','
                 + searchTerm.get("tier");
+
+        if (filter != null){
+            criteria = criteria + ","+filter;
+        }
         Matcher matcher = pattern.matcher(criteria + ',');
         while (matcher.find()) {
             switch (matcher.group(1)){
@@ -197,9 +209,67 @@ public class ArticleController {
     }
 
     @GetMapping("/article/detail/{id}")
-    public String articleDetail(@PathVariable("id") String id, Model model) throws ArticleException {
+    public String articleDetail(@PathVariable("id") String id, Model model) throws ArticleException, FeatureException, org.xml.sax.SAXException, ParserConfigurationException, SAXException, IOException {
         ArticleTemp articleTemp = articleService.convertArticleEntityToModel(id, true);
         model.addAttribute("article", articleTemp);
+        model.addAttribute("features", articleService.getMapFeaturesOfArticle(id));
+        model.addAttribute("coordinate", getCordinates(articleTemp.getAddress(), articleTemp.getCityId()));
         return "articleDetail";
+    }
+
+    public String[] getCordinates(String address,String county) throws IOException, ParserConfigurationException, SAXException, org.xml.sax.SAXException {
+        String thisLine;
+        String fullAddress = address.replace(" ", "%20")+",%20"+county.replace(" ", "%20");
+        System.out.println(fullAddress);
+
+        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyDEUhgpaRslz8IddVuYTz5miCWWTS_caiI&address="+fullAddress);
+
+//        BufferedReader theHTML = new BufferedReader(new InputStreamReader(url.openStream()));
+        BufferedReader theHTML = new BufferedReader(new InputStreamReader(((HttpURLConnection) url.openConnection()).getInputStream(), Charset.forName("UTF-8")));
+
+        FileWriter fstream = new FileWriter("url.xml");
+        BufferedWriter out = new BufferedWriter(fstream);
+        while ((thisLine = theHTML.readLine()) != null)
+            out.write(thisLine);
+        out.close();
+
+        File file = new File("url.xml");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(file);
+        doc.getDocumentElement().normalize();
+
+        NodeList n1 = doc.getElementsByTagName("status");
+        Element n = (Element)n1.item(0);
+        String st1 = n.getFirstChild().getNodeValue();
+        String coordinate[] = new String[2];
+        if (st1.equals("OK")){
+            NodeList n2 = doc.getElementsByTagName("lat");
+            Element nn = (Element)n2.item(0);
+            String st2 = nn.getFirstChild().getNodeValue();
+            NodeList n3 = doc.getElementsByTagName("lng");
+            Element nnn= (Element)n3.item(0);
+            String st3 = nnn.getFirstChild().getNodeValue();
+            coordinate[0] = st2;
+            coordinate[1] = st3;
+        }
+        return coordinate;
+    }
+
+
+    @PostMapping("/article/filter")
+    public String filterHandler(Model model, @RequestParam(required=false) String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page){
+        ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(searchTerm + ',');
+        while (matcher.find()){
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        Specification<Article> spec = builder.build();
+        Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page, 4);
+        model.addAttribute("pageInfo", searchResultPage.getTotalPages());
+        model.addAttribute("data", articleService.parseListEntityToListModel(searchResultPage.getContent(), true));
+        model.addAttribute("currentPage", page);
+        return "listArticlePage";
     }
 }

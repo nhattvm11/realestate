@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="/realestate/js/lightbox-plus-jquery.min.js"></script>
-<div class="section_title" style="background-image: url(''); background-position: 40% 6px;">
+<div class="section_title" style="background-image: url('${pageContext.request.contextPath}${article.thumbnail}'); background-position: 40% 6px;">
     <div class="container">
         <div class="row">
             <div class="col-md-12" style="width: auto !important;">
                 <h1>
-                    @Model.Title
-                    <span><a href="~/Home">Home </a> / @Model.Title</span>
+                    ${article.title}
+                    <span><a href="/realestate/home">Home </a> / ${article.title}</span>
                 </h1>
             </div>
         </div>
@@ -283,26 +283,27 @@
 
                                 <h4>General Features</h4>
                                 <div class="row">
-                                    @foreach (var item in listFeatures)
-                                    {
+                                    <c:forEach items="${features.keySet()}" var="ft">
                                     <div class="col-md-4">
                                         <ul class="general_info">
-                                            <li>@if (item.Value)
-                                                {
-                                                <i class="icon-ok"></i>@item.Key.FeatureName
-                                                }
-                                                else
-                                                {
-                                                <i class="icon-remove"></i>@item.Key.FeatureName
-                                                }
+                                            <li>
+                                                <c:choose>
+                                                    <c:when test="${features.get(ft)}">
+                                                        <i class="icon-ok"></i>${ft}
+                                                    </c:when>
+
+                                                    <c:otherwise>
+                                                        <i class="icon-remove"></i>${ft}
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </li>
                                         </ul>
                                     </div>
-                                    }
+                                    </c:forEach>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                @Html.Raw(Model.Desctiption)
+                                ${article.description}
                             </div>
                         </div>
 
@@ -318,7 +319,7 @@
                                 <div class="map_area">
                                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEUhgpaRslz8IddVuYTz5miCWWTS_caiI" async="" defer="defer" type="text/javascript"></script>
                                     <div class="acf-map">
-                                        <div class="marker" data-lat="@Locations[0]" data-lng="@Locations[1]"></div>
+                                        <div class="marker" data-lat="${coordinate[0]}" data-lng="${coordinate[1]}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -384,11 +385,11 @@
                                 var js, fjs = d.getElementsByTagName(s)[0];
                                 if (d.getElementById(id)) return;
                                 js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.10&appId=113347745999407";
+                                js.src = "https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.12&appId=224991638234719&autoLogAppEvents=1";
                                 fjs.parentNode.insertBefore(js, fjs);
                             }(document, 'script', 'facebook-jssdk'));</script>
                         <div id="fb-root"></div>
-                        <div class="fb-comments" data-href=@cmt data-width="1096" data-numposts="10"></div>
+                        <div class="fb-comments" data-href="https://realestate.com/${article.id}" data-width="1096" data-numposts="10"></div>
                     </div>
                     <!--End Tab3 commnets-->
 

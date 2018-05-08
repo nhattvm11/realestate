@@ -43,13 +43,9 @@ public class RegisterTemp {
     }
 
 
-    @AssertTrue(message = "Confirm password is not correct")
+    @AssertTrue(message = "Confirm password is not match")
     public boolean isPasswordConfirmCorrect() {
-        if(password != null) {
-            if(password.equals(confirmPassword))
-                return passwordConfirmCorrect = true;
-        }
-        return passwordConfirmCorrect = false;
+        return password != null ? password.equals(confirmPassword) : false;
     }
 
     public void setPasswordConfirmCorrect(boolean passwordConfirmCorrect) {
