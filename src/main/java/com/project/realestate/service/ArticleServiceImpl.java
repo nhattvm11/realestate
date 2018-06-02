@@ -321,6 +321,13 @@ public class ArticleServiceImpl implements ArticleService {
         return featuresMap;
     }
 
+    @Override
+    public Page<Article> getCategory(String type, String property, int page, int pageSize) throws TypeException, PropertyTypeException {
+        Type typeByName = typeService.findTypeByName(type);
+        PropertyType propertyType = propertyTypeService.findByName(property);
+        return articleRepository.findArticlesByTypeByTypeIdAndPropertyTypeByPropertyId(typeByName, propertyType, PageRequest.of(page, pageSize));
+    }
+
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);

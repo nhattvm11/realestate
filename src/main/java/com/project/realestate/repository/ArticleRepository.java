@@ -3,6 +3,8 @@ package com.project.realestate.repository;
 import com.project.realestate.entity.Article;
 import com.project.realestate.entity.PropertyType;
 import com.project.realestate.entity.Type;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +16,5 @@ public interface ArticleRepository extends CrudRepository<Article, String>,JpaRe
     List<Article> findTop10ByPriorityAndTypeByTypeId(int priority, Type type);
     List<Article> findTop10ByPriority(int priority);
     List<Article> findTop3ByPriority(int priority);
+    Page<Article> findArticlesByTypeByTypeIdAndPropertyTypeByPropertyId(Type type, PropertyType propertyType, Pageable pageable);
 }

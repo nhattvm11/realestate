@@ -76,18 +76,22 @@
                         <li id="menu-item-1430" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1430">
                             <a href="#">Rent</a>
                             <ul class="sub-menu">
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page">Thue chung cu</li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-apartment">Apartment</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-land">Land</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-house">House</a></li>
                             </ul>
                         </li>
                         <li id="menu-item-1437" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1437">
                             <a href="#">Sale</a>
                             <ul class="sub-menu">
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page">Ban chung cu</li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-apartment">Apartment</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-land">Land</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-house">House</a></li>
                             </ul>
                         </li>
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642">About</li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">About</a></li>
 
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642">Contact</li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">Contact</a></li>
 
                         <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
                             <a href="#">Accout</a>

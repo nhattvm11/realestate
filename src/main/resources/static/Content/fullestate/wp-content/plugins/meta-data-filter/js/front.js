@@ -296,14 +296,50 @@ function mdf_init_search_form(uniqid, slug, search_url, act_without_button, ajax
     }
 
     jQuery(document).ready(function(){
+        function removeURLParameter(url, parameter) {
+            //prefer to use l.search if you have a location/link object
+            var urlparts= url.split('?');
+            if (urlparts.length>=2) {
+
+                var prefix= encodeURIComponent(parameter)+'=';
+                var pars= urlparts[1].split(/[&;]/g);
+
+                //reverse iteration as may be destructive
+                for (var i= pars.length; i-- > 0;) {
+                    //idiom for string.startsWith
+                    if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                        pars.splice(i, 1);
+                    }
+                }
+
+                url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+                return url;
+            } else {
+                return url;
+            }
+        }
+        var cuurentUrl = removeURLParameter(window.location.href, "page");
+        var pageNumbers = jQuery("#page-number"+"s").val();
+        for (var i = 0; i < pageNumbers; i++){
+            if (cuurentUrl.indexOf("?") != -1){
+                jQuery("#page-"+i).attr("href", cuurentUrl+"&page="+i);
+            }else {
+                jQuery("#page-"+i).attr("href", cuurentUrl+"?page="+i);
+            }
+        }
         jQuery("#filter_button").click(function() {
             var url = window.location.href.split("filter")[0];
+            url = url.substring(0, url.length);
             var min_price = jQuery('#min_price').val();
             var max_price = jQuery('#max_price').val();
             var areasize = jQuery('#areasize').val();
             var tier = jQuery('#tier').val();
             if (!isNaN(min_price) && !isNaN(max_price)){
-                url = url + "&filter=price>"+min_price+",price<"+max_price+","+areasize+","+tier;
+                if (url.indexOf("?") != -1){
+                    url = url + "&filter=price>"+min_price+",price<"+max_price+","+areasize+","+tier;
+                }else {
+                    url = url + "?filter=price>"+min_price+",price<"+max_price+","+areasize+","+tier;
+                }
             }else {
                 alert("Let chose the price is a number!");
                 return false;
