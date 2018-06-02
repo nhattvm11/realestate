@@ -12,6 +12,9 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" value="${pageInfo}" id="page-numbers"/>
+
     <div class="content_info">
         <!-- Newsletter Box -->
         <div class="newsletter_box">
@@ -367,13 +370,13 @@
                                     <c:choose>
                                         <c:when test="${currentPage == loop.index}">
                                             <li class="active">
-                                                <a class="not-active" style="pointer-events: none;" href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
+                                                <a id="page-${loop.index}" class="not-active" style="pointer-events: none;" href="">${loop.index}</a>
                                             </li>
                                         </c:when>
 
                                         <c:otherwise>
                                             <li>
-                                                <a href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
+                                                <a id="page-${loop.index}" href="">${loop.index}</a>
                                             </li>
                                         </c:otherwise>
                                     </c:choose>

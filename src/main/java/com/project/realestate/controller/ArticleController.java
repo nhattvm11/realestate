@@ -61,6 +61,12 @@ public class ArticleController {
     @Autowired
     private PictureService pictureService;
 
+    @Autowired
+    private TypeService typeService;
+
+    @Autowired
+    private PropertyTypeService propertyTypeService;
+
     private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\static\\image\\";
 
     @GetMapping("/article/create")
@@ -256,20 +262,34 @@ public class ArticleController {
         return coordinate;
     }
 
+    @GetMapping("/article/{category}")
+    public String category(Model model, @RequestParam(required = false) String filter, @PathVariable("category") String category, @RequestParam(value = "page", defaultValue = "0") int page){
+        category.replace('-', ' ');
+        Page<Article> categories;
+        try {
+            String type = category.substring(0, 4);
+            String property = category.substring(5);
+            if (filter != null){
+                ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
+                Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+                Matcher matcher = pattern.matcher(filter + ',');
+                while (matcher.find()){
+                    builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+                }
+                builder.with("propertyTypeByPropertyId", ":", propertyTypeService.findByName(property));
+                builder.with("typeByTypeId", ":", typeService.findTypeByName(type));
+                Specification<Article> spec = builder.build();
+                categories = articleService.findBySearchTerm(spec, page, 4);
+            }else {
+                categories = articleService.getCategory(type, property, page, 4);
+            }
 
-    @PostMapping("/article/filter")
-    public String filterHandler(Model model, @RequestParam(required=false) String searchTerm,@RequestParam(value = "page", defaultValue = "0") int page){
-        ArticleSpecificationBuilder builder = new ArticleSpecificationBuilder();
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(searchTerm + ',');
-        while (matcher.find()){
-            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+            model.addAttribute("data", articleService.parseListEntityToListModel(categories.getContent(), true));
+            model.addAttribute("pageInfo", categories.getTotalPages());
+            model.addAttribute("currentPage", page);
+        }catch (Exception e){
+            return "redirect:/home";
         }
-        Specification<Article> spec = builder.build();
-        Page<Article> searchResultPage = articleService.findBySearchTerm(spec, page, 4);
-        model.addAttribute("pageInfo", searchResultPage.getTotalPages());
-        model.addAttribute("data", articleService.parseListEntityToListModel(searchResultPage.getContent(), true));
-        model.addAttribute("currentPage", page);
         return "listArticlePage";
     }
 }
