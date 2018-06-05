@@ -15,8 +15,8 @@ public class RealestateApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RealestateApplication.class, args);
-//		PayPalHelper payPalHelper = new PayPalHelper();
-//		payPalHelper.test();
+		PayPalHelper payPalHelper = new PayPalHelper();
+		payPalHelper.test();
 	}
 
 
