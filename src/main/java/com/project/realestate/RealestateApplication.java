@@ -1,5 +1,6 @@
 package com.project.realestate;
 
+import com.project.realestate.helper.PayPalHelper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,6 +15,8 @@ public class RealestateApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RealestateApplication.class, args);
+		PayPalHelper payPalHelper = new PayPalHelper();
+		payPalHelper.test();
 	}
 
 
