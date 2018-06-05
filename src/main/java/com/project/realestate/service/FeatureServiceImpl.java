@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FeatureServiceImpl implements FeatureService {
@@ -15,19 +16,27 @@ public class FeatureServiceImpl implements FeatureService {
     FeatureRepository featureRepository;
 
     @Override
-    public List<Feature> findAll() throws FeatureException {
+    public List<Feature> findAll() {
         List<Feature> features = featureRepository.findAll();
-        if (features.isEmpty())
-            throw new FeatureException("no feature found");
         return features;
     }
 
     @Override
-    public Feature findById(String id) throws FeatureException {
+    public Feature findById(String id) {
         Feature feature = featureRepository.findFeatureById(id);
-        if (feature == null)
-            throw new FeatureException("feature not found");
         return feature;
+    }
+
+    @Override
+    public void save(Feature feature) {
+        feature.setId(UUID.randomUUID().toString());
+        featureRepository.save(feature);
+    }
+
+    @Override
+    public void delete(String id) {
+
+        featureRepository.deleteById(id);
     }
 
 }

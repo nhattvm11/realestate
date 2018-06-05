@@ -6,6 +6,8 @@ import com.project.realestate.exception.FeatureException;
 import java.util.List;
 
 public interface FeatureService {
-    public List<Feature> findAll() throws FeatureException;
-    public Feature findById(String id) throws FeatureException;
+    List<Feature> findAll();
+    Feature findById(String id);
+    void save(Feature feature);
+    void delete(String id);
 }
