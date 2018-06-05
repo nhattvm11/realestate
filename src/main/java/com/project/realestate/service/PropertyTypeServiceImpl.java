@@ -30,4 +30,12 @@ public class PropertyTypeServiceImpl implements PropertyTypeService{
             throw new PropertyTypeException();
         return propertyType;
     }
+
+    @Override
+    public PropertyType findByName(String property) throws PropertyTypeException {
+        PropertyType propertyType = propertyTypeRepository.findPropertyTypeByPropertyName(property);
+        if (propertyType == null)
+            throw new PropertyTypeException("no property found");
+        return propertyType;
+    }
 }

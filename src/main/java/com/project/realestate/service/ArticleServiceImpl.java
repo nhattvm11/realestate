@@ -299,6 +299,35 @@ public class ArticleServiceImpl implements ArticleService {
         return articleTemps;
     }
 
+    @Override
+    public Map<String, Boolean> getMapFeaturesOfArticle(String articleId) throws ArticleException, FeatureException {
+        Article article = articleRepository.findArticleById(articleId);
+        if (article == null)
+            throw new ArticleException("Article not found");
+        List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
+        List<String> featuresOfArticle = new ArrayList<>();
+        for (ArticleFeature at:articleFeatures){
+            featuresOfArticle.add(at.getFeatureByFeatureId().getFeatureName());
+        }
+        List<Feature> features = featureService.findAll();
+        Map<String, Boolean> featuresMap = new HashMap<>();
+        for (Feature ft : features){
+            if (featuresOfArticle.contains(ft.getFeatureName())){
+                featuresMap.put(ft.getFeatureName(), true);
+            }else {
+                featuresMap.put(ft.getFeatureName(), false);
+            }
+        }
+        return featuresMap;
+    }
+
+    @Override
+    public Page<Article> getCategory(String type, String property, int page, int pageSize) throws TypeException, PropertyTypeException {
+        Type typeByName = typeService.findTypeByName(type);
+        PropertyType propertyType = propertyTypeService.findByName(property);
+        return articleRepository.findArticlesByTypeByTypeIdAndPropertyTypeByPropertyId(typeByName, propertyType, PageRequest.of(page, pageSize));
+    }
+
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);
@@ -344,12 +373,11 @@ public class ArticleServiceImpl implements ArticleService {
             for (Picture picture:pictures) {
                 if(picture.getThumbnail()){
                     articleTemp.setThumbnail(picture.getUrl());
-                }else {
-                    PictureTemp pictureTemp = new PictureTemp();
-                    pictureTemp.setId(picture.getId());
-                    pictureTemp.setUrl(picture.getUrl());
-                    pictureTemps.add(pictureTemp);
                 }
+                PictureTemp pictureTemp = new PictureTemp();
+                pictureTemp.setId(picture.getId());
+                pictureTemp.setUrl(picture.getUrl());
+                pictureTemps.add(pictureTemp);
             }
             articleTemp.setPictures(pictureTemps);
         }

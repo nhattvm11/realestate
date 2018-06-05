@@ -9,4 +9,5 @@ public interface PropertyTypeRepository extends JpaRepository<PropertyType, Stri
     @Override
     List<PropertyType> findAll();
     PropertyType findPropertyTypeById(String id);
+    PropertyType findPropertyTypeByPropertyName(String property);
 }

@@ -6,6 +6,7 @@ import com.project.realestate.exception.TypeException;
 import java.util.List;
 
 public interface TypeService {
-    public List<Type> findAll() throws TypeException;
-    public Type findById(String id) throws TypeException;
+    List<Type> findAll() throws TypeException;
+    Type findById(String id) throws TypeException;
+    Type findTypeByName(String type) throws TypeException;
 }

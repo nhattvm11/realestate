@@ -61,7 +61,7 @@
             <!-- Logo-->
             <div class="col-md-3">
                 <div class="logo">
-                    <a style="color: #ffffff; font-style: normal; font-family: arial; font-size: 30px;  top:-5px;" href="~/Home/Index">
+                    <a style="color: #ffffff; font-style: normal; font-family: arial; font-size: 30px;  top:-5px;" href="${pageContext.request.contextPath}/home">
 
                         <img src="/realestate/Content/fullestate/wp-content/uploads/2015/03/logo.png" alt="Logo" class="logo_img" />
 
@@ -74,20 +74,24 @@
                 <div class="menu-main-menu-container">
                     <ul id="menu" class="sf-menu">
                         <li id="menu-item-1430" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1430">
-                            <a href="#">Nhà Đất Cho Thuê</a>
+                            <a href="#">Rent</a>
                             <ul class="sub-menu">
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page">Thue chung cu</li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-apartment">Apartment</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-land">Land</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/rent-house">House</a></li>
                             </ul>
                         </li>
                         <li id="menu-item-1437" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1437">
-                            <a href="#">Nhà Đất Bán</a>
+                            <a href="#">Sale</a>
                             <ul class="sub-menu">
-                                <li class="menu-item menu-item-type-post_type menu-item-object-page">Ban chung cu</li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-apartment">Apartment</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-land">Land</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="${pageContext.request.contextPath}/article/sale-house">House</a></li>
                             </ul>
                         </li>
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642">About</li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">About</a></li>
 
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642">Contact</li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">Contact</a></li>
 
                         <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
                             <a href="#">Accout</a>

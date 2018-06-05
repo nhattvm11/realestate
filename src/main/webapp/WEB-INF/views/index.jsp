@@ -201,59 +201,38 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="mdf_shortcode_container  mdf_shortcode_skin_default">
-                        <form>
+                        <form method="get" id="searchForm" action="/realestate/article/search">
                         <div class="mdf_input_container_block mdf_input_container_block_0">
                             <div class="mdf_input_container">
-                                <select name="type" class="mdf_filter_select">
+                                <select id="typeId" name="type" class="mdf_filter_select">
                                     <c:forEach var = "item" items="${types.keySet()}">
                                         <option value = "typeByTypeId:${item}">${types.get(item)}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="mdf_input_container">
-                                <select name="type" class="mdf_filter_select">
+                                <select id="propertyId" name="property" class="mdf_filter_select">
                                     <c:forEach var = "item" items="${propertyTypes.keySet()}">
                                         <option value = "propertyTypeByPropertyId:${item}">${propertyTypes.get(item)}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="mdf_input_container">
-                                <select id="cityId" name="type" class="mdf_filter_select">
+                                <select id="cityId" name="city" class="mdf_filter_select">
                                     <c:forEach var = "item" items="${cities.keySet()}">
-                                        <option value = "cityByCityId:${item}">${cities.get(item)}</option>
+                                        <option value = "${item}">${cities.get(item)}</option>
                                     </c:forEach>
                                 </select>
                             </div>
 
-                            <script type="text/javascript">
-                                jQuery(document).ready(function () {
-                                    jQuery('#cityId').change(function () {
-                                        jQuery.ajax({
-                                            type: "post",
-                                            url: "/realestate/article/districts",
-                                            data: {cityId: $('#cityId').val()},
-                                            datatype: "json",
-                                            traditional: true,
-                                            success: function (data) {
-                                                var district = "<select id='districtId' name = 'districtId'>";
-                                                for (var i = 0; i < data.length; i++) {
-                                                    district = district + '<option value='+ 'districtByDistrictId:' + data[i].id + '>' + data[i].districtName + '</option>';
-                                                }
-                                                district = district + '</select>';
-                                                jQuery('#District').html(district);
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
 
                             <div class="mdf_input_container" id="District">
-                                <select name="DistrictId" class = "form-control">
+                                <select id='districtId' name="district" class = "form-control">
                                     <option value="">--Select City--</option>
                                 </select>
                             </div>
                             <div class="mdf_input_container">
-                                <select name="type" class="mdf_filter_select">
+                                <select id="directionId" name="direction" class="mdf_filter_select">
                                     <c:forEach var = "item" items="${directions.keySet()}">
                                         <option value = "directionByDirectionId:${item}">${directions.get(item)}</option>
                                     </c:forEach>
@@ -261,7 +240,7 @@
                             </div>
 
                             <div class="mdf_input_container" style="margin-top: 15px">
-                                <select name="Area" class="mdf_filter_select">
+                                <select id="areasize" name="area" class="mdf_filter_select">
                                     <option value="">All Areasize</option>
                                     <option value="areasize>30,areasize<50">30-50 m2</option>
                                     <option value="areasize>50,areasize<80">50-80m2</option>
@@ -276,7 +255,7 @@
                             </div>
 
                             <div class="mdf_input_container" style="margin-top: 15px">
-                                <select name="Price" class="mdf_filter_select">
+                                <select id="price" name="price" class="mdf_filter_select">
                                     <option value="">All Price</option>
                                     <option value="price<500">Below 500 mil</option>
                                     <option value="price>500,price<800">500 - 800 mil</option>
@@ -292,7 +271,7 @@
                             </div>
 
                             <div class="mdf_input_container" style="margin-top: 15px">
-                                <select name="Tier" class="mdf_filter_select">
+                                <select id="tier" name="tier" class="mdf_filter_select">
                                     <option value="">All Tiers</option>
                                     <option value="tier:1">1 floor</option>
                                     <option value="tier:2">2 floors</option>
@@ -309,7 +288,7 @@
                             </div>
 
                             <div class="mdf_input_container" style="margin-top: 15px">
-                                <select name="Bedroom" class="mdf_filter_select">
+                                <select id="bedroom" name="bedroom" class="mdf_filter_select">
                                     <option value="">All Rooms</option>
                                     <option value="tier:1">1 Room</option>
                                     <option value="tier:2">2 Rooms</option>
@@ -320,7 +299,7 @@
                             </div>
 
                             <div class="mdf_input_container" style="margin-top: 15px">
-                                <select name="Bathroom" class="mdf_filter_select">
+                                <select id="bathroom" name="bathroom" class="mdf_filter_select">
                                     <option value="">All Bathrooms</option>
                                     <option value="tier:1">1 Bathroom</option>
                                     <option value="tier:2">2 Bathrooms</option>
@@ -332,7 +311,7 @@
                         </div>
 
                         <div class="mdf_shortcode_submit_button">
-                            <input type="submit" class="button mdf_button" name="" value="Search">
+                            <input type="submit" id="btn_search" class="button mdf_button" name="" value="Search">
                         </div>
 
                         <div class="mdf_one_moment_txt" style="display: none;">
@@ -349,6 +328,43 @@
                         <script type="text/javascript">
                             jQuery(function () {
                                 mdf_init_search_form("598c636822dc1", "property", "/fullestate/result-horizontal-filter?", 0, 0);
+                            });
+                        </script>
+                        <script type="text/javascript">
+                            jQuery(document).ready(function () {
+                                jQuery('#cityId').change(function () {
+                                    jQuery.ajax({
+                                        type: "post",
+                                        url: "/realestate/article/districts",
+                                        data: {cityId: jQuery('#cityId').val()},
+                                        datatype: "json",
+                                        traditional: true,
+                                        success: function (data) {
+                                            var district = "<select id='districtId' name = 'districtId'>";
+                                            for (var i = 0; i < data.length; i++) {
+                                                district = district + '<option value='+ 'districtByDistrictId:' + data[i].id + '>' + data[i].districtName + '</option>';
+                                            }
+                                            district = district + '</select>';
+                                            jQuery('#District').html(district);
+                                        }
+                                    });
+                                });
+
+//                                jQuery('#searchForm').submit(function (e) {
+//                                    var criteria = 'cityByCityId:'+jQuery('#cityId').val()+ ',' + jQuery('#typeId').val()+','
+//                                        + jQuery('#propertyId').val()+','
+//                                        + jQuery('#districtId').val()+','
+//                                        + jQuery('#directionId').val()+','
+//                                        + jQuery('#areasize').val()+','
+//                                        + jQuery('#price').val()+','
+//                                        + jQuery('#bedroom').val()+','
+//                                        + jQuery('#bathroom').val()+','
+//                                        + jQuery('#tier').val();
+//
+//                                    jQuery('#searchForm').action = '/realestate/article/search?searchTerm='+criteria;
+//                                    e.preventDefault();
+//                                });
+
                             });
                         </script>
 
@@ -386,7 +402,7 @@
                         <div style="display: none" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="rent">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${rent.id}">
                                     <img src="${pageContext.request.contextPath}${rent.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                     <h5><c:out value="${rent.cityId}"/></h5>
                                     </a>
@@ -407,7 +423,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="sale">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${sale.id}">
                                         <img src="${pageContext.request.contextPath}${sale.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                         <h5>${sale.cityId}</h5>
                                     </a>
@@ -428,7 +444,7 @@
                         <div style="display: none" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 order" data-price="56000" data-date="20140904" data-type="offer">
                             <div class="item_property">
                                 <div class="head_property">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/article/detail/${nor.id}">
                                         <img src="${pageContext.request.contextPath}${nor.thumbnail}" alt="Image" style="width: 262px; height: 169px">
                                         <h5>${nor.cityId}</h5>
                                     </a>
