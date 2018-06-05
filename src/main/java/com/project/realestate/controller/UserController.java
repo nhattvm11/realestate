@@ -51,10 +51,10 @@ public class UserController {
     }
 
     @PostMapping("/users/edit")
-    public String editProfile(@Valid @ModelAttribute("user") UserUpdate user, BindingResult result) {
+    public String editProfile(@Valid @ModelAttribute("user") UserUpdate user,BindingResult result) {
         if(result.hasErrors())
             return "/user/" + user.getId() + "/edit";
         userService.updateUser(user);
-        return "/users/" + user.getId();
+        return "redirect:/users/" + user.getId();
     }
 }

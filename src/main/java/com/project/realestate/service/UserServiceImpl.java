@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUSerByEmail(String email) throws UserNotFoundException {
-        User user = usersRepository.findUsersByUsername(email);
+        User user = usersRepository.findUserByUsername(email);
         if(user == null) {
             throw new UserNotFoundException("User not found");
         }
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateFirstToken(User updateUser) throws UserNotFoundException {
-        User user = usersRepository.findUsersByUsername(updateUser.getUsername());
+        User user = usersRepository.findUserByUsername(updateUser.getUsername());
         if(user == null ) {
             throw new UserNotFoundException("User not found");
         }
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) throws UsernameExistException {
-        User userCheck = usersRepository.findUsersByUsername(user.getUsername());
+        User userCheck = usersRepository.findUserByUsername(user.getUsername());
         if(userCheck != null)
             throw new UsernameExistException("Username is exist");
         createUser(user);
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User updateUser) {
-        User user = usersRepository.findUsersByUsername(updateUser.getUsername());
+        User user = usersRepository.findUserByUsername(updateUser.getUsername());
         updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         if(user == null)
             throw new UsernameNotFoundException("Username does not exist");
@@ -125,11 +125,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserUpdate userUpdate) {
         User user = usersRepository.findUserById(userUpdate.getId());
-        user.setUsername(userUpdate.getUsername());
-        usersRepository.save(user);
-        Contact contact = contactService.findById(userUpdate.getIdContact());
+//        user.setUsername(userUpdate.getUsername());
+//        usersRepository.save(user);
+        Contact contact = contactService.getContactByUserByUserId(user);
         contact.setPhone(userUpdate.getPhone());
-        contact.setEmail(userUpdate.getEmail());
+//        contact.setEmail(userUpdate.getEmail());
         contact.setAddress(userUpdate.getAddress());
         contactService.saveContact(contact);
     }

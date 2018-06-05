@@ -28,7 +28,7 @@
                         <a><i class="fa fa-newspaper-o"></i>Article Manager <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="${pageContext.request.contextPath}/article/list">List Articles</a></li>
-                            <li><a href="">Create Article</a></li>
+                            <li><a href="${pageContext.request.contextPath}/article/create">Create Article</a></li>
                         </ul>
                     </li>
                     <li>

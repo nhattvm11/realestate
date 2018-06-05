@@ -7,23 +7,26 @@ import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ArticleService {
-    public void SaveArticle(Article article) throws ArticleException;
-    public Article findById(String id) throws ArticleException;
-    public void convertDistrictEntityToDistrictTemp(List<District> districts, List<DistrictTemp> districtTemps);
-    public void parseArticleTempToEntity(Article article, ArticleTemp articleTemp) throws Exception;
-    public Map<String, String> initCityModel() throws CityException;
-    public Map<String, String> initTypeModel() throws TypeException;
-    public Map<String, String> initPropertyTypeModel() throws PropertyTypeException;
-    public Map<String, String> initFeatureModel() throws FeatureException;
-    public Map<String, String> initDirectionModel() throws DirectionException;
+    void SaveArticle(Article article) throws ArticleException;
+    Article findById(String id) throws ArticleException;
+    void convertDistrictEntityToDistrictTemp(List<District> districts, List<DistrictTemp> districtTemps);
+    void parseArticleTempToEntity(Article article, ArticleTemp articleTemp) throws Exception;
+    Map<String, String> initCityModel() throws CityException;
+    Map<String, String> initTypeModel() throws TypeException;
+    Map<String, String> initPropertyTypeModel() throws PropertyTypeException;
+    Map<String, String> initFeatureModel() throws FeatureException;
+    Map<String, String> initDirectionModel() throws DirectionException;
 
-    ArticleTemp convertArticleEntityToModel(String id);
+    ArticleTemp convertArticleEntityToModel(String id, boolean info);
+    void setModel(ModelAndView model) throws Exception;
 
     void updateArticle(String id, ArticleTemp articleTemp) throws Exception;
 
@@ -31,5 +34,10 @@ public interface ArticleService {
 
     void initArticleError(ArticleError articleError, BindingResult result);
     Page<Article> findAllPagination(int page, int pagesize);
-    Page<Article> findBySearchTerm(String searchTerm, int page);
+    Page<Article> findBySearchTerm(Specification specification, int page, int size);
+    List<Article> getTop10Article(int priority, String typeId) throws TypeException;
+    List<Article> getTop10ArticleByPriority(int priority);
+    List<Article> getSlider(int priority);
+
+    List<ArticleTemp> parseListEntityToListModel(List<Article> articles, boolean info);
 }

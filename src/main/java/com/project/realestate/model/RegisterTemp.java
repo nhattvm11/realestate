@@ -10,11 +10,13 @@ public class RegisterTemp {
     @Email(message = "Email invalid")
     private String username;
     @NotEmpty
-    @Length(min = 8, max = 11, message = "Password of minimum length 8 characters")
+    @Length(min = 8, max = 11, message = "Password of minimum length 8 characters and maximum length is 11 characters")
     private String password;
     @NotEmpty
-    @Length(min = 8, max = 11, message = "Confirm Password of minimum length 8 characters")
+    @Length(min = 8, max = 11, message = "Confirm Password of minimum length 8 characters and maximum length is 11 characters")
     private String confirmPassword;
+
+    private boolean passwordConfirmCorrect;
 
     public String getUsername() {
         return username;
@@ -40,4 +42,17 @@ public class RegisterTemp {
         this.confirmPassword = confirmPassword;
     }
 
+
+    @AssertTrue(message = "Confirm password is not correct")
+    public boolean isPasswordConfirmCorrect() {
+        if(password != null) {
+            if(password.equals(confirmPassword))
+                return passwordConfirmCorrect = true;
+        }
+        return passwordConfirmCorrect = false;
+    }
+
+    public void setPasswordConfirmCorrect(boolean passwordConfirmCorrect) {
+        this.passwordConfirmCorrect = passwordConfirmCorrect;
+    }
 }

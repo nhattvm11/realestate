@@ -42,14 +42,14 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendMailConfirmation(User user) {
         String token = jwtTokenService.getToken(user);
-        String link = "http://localhost:8080/realestate/api/v1/public/confirm?token=" + token;
+        String link = "http://localhost:8080/realestate/confirm?token=" + token;
         sendSimpleMessage(user.getUsername(),"Register Confirmation", link);
     }
 
     @Override
     public void sendMailResetPassword(User user) {
         String token = jwtTokenService.getToken(user);
-        String link = "http://localhost:8080/realestate/api/v1/public/reset?token=" + token;
+        String link = "http://localhost:8080/realestate/reset?token=" + token;
         sendSimpleMessage(user.getUsername(),"Reset Password Confirmation", link);
     }
 }

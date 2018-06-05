@@ -3,17 +3,17 @@ package com.project.realestate.service;
 import com.project.realestate.Specification.ArticleSpecification;
 import com.project.realestate.entity.*;
 import com.project.realestate.exception.*;
-import com.project.realestate.model.ArticleError;
-import com.project.realestate.model.ArticleTemp;
-import com.project.realestate.model.DistrictTemp;
+import com.project.realestate.model.*;
 import com.project.realestate.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 
@@ -174,12 +174,21 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleTemp convertArticleEntityToModel(String id) {
+    public ArticleTemp convertArticleEntityToModel(String id, boolean info) {
         Article article = articleRepository.findArticleById(id);
         ArticleTemp articleTemp = new ArticleTemp();
 
-        parseArticleEntityToModel(article, articleTemp);
+        parseArticleEntityToModel(article, articleTemp, info);
         return articleTemp;
+    }
+
+    @Override
+    public void setModel(ModelAndView model) throws Exception {
+        model.addObject("cities", initCityModel());
+        model.addObject("types", initTypeModel());
+        model.addObject("propertyTypes", initPropertyTypeModel());
+        model.addObject("features", initFeatureModel());
+        model.addObject("directions", initDirectionModel());
     }
 
     @Override
@@ -227,7 +236,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleError.setLivingroom(result.getFieldError("livingroom").getDefaultMessage());
         }
         if (result.getFieldError("tier") != null){
-            articleError.setTier(result.getFieldError("livingroom").getDefaultMessage());
+            articleError.setTier(result.getFieldError("tier").getDefaultMessage());
         }
         if (result.getFieldError("price") != null){
             articleError.setPrice(result.getFieldError("price").getDefaultMessage());
@@ -258,12 +267,39 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> findBySearchTerm(String searchTerm, int page) {
-        Page<Article> searchResultPage = articleRepository.findAll(ArticleSpecification.titleOrDescriptionContainsIgnoreCase(searchTerm), PageRequest.of(page, 4));
+    public Page<Article> findBySearchTerm(Specification specification, int page, int size) {
+        Page<Article> searchResultPage = articleRepository.findAll(specification, PageRequest.of(page, size));
         return searchResultPage;
     }
 
-    private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp) {
+    @Override
+    public List<Article> getTop10Article(int priority, String typeId) throws TypeException {
+        Type type = typeService.findById(typeId);
+        return articleRepository.findTop10ByPriorityAndTypeByTypeId(priority, type);
+    }
+
+    @Override
+    public List<Article> getTop10ArticleByPriority(int priority) {
+        return articleRepository.findTop10ByPriority(priority);
+    }
+
+    @Override
+    public List<Article> getSlider(int priority) {
+        return articleRepository.findTop3ByPriority(priority);
+    }
+
+    @Override
+    public List<ArticleTemp> parseListEntityToListModel(List<Article> articles, boolean info) {
+        List<ArticleTemp> articleTemps = new ArrayList<>();
+        for (Article article:articles) {
+            ArticleTemp articleTemp = new ArticleTemp();
+            parseArticleEntityToModel(article, articleTemp, info);
+            articleTemps.add(articleTemp);
+        }
+        return articleTemps;
+    }
+
+    private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);
         articleTemp.setAddress(article.getAddress());
@@ -278,11 +314,19 @@ public class ArticleServiceImpl implements ArticleService {
         articleTemp.setPriority(0);
         articleTemp.setView(0);
 
-        articleTemp.setCityId(article.getCityByCityId().getId());
-        articleTemp.setDistrictId(article.getDistrictByDistrictId().getId());
-        articleTemp.setTypeId(article.getTypeByTypeId().getId());
-        articleTemp.setPropertyId(article.getPropertyTypeByPropertyId().getId());
-        articleTemp.setDirectionId(article.getDirectionByDirectionId().getId());
+        if (info){
+            articleTemp.setCityId(article.getCityByCityId().getCityName());
+            articleTemp.setDistrictId(article.getDistrictByDistrictId().getDistrictName());
+            articleTemp.setTypeId(article.getTypeByTypeId().getTypeName());
+            articleTemp.setPropertyId(article.getPropertyTypeByPropertyId().getPropertyName());
+            articleTemp.setDirectionId(article.getDirectionByDirectionId().getDirectionName());
+        }else{
+            articleTemp.setCityId(article.getCityByCityId().getId());
+            articleTemp.setDistrictId(article.getDistrictByDistrictId().getId());
+            articleTemp.setTypeId(article.getTypeByTypeId().getId());
+            articleTemp.setPropertyId(article.getPropertyTypeByPropertyId().getId());
+            articleTemp.setDirectionId(article.getDirectionByDirectionId().getId());
+        }
 
         List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
         List<String> features = new ArrayList<>();
@@ -292,5 +336,22 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         articleTemp.setFeatures(features);
+
+        if (!article.getPicturesById().isEmpty()){
+            List<Picture> pictures = new ArrayList<>(article.getPicturesById());
+            List<PictureTemp> pictureTemps = new ArrayList<>();
+
+            for (Picture picture:pictures) {
+                if(picture.getThumbnail()){
+                    articleTemp.setThumbnail(picture.getUrl());
+                }else {
+                    PictureTemp pictureTemp = new PictureTemp();
+                    pictureTemp.setId(picture.getId());
+                    pictureTemp.setUrl(picture.getUrl());
+                    pictureTemps.add(pictureTemp);
+                }
+            }
+            articleTemp.setPictures(pictureTemps);
+        }
     }
 }

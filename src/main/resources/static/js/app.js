@@ -1,5 +1,126 @@
 $(document).ready(function() {
 
+    $('#cityId').change(function () {
+        $.ajax({
+            type: "post",
+            url: "/realestate/article/districts",
+            data: {cityId: $('#cityId').val()},
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var district = "<select id='districtId' name = 'districtId'>";
+                for (var i = 0; i < data.length; i++) {
+                    district = district + '<option value=' + data[i].id + '>' + data[i].districtName + '</option>';
+                }
+                district = district + '</select>';
+                $('#District').html(district);
+            }
+        });
+    });
+
+    CKEDITOR.replace("description");
+    $('#update-button').on("click", function(e) {
+        var ArticleId = $('#articleId').val();
+        var url = "/realestate/article/update/"+ArticleId;
+        for (instance in CKEDITOR.instances) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#formUpdate").serialize(),
+            success: function(data)
+            {
+                myDropzone.options.url = "/realestate/article/uploadImage/"+data;
+                myDropzone.processQueue();
+
+                document.getElementById("address-error").innerHTML = ''   ;
+                document.getElementById("title-error").innerHTML = "";
+                document.getElementById("areasize-error").innerHTML = "";
+                document.getElementById("bedroom-error").innerHTML = "";
+                document.getElementById("bathroom-error").innerHTML = "";
+                document.getElementById("livingroom-error").innerHTML = "";
+                document.getElementById("tier-error").innerHTML = "";
+                document.getElementById("price-error").innerHTML = "";
+                document.getElementById("description-error").innerHTML = "";
+                document.getElementById("typeId-error").innerHTML = "";
+                document.getElementById("property-error").innerHTML = "";
+                document.getElementById("districtId-error").innerHTML = "";
+                document.getElementById("directionId-error").innerHTML = "";
+            },
+            error: function (data) {
+                var response = data.responseJSON;
+                document.getElementById("address-error").innerHTML = response.address   ;
+                document.getElementById("title-error").innerHTML = response.title;
+                document.getElementById("areasize-error").innerHTML = response.areasize;
+                document.getElementById("bedroom-error").innerHTML = response.bedroom;
+                document.getElementById("bathroom-error").innerHTML = response.bathroom;
+                document.getElementById("livingroom-error").innerHTML = response.livingroom;
+                document.getElementById("tier-error").innerHTML = response.tier;
+                document.getElementById("price-error").innerHTML = response.price;
+                document.getElementById("description-error").innerHTML = response.description;
+                document.getElementById("typeId-error").innerHTML = response.typeId;
+                document.getElementById("property-error").innerHTML = response.propertyId;
+                document.getElementById("districtId-error").innerHTML = response.districtId;
+                document.getElementById("directionId-error").innerHTML = response.directionId;
+
+
+            },
+        });
+
+        e.preventDefault();
+    });
+
+    $('#upload-button').on("click", function(e) {
+        var url = "/realestate/article/create";
+        for (instance in CKEDITOR.instances) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#formArticle").serialize(),
+            success: function(data)
+            {
+                myDropzone.options.url = "/realestate/article/uploadImage/"+data;
+                myDropzone.processQueue();
+                window.location.replace("/realestate/article/list");
+            },
+            error: function (data) {
+                var response = data.responseJSON;
+                document.getElementById("address-error").innerHTML = response.address;
+                document.getElementById("title-error").innerHTML = response.title;
+                document.getElementById("areasize-error").innerHTML = response.areasize;
+                document.getElementById("bedroom-error").innerHTML = response.bedroom;
+                document.getElementById("bathroom-error").innerHTML = response.bathroom;
+                document.getElementById("livingroom-error").innerHTML = response.livingroom;
+                document.getElementById("tier-error").innerHTML = response.tier;
+                document.getElementById("price-error").innerHTML = response.price;
+                document.getElementById("description-error").innerHTML = response.description;
+                document.getElementById("typeId-error").innerHTML = response.typeId;
+                document.getElementById("property-error").innerHTML = response.propertyId;
+                document.getElementById("districtId-error").innerHTML = response.districtId;
+                document.getElementById("directionId-error").innerHTML = response.directionId;
+
+
+            },
+        });
+
+        e.preventDefault();
+    });
+
+    $(".removepicture").click(function () {
+        var del = $(this);
+        if (confirm("Are you sure to remove this picture?")) {
+            $.post("/articles/removePicture", { id: del.attr("pid") })
+                .done(function (response) {
+                    if (response == "Deleted") {
+                        del.parent().remove();
+                    }
+                });
+        }
+    });
+
 	$(".file-dropzone").on('dragover', handleDragEnter);
 	$(".file-dropzone").on('dragleave', handleDragLeave);
 	$(".file-dropzone").on('drop', handleDragLeave);
@@ -21,27 +142,9 @@ $(document).ready(function() {
 
 	var myDropzone = Dropzone.forElement(".dropzone");
 
-    $('#upload-button').on("click", function(e) {
-        var url = "/realestate/article/create";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: $("#formCreate").serialize(),
-            success: function(data)
-            {
-                myDropzone.options.url = "/realestate/article/uploadImage/"+data;
-                myDropzone.processQueue();
-            },
-            error: function (data) {
-                console.log( "===this is data error: ===="+ data.responseJSON);
-                console.log( "===this is address address: ===="+ data.responseJSON.address);
-                var response = data.responseJSON;
-                document.getElementById("ajajak").innerHTML = response.address;
-            },
-        });
 
-        e.preventDefault();
-    });
+
+
 
     myDropzone.on("uploadprogress", function(file, progress) {
 
@@ -54,6 +157,7 @@ $(document).ready(function() {
     myDropzone.on("successmultiple", function(files, serverResponse) {
         showInformationDialog(files, serverResponse);
     });
+
 
 	// "dropzoneForm" is the camel-case version of the form id "dropzone-form"
 	// Dropzone.options.dropzoneForm = {

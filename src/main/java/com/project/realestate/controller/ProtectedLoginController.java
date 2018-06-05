@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@RequestMapping("/api/v1/protected")
 public class ProtectedLoginController {
 
     private static final String TOKEN = "token";
@@ -45,7 +44,6 @@ public class ProtectedLoginController {
         Cookie cookie = new Cookie(TOKEN, token);
         response.addCookie(cookie);
         User user =  userService.getUSerByEmail(username);
-        response.addHeader("Authorization", "Bearer " + token);
         return "redirect:/users/"+user.getId();
     }
 }
