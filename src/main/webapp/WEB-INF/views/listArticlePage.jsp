@@ -12,6 +12,9 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" value="${pageInfo}" id="page-numbers"/>
+
     <div class="content_info">
         <!-- Newsletter Box -->
         <div class="newsletter_box">
@@ -166,7 +169,7 @@
             </div>
         </div>
         <!-- End Newsletter Box -->
-
+        <input type="hidden" value="${searchTerm}" id="searchTerm"/>
         <div class="container">
             <div class="row paddings">
 
@@ -177,9 +180,9 @@
                             <div class="widget widget-meta-data-filter">
                                 <h3>Meta Data Filter</h3>
 
-                                <form method="post" action="FilterArticle" id="meta_data_filter_598ec9cf17607" data-search-url="/fullestate/properties-result-page?" data-unique-id="598ec9cf17607" data-slug="property" data-sidebar-name="Filter" data-sidebar-id="filter" data-widget-id="metadatafilter_search-4" class="mdf_widget_form mdf_ajax_auto_recount">
+                                <%--<form method="get">--%>
                                     <div class="mdf_one_moment_txt">
-                                        <span><img src="/Content/fullestate/wp-content/plugins/meta-data-filter/images/tax_loader.gif" alt="loader" /></span>
+                                        <span><img src="/realestate/Content/fullestate/wp-content/plugins/meta-data-filter/images/tax_loader.gif" alt="loader" /></span>
                                     </div>
                                     <h6>Wordpress Meta Data and Taxonomies Filter</h6>
 
@@ -195,9 +198,9 @@
                                                 <td>
                                                     <div class="mdf_input_container">
                                                         <h5 class="data-filter-section-title" style="margin-bottom: 4px;" for="598ec9cf189d3">Price:&nbsp;<span class="mdf_range">
-                                                                <input type="text" name="start"value="0" class="mdf_range_min" data-slider-id="ui_slider_item_598ec9cf189d3" />
+                                                                <input type="text" id="min_price" value="0" class="mdf_range_min" data-slider-id="ui_slider_item_598ec9cf189d3" />
                                                                 -
-                                                                <input type="text" name="end"value="1000000" class="mdf_range_max" data-slider-id="ui_slider_item_598ec9cf189d3" />
+                                                                <input type="text" id="max_price" value="1000000" class="mdf_range_max" data-slider-id="ui_slider_item_598ec9cf189d3" />
                                                                     </span> &nbsp;(0)&nbsp;
                                                         </h5>
                                                         <div class="ui_slider_item ui_slider_item_598ec9cf17607" id="ui_slider_item_598ec9cf189d3"></div>
@@ -212,16 +215,17 @@
                                                 <td>
                                                     <div class="mdf_input_container">
                                                         <h5 class="data-filter-section-title" style="margin-bottom: 4px;" for="medafi_5407ba3d0ee02">Area:&nbsp;                                        </h5>
-                                                        <select size="1" name="Area" id="medafi_5407ba3d0ee02" class="mdf_filter_select">
-                                                            <option value="">View All</option>
-                                                            <option value="0-60">0 - 60 m² (0)</option>
-                                                            <option value="60-90">60 m² - 90 m² (0)</option>
-                                                            <option value="90-150">90 m² - 150 m² (0)</option>
-                                                            <option value="150-240">150 m² - 240 m² (0)</option>
-                                                            <option value="240-360">240 m² - 360 m² (0)</option>
-                                                            <option value="360-480">360 m² - 480 m² (0)</option>
-                                                            <option value="480-600">480 m² - 600 m² (0)</option>
-                                                            <option value="600">More 600 m² (0)</option>
+                                                        <select id="areasize" name="area" class="mdf_filter_select">
+                                                            <option value="">All Areasize</option>
+                                                            <option value="areasize>30,areasize<50">30-50 m2</option>
+                                                            <option value="areasize>50,areasize<80">50-80m2</option>
+                                                            <option value="areasize>80,areasize<100">80-100 m2</option>
+                                                            <option value="areasize>100,areasize<150">100-150 m2</option>
+                                                            <option value="areasize>150,areasize<200">150-200 m2</option>
+                                                            <option value="areasize>200,areasize<250">200-250 m2</option>
+                                                            <option value="areasize>250,areasize<300">250-300 m2</option>
+                                                            <option value="areasize>300,areasize<500">300-500 m2</option>
+                                                            <option value="areasize>500">>= 500 m2</option>
                                                         </select>
                                                     </div>
                                                 </td>
@@ -232,15 +236,20 @@
 
                                                 <td>
                                                     <div class="mdf_input_container">
-                                                        <h5 class="data-filter-section-title" style="margin-bottom: 4px;" for="medafi_5407baa865119">Number of Rooms:&nbsp;                                        </h5>
-                                                        <select size="1" name="Room" id="medafi_5407baa865119" class="mdf_filter_select">
-                                                            <option value="">View All</option>
-                                                            <option value="1-3">1-3 (0)</option>
-                                                            <option value="3-5">3-5 (0)</option>
-                                                            <option  value="5-7">5-7 (0)</option>
-                                                            <option  value="7-10">7-10 (0)</option>
-                                                            <option  value="10-15">10-15 (0)</option>
-                                                            <option  value="15-20">15-20 (0)</option>
+                                                        <h5 class="data-filter-section-title" style="margin-bottom: 4px;" for="medafi_5407baa865119">Number of Tiers:&nbsp;                                        </h5>
+                                                        <select id="tier" name="tier" class="mdf_filter_select">
+                                                            <option value="">All Tiers</option>
+                                                            <option value="tier:1">1 floor</option>
+                                                            <option value="tier:2">2 floors</option>
+                                                            <option value="tier:3">3 floors</option>
+                                                            <option value="tier:4">4 floors</option>
+                                                            <option value="tier:5">5 floors</option>
+                                                            <option value="tier:6">6 floors</option>
+                                                            <option value="tier:7">7 floors</option>
+                                                            <option value="tier:8">8 floors</option>
+                                                            <option value="tier:9">9 floors</option>
+                                                            <option value="tier:10">10 floors</option>
+                                                            <option value="tier:11">Over 10 floors</option>
                                                         </select>
                                                     </div>
                                                 </td>
@@ -267,12 +276,12 @@
                                     <input type="hidden" value="23" name="meta_data_filter_cat" />
 
                                     <div style="float: left;">
-                                        <input type="submit" class="button mdf_button" name="" value="Filter" />
+                                        <input type="submit" id="filter_button" class="button mdf_button" name="" value="Filter" />
                                     </div>
 
                                     <div style="clear: both;"></div>
 
-                                </form>
+                                <%--</form>--%>
                                 <br />
 
                                 <script type="text/javascript">
@@ -357,17 +366,17 @@
 
                         <div class="pagination-container">
                             <ul class="pagination">
-                                <c:forEach begin="0" end="${pageInfo.totalPages-1}" varStatus="loop">
+                                <c:forEach begin="0" end="${pageInfo-1}" varStatus="loop">
                                     <c:choose>
                                         <c:when test="${currentPage == loop.index}">
                                             <li class="active">
-                                                <a class="not-active" style="pointer-events: none;" href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
+                                                <a id="page-${loop.index}" class="not-active" style="pointer-events: none;" href="">${loop.index}</a>
                                             </li>
                                         </c:when>
 
                                         <c:otherwise>
                                             <li>
-                                                <a href="${pageContext.request.contextPath}/article/list/?page=${loop.index}">${loop.index}</a>
+                                                <a id="page-${loop.index}" href="">${loop.index}</a>
                                             </li>
                                         </c:otherwise>
                                     </c:choose>

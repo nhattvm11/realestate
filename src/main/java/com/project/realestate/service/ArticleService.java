@@ -40,4 +40,6 @@ public interface ArticleService {
     List<Article> getSlider(int priority);
 
     List<ArticleTemp> parseListEntityToListModel(List<Article> articles, boolean info);
+    Map<String, Boolean> getMapFeaturesOfArticle(String articleId) throws ArticleException, FeatureException;
+    Page<Article> getCategory(String type, String property, int page, int pageSize) throws TypeException, PropertyTypeException;
 }

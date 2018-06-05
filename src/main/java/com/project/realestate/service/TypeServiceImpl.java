@@ -30,4 +30,12 @@ public class TypeServiceImpl implements TypeService {
             throw new TypeException();
         return type;
     }
+
+    @Override
+    public Type findTypeByName(String type) throws TypeException {
+        Type typeByName = typeRepository.findTypeByTypeName(type);
+        if (typeByName == null)
+            throw new TypeException("no type found");
+        return typeByName;
+    }
 }

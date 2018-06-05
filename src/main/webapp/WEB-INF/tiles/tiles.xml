@@ -34,4 +34,8 @@
         <put-attribute name="body" value="/WEB-INF/views/listArticlePage.jsp" />
     </definition>
 
+    <definition name="articleDetail" extends="pageLayout">
+        <put-attribute name="body" value="/WEB-INF/views/articleDetail.jsp" />
+    </definition>
+
 </tiles-definitions>
