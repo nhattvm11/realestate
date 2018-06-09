@@ -17,6 +17,7 @@ public class ArticleError {
     private String cityId;
     private String districtId;
     private String directionId;
+    private String thumbnail;
 
     public String getAddress() {
         return address;
@@ -128,5 +129,13 @@ public class ArticleError {
 
     public void setDirectionId(String directionId) {
         this.directionId = directionId;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

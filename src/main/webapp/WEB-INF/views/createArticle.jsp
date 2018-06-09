@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form id="formArticle" method="post"  modelAttribute="article" action="/realestate/article/create">
+<form:form id="formArticle" method="post" modelAttribute="article" action="/realestate/article/create" enctype="multipart/form-data">
 
     <div class="form-horizontal">
         <h4>Article</h4>
@@ -193,6 +193,13 @@
             <label class="control-label col-md-2">Features</label>
             <div class="col-md-10">
                 <form:checkboxes element="li" path="features" items="${features}"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Thumbnail</label>
+            <div class="col-md-10">
+                <input class="file" type="file" name="file" id="thumbnail-image">
             </div>
         </div>
 
