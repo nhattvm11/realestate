@@ -1,5 +1,44 @@
 $(document).ready(function() {
 
+    var my_delay = 2000;
+    $(function () {
+        callAjax();
+    });
+    function callAjax() {
+        $.ajax({
+            type: "post",
+            url: "/realestate/article/confirmArts",
+            data: {},
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var confirmA = "";
+                if (data.length <= 10){
+                    for (var i = 0; i < data.length; i++) {
+                        confirmA = confirmA + "<li><a class = 'confirm' aid = "+ data[i].id + "><span>" + "<span class='time'>3 mins ago</span></span><span class='message'>" + data[i].title + "</span></a ></li >";
+                    }
+                }else {
+                    for (var i = 0; i < 10; i++) {
+                        confirmA = confirmA + "<li><a class = 'confirm' aid = "+ data[i].id + "><span>" + "<span class='time'>3 mins ago</span></span><span class='message'>" + data[i].title + "</span></a ></li >";
+                    }
+                }
+                confirmA += "<li><div class='text-center'><a href='/realestate/article/activeArticles'><strong>See All Alerts</strong><i class='fa fa-angle-right'></i></a></div></li>"
+                $('#menu1').html(confirmA);
+                $('.count').html(data.length + "");
+                $(".confirm").click(function () {
+                    var del = $(this);
+                    if (confirm("Bạn có muốn chấp nhận tin đăng này?")) {
+                        $.post("/realestate/article/activeArticle", { id: del.attr("aid") })
+                            .done(function () {
+                                    del.parent().remove();
+                            });
+                    }
+                });
+                setTimeout(callAjax, my_delay);
+            }
+        });
+    }
+
     $('#cityId').change(function () {
         $.ajax({
             type: "post",
@@ -8,7 +47,7 @@ $(document).ready(function() {
             datatype: "json",
             traditional: true,
             success: function (data) {
-                var district = "<select id='districtId' name = 'districtId'>";
+                var district = "<select id='districtId' class = 'form-control' name = 'districtId'>";
                 for (var i = 0; i < data.length; i++) {
                     district = district + '<option value=' + data[i].id + '>' + data[i].districtName + '</option>';
                 }
@@ -28,7 +67,10 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: url,
-            data: $("#formUpdate").serialize(),
+            processData: false,
+            contentType: false,
+            data: new FormData($("#formUpdate")[0]),
+            processData: false,
             success: function(data)
             {
                 myDropzone.options.url = "/realestate/article/uploadImage/"+data;
@@ -73,22 +115,39 @@ $(document).ready(function() {
 
     $('#upload-button').on("click", function(e) {
         var url = "/realestate/article/create";
+
         for (instance in CKEDITOR.instances) {
             CKEDITOR.instances[instance].updateElement();
         }
         $.ajax({
-            type: "POST",
             url: url,
-            data: $("#formArticle").serialize(),
+            method: "post",
+            processData: false,
+            contentType: false,
+            data: new FormData($("#formArticle")[0]),
+            processData: false,
             success: function(data)
             {
                 myDropzone.options.url = "/realestate/article/uploadImage/"+data;
                 myDropzone.processQueue();
-                window.location.replace("/realestate/article/list");
+
+                document.getElementById("address-error").innerHTML = ''   ;
+                document.getElementById("title-error").innerHTML = "";
+                document.getElementById("areasize-error").innerHTML = "";
+                document.getElementById("bedroom-error").innerHTML = "";
+                document.getElementById("bathroom-error").innerHTML = "";
+                document.getElementById("livingroom-error").innerHTML = "";
+                document.getElementById("tier-error").innerHTML = "";
+                document.getElementById("price-error").innerHTML = "";
+                document.getElementById("description-error").innerHTML = "";
+                document.getElementById("typeId-error").innerHTML = "";
+                document.getElementById("property-error").innerHTML = "";
+                document.getElementById("districtId-error").innerHTML = "";
+                document.getElementById("directionId-error").innerHTML = "";
             },
             error: function (data) {
                 var response = data.responseJSON;
-                document.getElementById("address-error").innerHTML = response.address;
+                document.getElementById("address-error").innerHTML = response.address   ;
                 document.getElementById("title-error").innerHTML = response.title;
                 document.getElementById("areasize-error").innerHTML = response.areasize;
                 document.getElementById("bedroom-error").innerHTML = response.bedroom;
@@ -213,5 +272,7 @@ $(document).ready(function() {
 			responseContent = responseContent + "<hr>";
 		}
 	}
+
+
 
 });

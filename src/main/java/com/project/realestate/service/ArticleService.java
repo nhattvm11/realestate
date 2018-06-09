@@ -42,4 +42,8 @@ public interface ArticleService {
     List<ArticleTemp> parseListEntityToListModel(List<Article> articles, boolean info);
     Map<String, Boolean> getMapFeaturesOfArticle(String articleId) throws ArticleException, FeatureException;
     Page<Article> getCategory(String type, String property, int page, int pageSize) throws TypeException, PropertyTypeException;
+    List<ArticleTemp> getConfirmArticles(boolean isActive);
+    boolean activeArticle(String articleId);
+
+    Page<Article> getActiveArticles(int page, int pageSize);
 }

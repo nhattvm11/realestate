@@ -81,17 +81,39 @@ public class ArticleController {
 
 
     @PostMapping("/article/create")
-    public ResponseEntity createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception{
+    public ResponseEntity createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result, @RequestParam("file") MultipartFile file) throws Exception{
         if(result.hasErrors()){
             ArticleError articleError = new ArticleError();
             articleService.initArticleError(articleError, result);
+            if (file.isEmpty()){
+                articleError.setThumbnail("thumbnail image could not be empty!");
+            }
             return new ResponseEntity(articleError, HttpStatus.BAD_REQUEST);
         }
+
+        if (file.isEmpty()) {
+            ArticleError articleError = new ArticleError();
+            articleError.setThumbnail("thumbnail image could not be empty!");
+            return new ResponseEntity(articleError, HttpStatus.BAD_REQUEST);
+        }
+
         Article article = new Article();
         articleService.parseArticleTempToEntity(article, articleTemp);
         articleService.SaveArticle(article);
 
         articleFeatureService.SaveArticleFeature(articleTemp.getFeatures(), article.getId());
+
+        try {
+            byte[] bytes = file.getBytes();
+            String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + file.getOriginalFilename();
+            Path path = Paths.get(UPLOAD_PATH + fileName);
+            Files.write(path, bytes);
+            String imagePath = "/images/" + fileName;
+            pictureService.saveImage(article.getId(), imagePath, true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity(article.getId(), HttpStatus.OK);
     }
 
@@ -291,5 +313,28 @@ public class ArticleController {
             return "redirect:/home";
         }
         return "listArticlePage";
+    }
+
+    @PostMapping("/article/confirmArts")
+    public ResponseEntity<List<ArticleTemp>> getConfirmArticles(){
+        List<ArticleTemp> confirmArticles = articleService.getConfirmArticles(false);
+        if (confirmArticles.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(confirmArticles, HttpStatus.OK);
+    }
+
+    @PostMapping("/article/activeArticle")
+    public ResponseEntity activeArticle(@RequestParam("id") String articleId){
+        if (articleService.activeArticle(articleId))
+            return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/article/activeArticles")
+    public String activeArticlePage(Model model, @RequestParam(defaultValue = "0") int page){
+        model.addAttribute("data", articleService.getActiveArticles(page, 4));
+        model.addAttribute("currentPage", page);
+        return "confirmArticles";
     }
 }

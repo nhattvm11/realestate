@@ -328,6 +328,28 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findArticlesByTypeByTypeIdAndPropertyTypeByPropertyId(typeByName, propertyType, PageRequest.of(page, pageSize));
     }
 
+    @Override
+    public List<ArticleTemp> getConfirmArticles(boolean isActive) {
+        List<Article> confirmArticles = articleRepository.findArticleByActive(isActive);
+        List<ArticleTemp> confirmArticleTemps = parseListEntityToListModel(confirmArticles, true);
+        return confirmArticleTemps;
+    }
+
+    @Override
+    public boolean activeArticle(String articleId) {
+        Article activeArticle = articleRepository.findArticleById(articleId);
+        if (activeArticle == null)
+            return false;
+        activeArticle.setActive(true);
+        articleRepository.save(activeArticle);
+        return true;
+    }
+
+    @Override
+    public Page<Article> getActiveArticles(int page, int pageSize) {
+        return  articleRepository.findArticleByActive(false, PageRequest.of(page, pageSize));
+    }
+
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {
         articleTemp.setId(article.getId());
         articleTemp.setActive(false);

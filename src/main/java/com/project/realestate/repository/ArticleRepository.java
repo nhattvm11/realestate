@@ -17,4 +17,6 @@ public interface ArticleRepository extends CrudRepository<Article, String>,JpaRe
     List<Article> findTop10ByPriority(int priority);
     List<Article> findTop3ByPriority(int priority);
     Page<Article> findArticlesByTypeByTypeIdAndPropertyTypeByPropertyId(Type type, PropertyType propertyType, Pageable pageable);
+    List<Article> findArticleByActive(boolean isActive);
+    Page<Article> findArticleByActive(boolean isActive, Pageable pageable);
 }

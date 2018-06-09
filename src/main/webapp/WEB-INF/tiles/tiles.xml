@@ -38,4 +38,8 @@
         <put-attribute name="body" value="/WEB-INF/views/articleDetail.jsp" />
     </definition>
 
+    <definition name="confirmArticles" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/confirmArticles.jsp" />
+    </definition>
+
 </tiles-definitions>
