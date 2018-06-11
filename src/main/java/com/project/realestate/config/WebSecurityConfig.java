@@ -29,6 +29,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String ADMIN = "admin";
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -65,9 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirm").permitAll()
                 .antMatchers("/reset").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/home").permitAll()
+                .antMatchers("/articles/**").hasRole(ADMIN)
                 .anyRequest().authenticated().and()
-                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class)
-                .addFilterBefore(new CookieFilter(), TokenAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
+                //.addFilterBefore(new CookieFilter(), TokenAuthenticationFilter.class);
 
 
         http.csrf().disable();
