@@ -34,6 +34,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtTokenService jwtTokenService;
 
+    @Autowired
+    private LevelService levelService;
+
     @Override
     public User getUserById(String id) throws UserNotFoundException {
         User user = usersRepository.findUserById(id);
@@ -75,6 +78,7 @@ public class UserServiceImpl implements UserService {
         user.setId(UUID.randomUUID().toString());
         user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setLevelByLevelId(levelService.findAll().get(1));
         usersRepository.save(user);
         Contact contact = new Contact();
         contact.setId(UUID.randomUUID().toString());

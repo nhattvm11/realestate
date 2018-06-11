@@ -43,7 +43,7 @@ public class ProtectedLoginController {
         String token = tokenHelper.generateToken(username);
         Cookie cookie = new Cookie(TOKEN, token);
         response.addCookie(cookie);
-        User user =  userService.getUSerByEmail(username);
-        return "redirect:/users/"+user.getId();
+        //User user =  userService.getUSerByEmail(username);
+        return "redirect:/home";
     }
 }
