@@ -4,6 +4,7 @@ import com.project.realestate.helper.TokenHelper;
 import com.project.realestate.model.TokenBasedAuthentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,27 +39,31 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws IOException, ServletException {
-        Cookie[] cookies = request.getCookies();
-        String authTokenCk = null;
-        if(cookies != null) {
-            authTokenCk = getTokenFromCookie(cookies);
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
+        if(authentication == null || !authentication.isAuthenticated() ) {
+            Cookie[] cookies = request.getCookies();
+            String authTokenCk = null;
+            if(cookies != null) {
+                authTokenCk = getTokenFromCookie(cookies);
+            }
 
 
-        String username;
-        String authToken = tokenHelper.getToken(request);
+            String username;
+            String authToken = tokenHelper.getToken(request);
 
-        if (authTokenCk != null) {
-            // get username from token
-            username = tokenHelper.getUsernameFromToken(authTokenCk);
-            if (username != null) {
-                // get user
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (tokenHelper.validateToken(authTokenCk, userDetails)) {
-                    // create authentication
-                    TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
-                    authentication.setToken(authTokenCk);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (authTokenCk != null) {
+                // get username from token
+                username = tokenHelper.getUsernameFromToken(authTokenCk);
+                if (username != null) {
+                    // get user
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (tokenHelper.validateToken(authTokenCk, userDetails)) {
+                        // create authentication
+                        TokenBasedAuthentication tkbAuthentication = new TokenBasedAuthentication(userDetails);
+                        tkbAuthentication.setToken(authTokenCk);
+                        SecurityContextHolder.getContext().setAuthentication(tkbAuthentication);
+                    }
                 }
             }
         }

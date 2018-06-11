@@ -8,7 +8,6 @@ import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
-import jdk.internal.org.xml.sax.SAXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,7 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,7 +36,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -215,7 +216,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/detail/{id}")
-    public String articleDetail(@PathVariable("id") String id, Model model) throws ArticleException, FeatureException, org.xml.sax.SAXException, ParserConfigurationException, SAXException, IOException {
+    public String articleDetail(@PathVariable("id") String id, Model model) throws ArticleException, FeatureException, org.xml.sax.SAXException, ParserConfigurationException, IOException {
         ArticleTemp articleTemp = articleService.convertArticleEntityToModel(id, true);
         model.addAttribute("article", articleTemp);
         model.addAttribute("features", articleService.getMapFeaturesOfArticle(id));
@@ -223,7 +224,7 @@ public class ArticleController {
         return "articleDetail";
     }
 
-    public String[] getCordinates(String address,String county) throws IOException, ParserConfigurationException, SAXException, org.xml.sax.SAXException {
+    public String[] getCordinates(String address,String county) throws IOException, ParserConfigurationException, org.xml.sax.SAXException {
         String thisLine;
         String fullAddress = address.replace(" ", "%20")+",%20"+county.replace(" ", "%20");
         System.out.println(fullAddress);
