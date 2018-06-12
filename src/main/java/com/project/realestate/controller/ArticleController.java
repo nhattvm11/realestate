@@ -70,17 +70,6 @@ public class ArticleController {
 
     private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\static\\image\\";
 
-    @GetMapping("/article/create")
-    public ModelAndView createArticleView() throws Exception{
-        ModelAndView model = new ModelAndView("createArticle");
-        model.addObject("title", "Create Article");
-        ArticleTemp articleTemp = new ArticleTemp();articleTemp.setCityId("-1");
-        articleService.setModel(model);
-        model.addObject("article", articleTemp);
-        return model;
-    }
-
-
     @PostMapping("/article/create")
     public ResponseEntity createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result, @RequestParam("file") MultipartFile file) throws Exception{
         if(result.hasErrors()){
@@ -133,15 +122,6 @@ public class ArticleController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("article/update/{id}")
-    public ModelAndView updateArticleView(@PathVariable("id")String id) throws Exception{
-        ModelAndView model = new ModelAndView();
-        model.setViewName("updateArticle");
-        articleService.setModel(model);
-        model.addObject("article", articleService.convertArticleEntityToModel(id, false));
-        return model;
-    }
-
     @PostMapping("/article/update/{id}")
     public ResponseEntity updateArticleHandler(@PathVariable("id") String id,@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result) throws Exception {
         if(result.hasErrors()){
@@ -153,12 +133,6 @@ public class ArticleController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/article/delete/{id}")
-    public String deleteArticleHandler(@PathVariable("id") String id){
-        articleService.deleteArticle(id);
-        return "listArticle";
-    }
-
     @PostMapping("/article/districts")
     public ResponseEntity<List<DistrictTemp>> getDistricts(@RequestParam(value = "cityId", required = false) String cityId) throws Exception {
         City city = cityService.findById(cityId);
@@ -167,14 +141,6 @@ public class ArticleController {
         articleService.convertDistrictEntityToDistrictTemp(districts, districtTemps);
 
         return new ResponseEntity<List<DistrictTemp>>(districtTemps, HttpStatus.OK);
-    }
-
-
-    @GetMapping("/article/list")
-    public String listArticles(Model model, @RequestParam(defaultValue = "0") int page){
-        model.addAttribute("data", articleService.findAllPagination(page, 4));
-        model.addAttribute("currentPage", page);
-        return "listArticle";
     }
 
     @GetMapping(value = "/article/search")
@@ -314,28 +280,5 @@ public class ArticleController {
             return "redirect:/home";
         }
         return "listArticlePage";
-    }
-
-    @PostMapping("/article/confirmArts")
-    public ResponseEntity<List<ArticleTemp>> getConfirmArticles(){
-        List<ArticleTemp> confirmArticles = articleService.getConfirmArticles(false);
-        if (confirmArticles.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(confirmArticles, HttpStatus.OK);
-    }
-
-    @PostMapping("/article/activeArticle")
-    public ResponseEntity activeArticle(@RequestParam("id") String articleId){
-        if (articleService.activeArticle(articleId))
-            return new ResponseEntity(HttpStatus.OK);
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping("/article/activeArticles")
-    public String activeArticlePage(Model model, @RequestParam(defaultValue = "0") int page){
-        model.addAttribute("data", articleService.getActiveArticles(page, 4));
-        model.addAttribute("currentPage", page);
-        return "confirmArticles";
     }
 }

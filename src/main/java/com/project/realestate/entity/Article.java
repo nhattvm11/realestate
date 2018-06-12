@@ -22,7 +22,7 @@ public class Article {
     private Integer priority;
     private Boolean active;
     private Integer view;
-    private Integer contactId;
+    private Contact contactByContactId;
     private Date dateUp;
     private Date dateExpire;
     private Date lastUpdate;
@@ -166,16 +166,6 @@ public class Article {
     }
 
     @Basic
-    @Column(name = "contactId")
-    public Integer getContactId() {
-        return contactId;
-    }
-
-    public void setContactId(Integer contactId) {
-        this.contactId = contactId;
-    }
-
-    @Basic
     @Column(name = "dateUp")
     public Date getDateUp() {
         return dateUp;
@@ -205,6 +195,16 @@ public class Article {
         this.lastUpdate = lastUpdate;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "contactId", referencedColumnName = "id", nullable = false)
+    public Contact getContactByContactId() {
+        return contactByContactId;
+    }
+
+    public void setContactByContactId(Contact contactByContactId) {
+        this.contactByContactId = contactByContactId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -225,7 +225,7 @@ public class Article {
         if (priority != null ? !priority.equals(article.priority) : article.priority != null) return false;
         if (active != null ? !active.equals(article.active) : article.active != null) return false;
         if (view != null ? !view.equals(article.view) : article.view != null) return false;
-        if (contactId != null ? !contactId.equals(article.contactId) : article.contactId != null) return false;
+        if (contactByContactId != null ? !contactByContactId.equals(article.contactByContactId) : article.contactByContactId != null) return false;
         if (dateUp != null ? !dateUp.equals(article.dateUp) : article.dateUp != null) return false;
         if (dateExpire != null ? !dateExpire.equals(article.dateExpire) : article.dateExpire != null) return false;
         if (lastUpdate != null ? !lastUpdate.equals(article.lastUpdate) : article.lastUpdate != null) return false;
@@ -248,7 +248,7 @@ public class Article {
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         result = 31 * result + (active != null ? active.hashCode() : 0);
         result = 31 * result + (view != null ? view.hashCode() : 0);
-        result = 31 * result + (contactId != null ? contactId.hashCode() : 0);
+        result = 31 * result + (contactByContactId != null ? contactByContactId.hashCode() : 0);
         result = 31 * result + (dateUp != null ? dateUp.hashCode() : 0);
         result = 31 * result + (dateExpire != null ? dateExpire.hashCode() : 0);
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);

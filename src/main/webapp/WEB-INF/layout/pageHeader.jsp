@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="jBar">
     <div class="container">
         <div class="row">
@@ -93,14 +94,28 @@
 
                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">Contact</a></li>
 
-                        <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
-                            <a href="#">Accout</a>
-                            <ul class="sub-menu">
-                                <li id="menu-item-1641" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="">Manager</a></li>
-                                <li id="menu-item-1640" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
-                                <li id="menu-item-1639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
-                            </ul>
-                        </li>
+                        <c:choose>
+                            <c:when test="${role=='admin'}">
+                                <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
+                                    <a href="#">Accout</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="${pageContext.request.contextPath}/article/list">Manager</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
+                                    </ul>
+                                </li>
+                            </c:when>
+                            <c:when test="${role=='user'}">
+                                <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
+                                    <a href="#">Accout</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="#">Manager</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
+                                    </ul>
+                                </li>
+                            </c:when>
+                        </c:choose>
 
                     </ul>
                 </div>

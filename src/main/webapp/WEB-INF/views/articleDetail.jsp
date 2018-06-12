@@ -354,18 +354,18 @@
                                         <img src="/realestate/Content/fullestate/wp-content/uploads/2014/11/1.jpg" alt="George Frurt">
                                     </div>
                                     <div class="col-md-6 info_agent">
-                                        <h5>@Model.Contact.ContactName</h5>
+                                        <h5>${article.contactName}</h5>
                                         <ul>
                                             <li>
                                                 <i class="icon-envelope"></i>
                                                 <a href="#" target="_self">
-                                                    @Model.Contact.Email
+                                                    ${article.email}
                                                 </a>
                                             </li>
                                             <li>
                                                 <i class="icon-mobile-phone"></i>
                                                 <a href="#" target="_self">
-                                                    @Model.Contact.Phone
+                                                    ${article.phone}
                                                 </a>
                                             </li>
                                         </ul>
