@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -45,6 +47,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleFeatureService articleFeatureService;
+
+    @Autowired
+    ContactService contactService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public void SaveArticle(Article article) {
@@ -88,13 +96,14 @@ public class ArticleServiceImpl implements ArticleService {
         article.setPriority(0);
         article.setView(0);
 
-
+        Contact contact = contactService.findById(articleTemp.getContactId());
         City city = cityService.findById(articleTemp.getCityId());
         District district = districtService.findById(articleTemp.getDistrictId());
         Type type = typeService.findById(articleTemp.getTypeId());
         PropertyType propertyType = propertyTypeService.findById(articleTemp.getPropertyId());
         Direction direction = directionSerVice.findById(articleTemp.getDirectionId());
 
+        article.setContactByContactId(contact);
         article.setCityByCityId(city);
         article.setDistrictByDistrictId(district);
         article.setTypeByTypeId(type);
@@ -130,6 +139,12 @@ public class ArticleServiceImpl implements ArticleService {
         citiesMap.put("-1", "--Select City--");
         for (City city: cities) {
             citiesMap.put(city.getId(), city.getCityName());
+        }
+    }
+
+    public void convertContactListToMap(List<Contact> contacts, Map<String, String> contactsMap){
+        for (Contact contact:contacts){
+            contactsMap.put(contact.getId(), contact.getContactName());
         }
     }
 
@@ -173,6 +188,17 @@ public class ArticleServiceImpl implements ArticleService {
         return directionMap;
     }
 
+    public Map<String, String> initContactModel() throws TypeException, UserNotFoundException {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        List<Contact> contacts = contactService.getContactByUserByUserId(userService.getUSerByEmail(userDetails.getUsername()));
+        Map<String, String> contactsMap = new HashMap<>();
+        convertContactListToMap(contacts, contactsMap);
+        return contactsMap;
+    }
+
     @Override
     public ArticleTemp convertArticleEntityToModel(String id, boolean info) {
         Article article = articleRepository.findArticleById(id);
@@ -183,12 +209,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void setModel(ModelAndView model) throws Exception {
+    public void setModel(ModelAndView model, boolean isHome) throws Exception {
         model.addObject("cities", initCityModel());
         model.addObject("types", initTypeModel());
         model.addObject("propertyTypes", initPropertyTypeModel());
         model.addObject("features", initFeatureModel());
         model.addObject("directions", initDirectionModel());
+        if (!isHome){
+            model.addObject("contacts", initContactModel());
+        }
     }
 
     @Override
@@ -378,6 +407,11 @@ public class ArticleServiceImpl implements ArticleService {
             articleTemp.setPropertyId(article.getPropertyTypeByPropertyId().getId());
             articleTemp.setDirectionId(article.getDirectionByDirectionId().getId());
         }
+
+        Contact contact = contactService.findById(article.getContactByContactId().getId());
+        articleTemp.setContactName(contact.getContactName());
+        articleTemp.setPhone(contact.getPhone());
+        articleTemp.setEmail(contact.getEmail());
 
         List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
         List<String> features = new ArrayList<>();

@@ -35,7 +35,7 @@
                         <a><i class="fa fa-male"></i> Profile Manager <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="${pageContext.request.contextPath}/users/contacts">List Contacts</a></li>
-                            <li><a href="">Create Contact</a></li>
+                            <li><a href="${pageContext.request.contextPath}/users/contact/create">Create Contact</a></li>
                             <li><a href="">Edit Profile</a></li>
                         </ul>
                     </li>
@@ -82,15 +82,20 @@
                     </ul>
                 </li>
 
-                <li role="presentation" class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green count">0</span>
-                    </a>
-                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
 
-                    </ul>
-                </li>
+                <c:choose>
+                    <c:when test="${role=='admin'}">
+                        <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="badge bg-green count">0</span>
+                            </a>
+                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+
+                            </ul>
+                        </li>
+                    </c:when>
+                </c:choose>
             </ul>
         </nav>
     </div>

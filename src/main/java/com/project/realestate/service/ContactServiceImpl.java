@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -47,8 +48,15 @@ public class ContactServiceImpl implements ContactService {
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
-        User user = usersRepository.findUserByUsername(userDetails.getUsername());
-        Contact contact = contactRepository.getContactById(id);
+        Contact contact;
+        if (id == null){
+            User user = usersRepository.findUserByUsername(userDetails.getUsername());
+            contact = new Contact();
+            contact.setUserByUserId(user);
+            contact.setId(UUID.randomUUID().toString());
+        }else {
+            contact = contactRepository.getContactById(id);
+        }
         contact.setAddress(contactTemp.getAddress());
         contact.setPhone(contactTemp.getPhone());
         contact.setContactName(contactTemp.getContactName());

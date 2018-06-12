@@ -30,6 +30,10 @@
         <put-attribute name="body" value="/WEB-INF/views/listContact.jsp" />
     </definition>
 
+    <definition name="createContact" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/createContact.jsp" />
+    </definition>
+
     <definition name="updateContact" extends="mainLayout">
         <put-attribute name="body" value="/WEB-INF/views/updateContact.jsp" />
     </definition>

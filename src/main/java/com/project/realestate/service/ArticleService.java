@@ -26,7 +26,7 @@ public interface ArticleService {
     Map<String, String> initDirectionModel() throws DirectionException;
 
     ArticleTemp convertArticleEntityToModel(String id, boolean info);
-    void setModel(ModelAndView model) throws Exception;
+    void setModel(ModelAndView model, boolean isHome) throws Exception;
 
     void updateArticle(String id, ArticleTemp articleTemp) throws Exception;
 

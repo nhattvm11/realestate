@@ -79,6 +79,20 @@ public class UserController {
         return "listContact";
     }
 
+    @GetMapping("/users/contact/create")
+    public ModelAndView createContact(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("createContact");
+        modelAndView.addObject("contact", new ContactTemp());
+        return modelAndView;
+    }
+
+    @PostMapping("/users/contact/create")
+    public String handleCreateContact(@ModelAttribute ContactTemp contactTemp){
+        contactService.saveContact(contactService.parseContactModelToEntity(null, contactTemp));
+        return "redirect:/users/contacts";
+    }
+
     @GetMapping("/users/contact/update/{contactId}")
     public ModelAndView showEditContact(@PathVariable("contactId") String id) throws UserNotFoundException {
         ModelAndView model = new ModelAndView();

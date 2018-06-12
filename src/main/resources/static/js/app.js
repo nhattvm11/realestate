@@ -7,7 +7,7 @@ $(document).ready(function() {
     function callAjax() {
         $.ajax({
             type: "post",
-            url: "/realestate/article/confirmArts",
+            url: "/realestate/admin/article/confirmArts",
             data: {},
             datatype: "json",
             traditional: true,
@@ -28,7 +28,7 @@ $(document).ready(function() {
                 $(".confirm").click(function () {
                     var del = $(this);
                     if (confirm("Bạn có muốn chấp nhận tin đăng này?")) {
-                        $.post("/realestate/article/activeArticle", { id: del.attr("aid") })
+                        $.post("/realestate/admin/article/activeArticle", { id: del.attr("aid") })
                             .done(function () {
                                     del.parent().remove();
                             });

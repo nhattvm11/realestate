@@ -39,7 +39,7 @@ public class ArticleTemp {
     private Integer priority;
     private Boolean active;
     private Integer view;
-    private Integer contactId;
+    private String contactId;
     @NotNull
     private String typeId;
     @NotNull
@@ -53,6 +53,9 @@ public class ArticleTemp {
     private List<String> features;
     private String thumbnail;
     private List<PictureTemp> pictures;
+    private String contactName;
+    private String phone;
+    private String email;
 
     public String getThumbnail() {
         return thumbnail;
@@ -174,11 +177,11 @@ public class ArticleTemp {
         this.view = view;
     }
 
-    public Integer getContactId() {
+    public String getContactId() {
         return contactId;
     }
 
-    public void setContactId(Integer contactId) {
+    public void setContactId(String contactId) {
         this.contactId = contactId;
     }
 
@@ -228,5 +231,29 @@ public class ArticleTemp {
 
     public void setFeatures(List<String> features) {
         this.features = features;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
