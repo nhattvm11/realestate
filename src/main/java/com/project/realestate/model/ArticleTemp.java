@@ -16,7 +16,7 @@ public class ArticleTemp {
     @NotEmpty(message = "Address is required")
     @Length(max = 50, message = "Adress could not be more than 50 charactors")
     private String address;
-    @NotEmpty(message = "Address is required")
+    @NotEmpty(message = "Title is required")
     @Length(max = 50, message = "Title could not be more than 50 charactors")
     private String title;
     @NotNull(message = "areasize is required")

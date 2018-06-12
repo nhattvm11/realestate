@@ -221,7 +221,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleError.setAddress(result.getFieldError("address").getDefaultMessage());
         }
         if (result.getFieldError("title") != null){
-            articleError.setTier(result.getFieldError("title").getDefaultMessage());
+            articleError.setTitle(result.getFieldError("title").getDefaultMessage());
         }
         if (result.getFieldError("areasize") != null){
             articleError.setAreasize(result.getFieldError("areasize").getDefaultMessage());

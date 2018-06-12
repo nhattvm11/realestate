@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
         User user = usersRepository.findUserById(userUpdate.getId());
 //        user.setUsername(userUpdate.getUsername());
 //        usersRepository.save(user);
-        Contact contact = contactService.getContactByUserByUserId(user);
+        Contact contact = contactService.getMainContact(user);
         contact.setPhone(userUpdate.getPhone());
 //        contact.setEmail(userUpdate.getEmail());
         contact.setAddress(userUpdate.getAddress());

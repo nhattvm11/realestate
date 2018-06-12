@@ -87,7 +87,7 @@
 <script>
     $(".activeArticle").click(function () {
         var del = $(this);
-        if (confirm("Bạn có muốn chấp nhận tin đăng này?")) {
+        if (confirm("Are you sure to active this article?")) {
             $.post("/realestate/article/activeArticle", { id: del.attr("aid") })
                 .done(function (response) {
                         del.parent().parent().remove();
