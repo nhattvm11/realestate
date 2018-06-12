@@ -41,7 +41,7 @@
             <th>
                 View
             </th>
-            <th c></th>
+            <th></th>
         </tr>
 
 
@@ -54,6 +54,9 @@
                 <td>${article.areasize}</td>
                 <td>${article.price}</td>
                 <td>${article.view}</td>
+                <td>
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/article/update/${article.id}">Edit</a>
+                </td>
             </tr>
         </c:forEach>
 

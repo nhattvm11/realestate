@@ -96,9 +96,9 @@
                         <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
                             <a href="#">Accout</a>
                             <ul class="sub-menu">
-                                <li id="menu-item-1641" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641">Manager</li>
-                                <li id="menu-item-1640" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640">Change Password</li>
-                                <li id="menu-item-1639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639">Logout</li>
+                                <li id="menu-item-1641" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="">Manager</a></li>
+                                <li id="menu-item-1640" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
+                                <li id="menu-item-1639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
                             </ul>
                         </li>
 

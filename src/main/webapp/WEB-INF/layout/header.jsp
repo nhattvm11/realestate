@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="~/${pageContext.request.contextPath}/home" class="site_title"><i class="fa fa-paw"></i> <span>HOME</span></a>
+            <a href="${pageContext.request.contextPath}/home" class="site_title"><i class="fa fa-paw"></i> <span>HOME</span></a>
         </div>
 
         <div class="clearfix"></div>
@@ -34,7 +34,7 @@
                     <li>
                         <a><i class="fa fa-male"></i> Profile Manager <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="">List Contacts</a></li>
+                            <li><a href="${pageContext.request.contextPath}/users/contacts">List Contacts</a></li>
                             <li><a href="">Create Contact</a></li>
                             <li><a href="">Edit Profile</a></li>
                         </ul>
