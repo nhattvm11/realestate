@@ -40,7 +40,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws IOException, ServletException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
         if(authentication == null || !authentication.isAuthenticated() ) {
             Cookie[] cookies = request.getCookies();
             String authTokenCk = null;

@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,16 +37,19 @@ public class ProtectedLoginController {
     private TokenHelper tokenHelper;
 
     @PostMapping("/login")
-    public String handleLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response) throws UserNotFoundException {
+    public ModelAndView handleLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws UserNotFoundException {
         System.out.println("begin handle login with username is " + username + " and pass word : " + password + "......");
         UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-
+        if(userDetails == null)
+            return new ModelAndView("login", model);
+        if (!passwordEncoder.matches(password, userDetails.getPassword()) || !username.equals(userDetails.getUsername())) {
+            model.addAttribute("error", "Username or password invalid");
+            return new ModelAndView("login", model);
         }
         String token = tokenHelper.generateToken(username);
         Cookie cookie = new Cookie(TOKEN, token);
         response.addCookie(cookie);
         //User user =  userService.getUSerByEmail(username);
-        return "redirect:/home";
+        return new ModelAndView("redirect:/home");
     }
 }

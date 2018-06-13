@@ -36,7 +36,8 @@
             <div class="main-login main-center">
                 <h5>Enter new password</h5>
                 <%--<form class="" method="post" action="/register">--%>
-                <form:form method="POST" action="/realestate/api/v1/public/newpass" modelAttribute="user">
+                <spring:url var="newpassURL" value="/newpass"/>
+                <form:form method="POST" action="${newpassURL}" modelAttribute="user">
                     <div class="form-group">
                         <label for="password" class="cols-sm-2 control-label">New password</label>
                         <div class="cols-sm-10">
@@ -44,8 +45,8 @@
                                 <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                                     <%--<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required/>--%>
                                 <form:input path="password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required="required"/>
-                                <form:errors path="password" cssClass="error"/>
                             </div>
+                            <form:errors path="password" cssClass="error"/>
                         </div>
                     </div>
 
@@ -56,8 +57,9 @@
                                 <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                                     <%--<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required/>--%>
                                 <form:input path="confirmPassword" type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required="required"/>
-                                <form:errors path="confirmPassword" cssClass="error"/>
                             </div>
+                            <form:errors path="confirmPassword" cssClass="error"/>
+                            <form:errors path="passwordConfirmCorrect" cssClass="error" />
                         </div>
                     </div>
 

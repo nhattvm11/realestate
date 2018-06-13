@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendMailResetPassword(User user) {
         String token = jwtTokenService.getToken(user);
-        String link = "http://localhost:8080/realestate/reset?token=" + token;
+        String link = "http://localhost:8080/realestate/newpass?token=" + token;
         sendSimpleMessage(user.getUsername(),"Reset Password Confirmation", link);
     }
 }

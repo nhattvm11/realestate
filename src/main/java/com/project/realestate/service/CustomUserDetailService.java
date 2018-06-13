@@ -23,7 +23,10 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
-        String role = user.getLevelByLevelId().getLevelName();
+        String role = "";
+        if(user != null) {
+            role = user.getLevelByLevelId().getLevelName();
+        }
         if (user == null) {
             throw new UsernameNotFoundException("User does not exists");
         }

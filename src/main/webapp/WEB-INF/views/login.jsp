@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -19,6 +20,7 @@
 
 <div class="container">
     <div class="row">
+
 
         <div class="pen-title">
             <h1>Login Form</h1>
@@ -39,6 +41,11 @@
                         <input type="password" id="Password" name="password" required="required"/>
                         <label for="Password">Password</label>
                         <div class="bar"></div>
+                    </div>
+                    <div class="input-container">
+                        <c:if test="${error != null}">
+                            <p style="color: red">${error}</p>
+                        </c:if>
                     </div>
                     <div class="button-container">
                         <button type="submit"><span>Go</span></button>
