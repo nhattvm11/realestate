@@ -22,17 +22,17 @@
     <table class="table table-striped custab">
         <tr>
             <th>
-                Feature Name
+                Property Name
             </th>
             <th></th>
         </tr>
 
 
-        <c:forEach items="${features}" var="feature">
+        <c:forEach items="${properties}" var="property">
             <tr>
-                <td>${feature.featureName}</td>
+                <td>${property.propertyName}</td>
                 <td>
-                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/feature/update/${feature.id}">Edit</a>
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/property/update/${property.id}">Edit</a>
                 </td>
             </tr>
         </c:forEach>

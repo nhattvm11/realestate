@@ -53,6 +53,26 @@
                             <li><a href="">Edit Profile</a></li>
                         </ul>
                     </li>
+
+                    <c:choose>
+                        <c:when test="${role=='admin'}">
+                            <li>
+                                <a><i class="fa fa-bolt"></i> Features <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="${pageContext.request.contextPath}/admin/features">List Features</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/feature/create">Create Feature</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a><i class="fa fa-database"></i> Properties <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="${pageContext.request.contextPath}/admin/properties">List Properties</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/property/create">Create Property</a></li>
+                                </ul>
+                            </li>
+                        </c:when>
+                    </c:choose>
                 </ul>
             </div>
 

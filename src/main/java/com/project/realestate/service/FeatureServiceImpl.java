@@ -28,9 +28,15 @@ public class FeatureServiceImpl implements FeatureService {
     }
 
     @Override
-    public void save(Feature feature) {
-        feature.setId(UUID.randomUUID().toString());
-        featureRepository.save(feature);
+    public void save(String id, Feature feature) {
+        if (id == null) {
+            feature.setId(UUID.randomUUID().toString());
+            featureRepository.save(feature);
+        }else {
+            Feature featureSave = featureRepository.findFeatureById(id);
+            featureSave.setFeatureName(feature.getFeatureName());
+            featureRepository.save(featureSave);
+        }
     }
 
     @Override

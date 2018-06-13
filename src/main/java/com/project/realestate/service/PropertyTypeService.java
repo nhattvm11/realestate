@@ -9,4 +9,7 @@ public interface PropertyTypeService {
     List<PropertyType> findAll() throws PropertyTypeException;
     PropertyType findById(String id) throws PropertyTypeException;
     PropertyType findByName(String property) throws PropertyTypeException;
+
+    void save(String id, PropertyType propertyType);
+
 }

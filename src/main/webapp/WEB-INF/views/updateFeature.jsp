@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form method="post"  modelAttribute="feature" action="${pageContext.request.contextPath}/admin/feature/create">
+<form:form method="post"  modelAttribute="feature" action="${pageContext.request.contextPath}/admin/feature/update/${feature.id}">
     <div class="form-horizontal">
-        <h4>Create Feature</h4>
+        <h4>Update Feature</h4>
         <hr />
 
         <div class="form-group">
@@ -16,7 +16,7 @@
         </div>
 
 
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Update</button>
 
     </div>
 

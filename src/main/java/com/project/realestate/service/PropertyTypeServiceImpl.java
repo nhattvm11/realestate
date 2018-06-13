@@ -1,5 +1,6 @@
 package com.project.realestate.service;
 
+import com.project.realestate.entity.ArticleFeature;
 import com.project.realestate.entity.PropertyType;
 import com.project.realestate.exception.PropertyTypeException;
 import com.project.realestate.repository.PropertyTypeRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PropertyTypeServiceImpl implements PropertyTypeService{
@@ -14,6 +16,8 @@ public class PropertyTypeServiceImpl implements PropertyTypeService{
     @Autowired
     private PropertyTypeRepository propertyTypeRepository;
 
+    @Autowired
+    private ArticleFeatureService articleFeatureService;
 
     @Override
     public List<PropertyType> findAll() throws PropertyTypeException {
@@ -38,4 +42,18 @@ public class PropertyTypeServiceImpl implements PropertyTypeService{
             throw new PropertyTypeException("no property found");
         return propertyType;
     }
+
+    @Override
+    public void save(String id, PropertyType propertyType) {
+        if (id == null){
+            propertyType.setId(UUID.randomUUID().toString());
+            propertyTypeRepository.save(propertyType);
+        }else {
+            PropertyType propertyTypeS = propertyTypeRepository.findPropertyTypeById(id);
+            propertyTypeS.setPropertyName(propertyType.getPropertyName());
+            propertyTypeRepository.save(propertyType);
+        }
+
+    }
+
 }

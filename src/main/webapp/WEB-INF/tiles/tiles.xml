@@ -34,6 +34,30 @@
         <put-attribute name="body" value="/WEB-INF/views/createContact.jsp" />
     </definition>
 
+    <definition name="createFeature" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/createFeature.jsp" />
+    </definition>
+
+    <definition name="updateFeature" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/updateFeature.jsp" />
+    </definition>
+
+    <definition name="listFeature" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/listFeature.jsp" />
+    </definition>
+
+    <definition name="createProperty" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/createProperty.jsp" />
+    </definition>
+
+    <definition name="updateProperty" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/updateProperty.jsp" />
+    </definition>
+
+    <definition name="listProperty" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/listProperty.jsp" />
+    </definition>
+
     <definition name="updateContact" extends="mainLayout">
         <put-attribute name="body" value="/WEB-INF/views/updateContact.jsp" />
     </definition>

@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 public interface ArticleFeatureRepository extends JpaRepository<ArticleFeature, String>, JpaSpecificationExecutor<Article> {
-    public List<ArticleFeature> findArticleFeatureByArticleByArticleId(Article article);
+    List<ArticleFeature> findArticleFeatureByArticleByArticleId(Article article);
 }

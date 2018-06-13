@@ -2,21 +2,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form method="post"  modelAttribute="feature" action="${pageContext.request.contextPath}/admin/feature/create">
+<form:form method="post"  modelAttribute="property" action="${pageContext.request.contextPath}/admin/property/update/${property.id}">
     <div class="form-horizontal">
-        <h4>Create Feature</h4>
+        <h4>Update Feature</h4>
         <hr />
 
         <div class="form-group">
             <label class="control-label col-md-2">Feature Name</label>
             <div class="col-md-10">
-                <form:input path="featureName" cssClass="form-control"/>
-                <div class="text-danger" id="featureName-error"></div>
+                <form:input path="propertyName" cssClass="form-control"/>
+                <div class="text-danger" id="propertyName-error"></div>
             </div>
         </div>
 
 
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Update</button>
 
     </div>
 
