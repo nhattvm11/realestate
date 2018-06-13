@@ -1,10 +1,14 @@
 package com.project.realestate.controller;
 
+import com.project.realestate.entity.User;
 import com.project.realestate.model.ArticleTemp;
 import com.project.realestate.service.ArticleService;
+import com.project.realestate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +22,8 @@ public class ManagerOfAdmin {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("/article/create")
-    public ModelAndView createArticleView() throws Exception{
-        ModelAndView model = new ModelAndView("createArticle");
-        model.addObject("title", "Create Article");
-        ArticleTemp articleTemp = new ArticleTemp();articleTemp.setCityId("-1");
-        articleService.setModel(model, false);
-        model.addObject("article", articleTemp);
-        return model;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("article/update/{id}")
     public ModelAndView updateArticleView(@PathVariable("id")String id) throws Exception{
@@ -34,19 +31,21 @@ public class ManagerOfAdmin {
         model.setViewName("updateArticle");
         articleService.setModel(model, false);
         model.addObject("article", articleService.convertArticleEntityToModel(id, false));
+        model.addObject("role", getRole());
         return model;
     }
 
-    @GetMapping("/article/delete/{id}")
-    public String deleteArticleHandler(@PathVariable("id") String id){
+    @PostMapping("/article/delete/{id}")
+    public ResponseEntity deleteArticleHandler(@PathVariable("id") String id){
         articleService.deleteArticle(id);
-        return "listArticle";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/article/list")
     public String listArticles(Model model, @RequestParam(defaultValue = "0") int page){
         model.addAttribute("data", articleService.findAllPagination(page, 4));
         model.addAttribute("currentPage", page);
+        model.addAttribute("role", getRole());
         return "listArticle";
     }
 
@@ -54,6 +53,7 @@ public class ManagerOfAdmin {
     public String activeArticlePage(Model model, @RequestParam(defaultValue = "0") int page){
         model.addAttribute("data", articleService.getActiveArticles(page, 4));
         model.addAttribute("currentPage", page);
+        model.addAttribute("role", getRole());
         return "confirmArticles";
     }
 
@@ -71,5 +71,18 @@ public class ManagerOfAdmin {
         if (articleService.activeArticle(articleId))
             return new ResponseEntity(HttpStatus.OK);
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    private String getRole(){
+        try{
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            User user = userService.getUSerByEmail(userDetails.getUsername());
+            return user.getLevelByLevelId().getLevelName();
+        } catch (Exception e){
+            return "none";
+        }
     }
 }

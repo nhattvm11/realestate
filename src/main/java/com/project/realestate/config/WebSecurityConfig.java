@@ -70,7 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/confirm-reset").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/home").permitAll()
-                .antMatchers("/article/**").hasRole(ADMIN)
+                .antMatchers("/images").permitAll()
+//                .antMatchers("/admin/article/**").hasRole(ADMIN)
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
                 //.addFilterBefore(new CookieFilter(), TokenAuthenticationFilter.class);

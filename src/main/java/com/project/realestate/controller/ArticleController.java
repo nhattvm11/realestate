@@ -6,6 +6,7 @@ import com.project.realestate.exception.ArticleException;
 import com.project.realestate.exception.FeatureException;
 import com.project.realestate.model.ArticleError;
 import com.project.realestate.model.ArticleTemp;
+import com.project.realestate.model.ContactTemp;
 import com.project.realestate.model.DistrictTemp;
 import com.project.realestate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +52,8 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CityService cityService;
@@ -69,6 +74,24 @@ public class ArticleController {
     private PropertyTypeService propertyTypeService;
 
     private String UPLOAD_PATH = "C:\\Users\\Anh\\Desktop\\realestate\\src\\main\\resources\\static\\image\\";
+
+    @GetMapping("/article/create")
+    public ModelAndView createArticleView() throws Exception{
+        ModelAndView model;
+        if (!userService.checkHaveAnyContact()){
+             model = new ModelAndView("createContact");
+             model.addObject("contact", new ContactTemp());
+             return model;
+        }
+        model = new ModelAndView("createArticle");
+
+        model.addObject("title", "Create Article");
+        ArticleTemp articleTemp = new ArticleTemp();articleTemp.setCityId("-1");
+        articleService.setModel(model, false);
+        model.addObject("article", articleTemp);
+        model.addObject("role", getRole());
+        return model;
+    }
 
     @PostMapping("/article/create")
     public ResponseEntity createArticleHandler(@Valid @ModelAttribute("article") ArticleTemp articleTemp, BindingResult result, @RequestParam("file") MultipartFile file) throws Exception{
@@ -200,6 +223,7 @@ public class ArticleController {
         model.addAttribute("pageInfo", searchResultPage.getTotalPages());
         model.addAttribute("data", articleService.parseListEntityToListModel(searchResultPage.getContent(), true));
         model.addAttribute("currentPage", page);
+        model.addAttribute("role", getRole());
         return "listArticlePage";
     }
 
@@ -209,6 +233,7 @@ public class ArticleController {
         model.addAttribute("article", articleTemp);
         model.addAttribute("features", articleService.getMapFeaturesOfArticle(id));
         model.addAttribute("coordinate", getCordinates(articleTemp.getAddress(), articleTemp.getCityId()));
+        model.addAttribute("role", getRole());
         return "articleDetail";
     }
 
@@ -255,6 +280,7 @@ public class ArticleController {
     public String category(Model model, @RequestParam(required = false) String filter, @PathVariable("category") String category, @RequestParam(value = "page", defaultValue = "0") int page){
         category.replace('-', ' ');
         Page<Article> categories;
+        model.addAttribute("role", getRole());
         try {
             String type = category.substring(0, 4);
             String property = category.substring(5);
@@ -280,5 +306,18 @@ public class ArticleController {
             return "redirect:/home";
         }
         return "listArticlePage";
+    }
+
+    private String getRole(){
+        try{
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            User user = userService.getUSerByEmail(userDetails.getUsername());
+            return user.getLevelByLevelId().getLevelName();
+        } catch (Exception e){
+            return "none";
+        }
     }
 }

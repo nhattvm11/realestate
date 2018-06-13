@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ArticleService {
-    void SaveArticle(Article article) throws ArticleException;
+    void SaveArticle(Article article) throws ArticleException, UserNotFoundException;
     Article findById(String id) throws ArticleException;
     void convertDistrictEntityToDistrictTemp(List<District> districts, List<DistrictTemp> districtTemps);
     void parseArticleTempToEntity(Article article, ArticleTemp articleTemp) throws Exception;
@@ -46,4 +46,7 @@ public interface ArticleService {
     boolean activeArticle(String articleId);
 
     Page<Article> getActiveArticles(int page, int pageSize);
+
+    boolean checkValidArticleMatchUser(String id);
+    Page<Article> findArticleByUserByUserId(int page, int pagesize) throws UserNotFoundException;
 }

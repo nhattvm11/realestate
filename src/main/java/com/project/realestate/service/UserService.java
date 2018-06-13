@@ -19,4 +19,6 @@ public interface UserService {
     void resetPassword(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException;
     List<User> getAll();
     void updateUser(UserUpdate userUpdate);
+
+    boolean checkHaveAnyContact();
 }

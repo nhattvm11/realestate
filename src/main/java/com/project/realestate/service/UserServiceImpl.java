@@ -9,6 +9,8 @@ import com.project.realestate.exception.UsernameExistException;
 import com.project.realestate.model.UserUpdate;
 import com.project.realestate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -136,6 +138,18 @@ public class UserServiceImpl implements UserService {
 //        contact.setEmail(userUpdate.getEmail());
         contact.setAddress(userUpdate.getAddress());
         contactService.saveContact(contact);
+    }
+
+    @Override
+    public boolean checkHaveAnyContact() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User user = usersRepository.findUserByUsername(userDetails.getUsername());
+        if (user.getContactsById().isEmpty())
+            return false;
+        return true;
     }
 
 }

@@ -54,10 +54,20 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PictureService pictureService;
+
     @Override
-    public void SaveArticle(Article article) {
-        if (article != null)
+    public void SaveArticle(Article article) throws UserNotFoundException {
+        if (article != null) {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            User user = userService.getUSerByEmail(userDetails.getUsername());
+            article.setUserByUserId(user);
             articleRepository.save(article);
+        }
     }
 
     @Override
@@ -234,12 +244,17 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findArticleById(id);
         List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureByArticle(article);
 
-        List<String> featureId = new ArrayList<>();
         if (!articleFeatures.isEmpty()){
             for (ArticleFeature articleFeature:articleFeatures) {
                 articleFeatureService.deleteArticleFeature(articleFeature);
             }
         }
+
+        List<Picture> pictures = new ArrayList<>(article.getPicturesById());
+        for (Picture pic:pictures){
+            pictureService.deletePicture(pic.getId());
+        }
+
 
         articleRepository.delete(article);
     }
@@ -377,6 +392,34 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<Article> getActiveArticles(int page, int pageSize) {
         return  articleRepository.findArticleByActive(false, PageRequest.of(page, pageSize));
+    }
+
+    @Override
+    public boolean checkValidArticleMatchUser(String id) {
+        Article article = articleRepository.findArticleById(id);
+        if (article == null)
+            return false;
+        try {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            if (article.getUserByUserId().getUsername().equals(userDetails.getUsername()))
+                return true;
+        }catch (Exception e){
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public Page<Article> findArticleByUserByUserId(int page, int pagesize) throws UserNotFoundException {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User us = userService.getUSerByEmail(userDetails.getUsername());
+        return articleRepository.findArticleByUserByUserId(us, PageRequest.of(page, pagesize));
     }
 
     private void parseArticleEntityToModel(Article article, ArticleTemp articleTemp, boolean info) {

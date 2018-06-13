@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -24,13 +25,26 @@
             <div class="menu_section">
                 <h3>Dashboard</h3>
                 <ul class="nav side-menu">
-                    <li>
-                        <a><i class="fa fa-newspaper-o"></i>Article Manager <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="${pageContext.request.contextPath}/article/list">List Articles</a></li>
-                            <li><a href="${pageContext.request.contextPath}/article/create">Create Article</a></li>
-                        </ul>
-                    </li>
+                    <c:choose>
+                        <c:when test="${role=='admin'}">
+                            <li>
+                                <a><i class="fa fa-newspaper-o"></i>Article Manager <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="${pageContext.request.contextPath}/admin/article/list">List Articles</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/article/create">Create Article</a></li>
+                                </ul>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li>
+                                <a><i class="fa fa-newspaper-o"></i>Article Manager <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="${pageContext.request.contextPath}/article/list">List Articles</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/article/create">Create Article</a></li>
+                                </ul>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
                     <li>
                         <a><i class="fa fa-male"></i> Profile Manager <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
