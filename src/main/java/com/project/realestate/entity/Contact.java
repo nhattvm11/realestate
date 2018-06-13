@@ -2,6 +2,7 @@ package com.project.realestate.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Entity
 public class Contact {
@@ -14,6 +15,7 @@ public class Contact {
     private Date createAt;
     private Date lastUpdate;
     private User userByUserId;
+    private Collection<Article> articlesById;
 
     @Id
     @Column(name = "id")
@@ -135,5 +137,14 @@ public class Contact {
 
     public void setUserByUserId(User userByUserId) {
         this.userByUserId = userByUserId;
+    }
+
+    @OneToMany(mappedBy = "contactByContactId")
+    public Collection<Article> getArticlesById() {
+        return articlesById;
+    }
+
+    public void setArticlesById(Collection<Article> articlesById) {
+        this.articlesById = articlesById;
     }
 }

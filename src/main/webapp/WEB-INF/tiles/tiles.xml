@@ -26,6 +26,18 @@
         <put-attribute name="body" value="/WEB-INF/views/updateArticle.jsp" />
     </definition>
 
+    <definition name="listContact" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/listContact.jsp" />
+    </definition>
+
+    <definition name="createContact" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/createContact.jsp" />
+    </definition>
+
+    <definition name="updateContact" extends="mainLayout">
+        <put-attribute name="body" value="/WEB-INF/views/updateContact.jsp" />
+    </definition>
+
     <definition name="index" extends="pageLayout">
         <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
     </definition>

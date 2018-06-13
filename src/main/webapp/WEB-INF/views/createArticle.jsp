@@ -42,6 +42,14 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2">Contact</label>
+            <div class="col-md-10">
+                <form:select path="contactId" items="${contacts}" cssClass="form-control"/>
+                <div class="text-danger" id="contact-error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2">Address</label>
             <div class="col-md-10">
                 <form:input path="address" cssClass="form-control"/>
