@@ -49,7 +49,7 @@ public class FeatureController {
     }
 
     @GetMapping("/feature/update/{id}")
-    public ModelAndView deleteFeature(@PathVariable("id") String id) {
+    public ModelAndView updateFeature(@PathVariable("id") String id) {
         ModelAndView model = new ModelAndView("updateFeature");
         Feature feature = featureService.findById(id);
         model.addObject("feature", feature);
@@ -58,8 +58,15 @@ public class FeatureController {
     }
 
     @PostMapping("/feature/update/{id}")
-    public String deleteFeature(@PathVariable("id") String id, @ModelAttribute Feature feature, Model model) {
+    public String updateFeature(@PathVariable("id") String id, @ModelAttribute Feature feature, Model model) {
         featureService.save(id, feature);
+        model.addAttribute("role", getRole());
+        return "redirect:/admin/features";
+    }
+
+    @PostMapping("/feature/delete/{id}")
+    public String deleteFeature(@PathVariable("id") String id, Model model){
+        featureService.delete(id);
         model.addAttribute("role", getRole());
         return "redirect:/admin/features";
     }

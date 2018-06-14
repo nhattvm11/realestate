@@ -56,4 +56,9 @@ public class ArticleFeatureServiceImpl implements ArticleFeatureService{
     public void deleteArticleFeature(ArticleFeature articleFeature) {
         articleFeatureRepository.delete(articleFeature);
     }
+
+    @Override
+    public List<ArticleFeature> findArticleFeatureBYFeature(Feature feature) {
+        return articleFeatureRepository.findArticleFeatureByFeatureByFeatureId(feature);
+    }
 }

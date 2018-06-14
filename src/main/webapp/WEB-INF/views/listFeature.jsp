@@ -29,10 +29,12 @@
 
 
         <c:forEach items="${features}" var="feature">
+            <input id="feature-id" type="hidden" value="${feature.id}"/>
             <tr>
                 <td>${feature.featureName}</td>
                 <td>
                     <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/feature/update/${feature.id}">Edit</a>
+                    <a id="delete-feature" class="btn btn-danger" href="#">Delete</a>
                 </td>
             </tr>
         </c:forEach>
@@ -40,3 +42,17 @@
     </table>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $("#delete-feature").click(function (){
+            var featureId = $("#feature-id").val();
+            var del = $(this);
+            if (confirm("Do you want to delete this feature?")) {
+                $.post("/realestate/admin/feature/delete/"+featureId)
+                    .done(function () {
+                        del.parent().parent().remove();
+                    });
+            }
+        });
+    });
+</script>

@@ -1,5 +1,6 @@
 package com.project.realestate.service;
 
+import com.project.realestate.entity.ArticleFeature;
 import com.project.realestate.entity.Feature;
 import com.project.realestate.exception.FeatureException;
 import com.project.realestate.repository.FeatureRepository;
@@ -14,6 +15,9 @@ public class FeatureServiceImpl implements FeatureService {
 
     @Autowired
     FeatureRepository featureRepository;
+
+    @Autowired
+    ArticleFeatureService articleFeatureService;
 
     @Override
     public List<Feature> findAll() {
@@ -41,7 +45,10 @@ public class FeatureServiceImpl implements FeatureService {
 
     @Override
     public void delete(String id) {
-
+        List<ArticleFeature> articleFeatures = articleFeatureService.findArticleFeatureBYFeature(featureRepository.findFeatureById(id));
+        for (ArticleFeature articleFeature : articleFeatures){
+            articleFeatureService.deleteArticleFeature(articleFeature);
+        }
         featureRepository.deleteById(id);
     }
 

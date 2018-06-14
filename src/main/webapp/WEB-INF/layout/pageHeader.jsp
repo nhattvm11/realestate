@@ -1,27 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="jBar">
     <div class="container">
         <div class="row">
-            <form>
+            <spring:url var="loginURL" value="/login"/>
+            <form method="post" action="${loginURL}">
                 <div class="col-md-2">
                     <h1>Login Area</h1>
                 </div>
 
                 <div class="col-md-4">
-                    <input type="text" name="log" placeholder="Your Account Id" required>
+                    <input type="text" placeholder="Your Account Id" id="Username" name="username" required="required"/>
                 </div>
 
                 <div class="col-md-3">
-                    <input type="password" name="pwd" placeholder="Your Password">
+                    <input type="password" id="Password" name="password" required="required" placeholder="Your Password"/>
                 </div>
 
                 <div class="col-md-3">
                     <input type="submit" class="botton" value="Sign in">
                     <span>Or</span>
-                    <input type="button" class="botton" value="Register">
+                    <input type="button" class="botton" value="Register" href="${pageContext.request.contextPath}/register">
                 </div>
-
-                <input type="hidden" name="redirect_to" value="/fullestate/" />
 
                 <p class="jTrigger downarrow">Close Login</p>
             </form>
