@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="jBar">
     <div class="container">
         <div class="row">
@@ -93,7 +93,7 @@
                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">About</a></li>
 
                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1642"><a href="">Contact</a></li>
-
+                        <spring:url var="logoutURL" value="/logout"/>
                         <c:choose>
                             <c:when test="${role=='user'}">
                                 <li id="menu-item-1433" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1433">
@@ -101,7 +101,7 @@
                                     <ul class="sub-menu">
                                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="${pageContext.request.contextPath}/article/list">Manager</a></li>
                                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
-                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a href="${logoutURL}">Logout</a></li>
                                     </ul>
                                 </li>
                             </c:when>
@@ -111,7 +111,7 @@
                                     <ul class="sub-menu">
                                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1641"><a href="${pageContext.request.contextPath}/admin/article/list">Manager</a></li>
                                         <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1640"><a>Change Password</a></li>
-                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a>Logout</a></li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a href="${logoutURL}">Logout</a></li>
                                     </ul>
                                 </li>
                             </c:when>

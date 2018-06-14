@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -90,7 +91,8 @@
             <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="#">
+            <spring:url var="logoutURL" value="/logout"/>
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="${logoutURL}/logout">
             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
         </div>

@@ -1,7 +1,6 @@
 package com.project.realestate.Specification;
 
 import com.project.realestate.entity.Article;
-import com.project.realestate.entity.Article_;
 import com.project.realestate.model.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
