@@ -4,6 +4,8 @@ import com.project.realestate.entity.Contact;
 import com.project.realestate.entity.User;
 import com.project.realestate.exception.UserNotFoundException;
 import com.project.realestate.model.ContactTemp;
+import com.project.realestate.model.PasswordReset;
+import com.project.realestate.model.RegisterTemp;
 import com.project.realestate.model.UserUpdate;
 import com.project.realestate.service.ContactService;
 import com.project.realestate.service.UserService;
@@ -13,7 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,5 +111,29 @@ public class UserController {
     public String handleUpdateContact(@PathVariable("contactId") String id, @ModelAttribute ContactTemp contactTemp){
         contactService.saveContact(contactService.parseContactModelToEntity(id, contactTemp));
         return "redirect:/users/contacts";
+    }
+
+    @GetMapping("/password")
+    public ModelAndView showFormNewPass() {
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("------------" + userDetails.getUsername());
+        System.out.println("------------" + userDetails.getPassword());
+        ModelAndView modelAndView = new ModelAndView("changePass");
+        PasswordReset pass = new PasswordReset();
+        pass.setPassword(userDetails.getPassword());
+        modelAndView.addObject("pass", pass);
+        return new ModelAndView("changePass");
+    }
+
+    @PostMapping("/password")
+    public String changePassword(@ModelAttribute("pass") @Valid PasswordReset passwordReset, BindingResult result) {
+        if(result.hasErrors()) {
+            return "password";
+        }
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByEmail(userDetails.getUsername());
+        user.setPassword(passwordReset.getPassword());
+        userService.saveUser(user);
+        return "redirect:/login";
     }
 }
