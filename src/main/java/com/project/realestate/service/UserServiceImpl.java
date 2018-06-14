@@ -57,6 +57,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+
+
     @Override
     public void updateFirstToken(User updateUser) throws UserNotFoundException {
         User user = usersRepository.findUserByUsername(updateUser.getUsername());
@@ -150,6 +152,10 @@ public class UserServiceImpl implements UserService {
         if (user.getContactsById().isEmpty())
             return false;
         return true;
+    }
+
+    public User findUserByEmail(String email) {
+        return usersRepository.findUserByUsername(email);
     }
 
 }

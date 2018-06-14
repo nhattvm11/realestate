@@ -73,6 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images").permitAll()
 //                .antMatchers("/admin/article/**").hasRole(ADMIN)
                 .anyRequest().authenticated().and()
+
+                .logout().deleteCookies().logoutUrl("/logout").clearAuthentication(true).logoutSuccessUrl("/home").and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
                 //.addFilterBefore(new CookieFilter(), TokenAuthenticationFilter.class);
 

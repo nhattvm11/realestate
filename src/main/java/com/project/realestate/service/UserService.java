@@ -21,4 +21,6 @@ public interface UserService {
     void updateUser(UserUpdate userUpdate);
 
     boolean checkHaveAnyContact();
+
+    User findUserByEmail(String email);
 }

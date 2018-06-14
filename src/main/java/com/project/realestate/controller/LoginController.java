@@ -13,6 +13,7 @@ import com.project.realestate.service.JwtTokenService;
 import com.project.realestate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,10 +53,15 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/{pathURL}", method = RequestMethod.POST)
-    public String handleFormReset(@ModelAttribute("email") ResetUser resetUser, @PathVariable String pathURL) throws UserNotFoundException {
-        User user = userService.getUSerByEmail(resetUser.getEmail());
+    public ModelAndView handleFormReset(@ModelAttribute("email") ResetUser resetUser, @PathVariable String pathURL) throws UserNotFoundException {
+        User user = userService.findUserByEmail(resetUser.getEmail());
+        if(user == null) {
+            ModelAndView model = new ModelAndView("resetForm");
+            model.addObject("error", "Email not found");
+            return model;
+        }
         emailService.sendMailResetPassword(user);
-        return "redirect:/confirm-reset";
+        return new ModelAndView("redirect:/confirm-reset");
     }
 
     @GetMapping("/confirm-reset")
@@ -74,7 +80,7 @@ public class LoginController {
     }
 
     @PostMapping("/newpass")
-    public String resetPass(@Valid @ModelAttribute("user") PasswordReset passwordReset, BindingResult result, ServletRequest request) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
+    public ModelAndView resetPass(@Valid @ModelAttribute("user") PasswordReset passwordReset, BindingResult result, ServletRequest request) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {
         HttpServletRequest req = (HttpServletRequest) request;
         User user = new User();
         Cookie[] cookies = req.getCookies();
@@ -83,13 +89,13 @@ public class LoginController {
             if(cookie.getName().equals("username"))
                 user.setUsername(cookie.getValue());
         }
-        User updateUser = userService.getUSerByEmail(user.getUsername());
+        User updateUser = userService.findUserByEmail(user.getUsername());
         if(result.hasErrors()) {
-            return "newPass";
+            return new ModelAndView("newPass");
         }
         updateUser.setPassword(passwordReset.getPassword());
         userService.saveUser(updateUser);
-        return "redirect:/login";
+        return new ModelAndView("redirect:/login");
     }
 
     private User getUserFormToken(String token) throws TokenInvalidException, UsernameExistException, ConfirmationException, UserNotFoundException {

@@ -50,7 +50,8 @@
                     <div class="button-container">
                         <button type="submit"><span>Go</span></button>
                     </div>
-                    <div class="footer"><a href="#">Forgot your password?</a></div>
+                    <spring:url var="resetURL" value="/reset"/>
+                    <div class="footer"><a href="${resetURL}">Forgot your password?</a></div>
                 </form>
             </div>
         </div>
